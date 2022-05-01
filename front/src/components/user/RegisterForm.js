@@ -7,16 +7,17 @@ import * as Api from "../../api";
 function RegisterForm() {
   const navigate = useNavigate();
 
-  //useState로 email 상태를 생성함.
+  const [isCompany, setIsCompany] = useState(false);
+
+  const [registerNumber, setRegisterNumber] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [ownerName, setOwnerName] = useState("");
+
   const [email, setEmail] = useState("");
-  //useState로 password 상태를 생성함.
   const [password, setPassword] = useState("");
-  //useState로 confirmPassword 상태를 생성함.
   const [confirmPassword, setConfirmPassword] = useState("");
-  //useState로 name 상태를 생성함.
   const [name, setName] = useState("");
 
-  //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
   const validateEmail = (email) => {
     return email
       .toLowerCase()
@@ -25,16 +26,11 @@ function RegisterForm() {
       );
   };
 
-  //위 validateEmail 함수를 통해 이메일 형태 적합 여부를 확인함.
   const isEmailValid = validateEmail(email);
-  // 비밀번호가 4글자 이상인지 여부를 확인함.
   const isPasswordValid = password.length >= 4;
-  // 비밀번호와 확인용 비밀번호가 일치하는지 여부를 확인함.
   const isPasswordSame = password === confirmPassword;
-  // 이름이 2글자 이상인지 여부를 확인함.
   const isNameValid = name.length >= 2;
 
-  // 위 4개 조건이 모두 동시에 만족되는지 여부를 확인함.
   const isFormValid =
     isEmailValid && isPasswordValid && isPasswordSame && isNameValid;
 
@@ -42,13 +38,22 @@ function RegisterForm() {
     e.preventDefault();
 
     try {
-      // "user/register" 엔드포인트로 post요청함.
-      await Api.post("user/register", {
-        email,
-        password,
-        name,
-      });
-
+      if (isCompany) {
+        await Api.post("company/register", {
+          name,
+          email,
+          password,
+          companyName,
+          registerNumber,
+          ownerName,
+        });
+      } else {
+        await Api.post("user/register", {
+          email,
+          password,
+          name,
+        });
+      }
       // 로그인 페이지로 이동함.
       navigate("/login");
     } catch (err) {
@@ -60,7 +65,40 @@ function RegisterForm() {
     <Container>
       <Row className="justify-content-md-center mt-5">
         <Col lg={8}>
+          <button onClick={() => setIsCompany(false)}>개인회원</button>
+          <button onClick={() => setIsCompany(true)}>기업회원</button>
           <Form onSubmit={handleSubmit}>
+            {isCompany && (
+              <>
+                <Form.Group>
+                  <Form.Label>사업자 등록번호</Form.Label>
+                  <Form.Control
+                    type="text"
+                    autoComplete="off"
+                    value={registerNumber}
+                    onChange={(e) => setRegisterNumber(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>회사명</Form.Label>
+                  <Form.Control
+                    type="text"
+                    autoComplete="off"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>대표자명</Form.Label>
+                  <Form.Control
+                    type="text"
+                    autoComplete="off"
+                    value={ownerName}
+                    onChange={(e) => setOwnerName(e.target.value)}
+                  />
+                </Form.Group>
+              </>
+            )}
             <Form.Group controlId="registerEmail">
               <Form.Label>이메일 주소</Form.Label>
               <Form.Control

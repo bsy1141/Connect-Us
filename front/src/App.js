@@ -5,9 +5,9 @@ import * as Api from "./api";
 import { loginReducer } from "./reducer";
 
 import Header from "./components/Header";
-import LoginForm from "./components/user/LoginForm";
+import LoginForm from "./components/user/LoginForm/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
-import Portfolio from "./components/Portfolio";
+import MyPage from "./components/MyPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -57,11 +57,11 @@ function App() {
         <Router>
           <Header />
           <Routes>
-            <Route path="/" exact element={<Portfolio />} />
+            <Route path="/" exact element={<MyPage />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/users/:userId" element={<Portfolio />} />
-            <Route path="*" element={<Portfolio />} />
+            <Route path="/users/:userId" element={<MyPage />} />
+            <Route path="*" element={<MyPage />} />
           </Routes>
         </Router>
       </UserStateContext.Provider>

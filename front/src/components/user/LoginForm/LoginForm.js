@@ -2,8 +2,8 @@ import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Col, Row, Form, Button } from "react-bootstrap";
 
-import * as Api from "../../api";
-import { DispatchContext } from "../../App";
+import * as Api from "../../../api";
+import { DispatchContext } from "../../../App";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -62,7 +62,7 @@ function LoginForm() {
       });
 
       // 기본 페이지로 이동함.
-      navigate("/", { replace: true });
+      navigate("/", { state: { position }, replace: true });
     } catch (err) {
       console.log("로그인에 실패하였습니다.\n", err);
     }
@@ -77,19 +77,21 @@ function LoginForm() {
               style={{ textAlign: "center" }}
               onChange={(e) => setPosition(e.target.value)}
             >
-              <Form.Check
-                inline
+              <input
                 type="radio"
-                label="개인회원"
                 value="user"
+                id="user"
+                name="position"
                 defaultChecked
               />
-              <Form.Check
-                inline
+              <label htmlFor="user">개인 회원</label>
+              <input
                 type="radio"
-                label="기업회원"
                 value="company"
+                id="company"
+                name="position"
               />
+              <label htmlFor="company">기업 회원</label>
             </div>
 
             <Form.Group controlId="loginEmail">
