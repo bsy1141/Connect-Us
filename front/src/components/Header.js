@@ -21,9 +21,7 @@ function Header() {
   return (
     <Nav activeKey={location.pathname}>
       <Nav.Item className="me-auto mb-5">
-        <Nav.Link disabled>
-          안녕하세요, 청년과 스타트업을 잇는 sns형 포트폴리오 Connect Us 입니다.{" "}
-        </Nav.Link>
+        <Nav.Link onClick={() => navigate("/")}>Connect Us</Nav.Link>
       </Nav.Item>
       <Nav.Item>
         <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>

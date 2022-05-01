@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
-
+import styles from "../../css/user/RegisterForm.module.css";
 import * as Api from "../../api";
 
 function RegisterForm() {
@@ -62,122 +61,126 @@ function RegisterForm() {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col lg={8}>
-          <button onClick={() => setIsCompany(false)}>개인회원</button>
-          <button onClick={() => setIsCompany(true)}>기업회원</button>
-          <Form onSubmit={handleSubmit}>
-            {isCompany && (
-              <>
-                <Form.Group>
-                  <Form.Label>사업자 등록번호</Form.Label>
-                  <Form.Control
-                    type="text"
-                    autoComplete="off"
-                    value={registerNumber}
-                    onChange={(e) => setRegisterNumber(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>회사명</Form.Label>
-                  <Form.Control
-                    type="text"
-                    autoComplete="off"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group>
-                  <Form.Label>대표자명</Form.Label>
-                  <Form.Control
-                    type="text"
-                    autoComplete="off"
-                    value={ownerName}
-                    onChange={(e) => setOwnerName(e.target.value)}
-                  />
-                </Form.Group>
-              </>
-            )}
-            <Form.Group controlId="registerEmail">
-              <Form.Label>이메일 주소</Form.Label>
-              <Form.Control
+    <div className={styles.container}>
+      <div className={styles.registerForm}>
+        <h3>Connect Us</h3>
+        <div className={styles.box_button}>
+          <button
+            onClick={() => setIsCompany(false)}
+            className={isCompany ? "" : styles.clicked}
+          >
+            개인회원
+          </button>
+          <button
+            onClick={() => setIsCompany(true)}
+            className={isCompany ? styles.clicked : ""}
+          >
+            기업회원
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          {isCompany && (
+            <div>
+              <h3 className={styles.subtitle}>기업 정보</h3>
+              <div className={styles.box_input}>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={registerNumber}
+                  onChange={(e) => setRegisterNumber(e.target.value)}
+                  placeholder="사업자 등록번호"
+                />
+              </div>
+
+              <div className={styles.box_input}>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  placeholder="회사명"
+                />
+              </div>
+
+              <div className={styles.box_input}>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={ownerName}
+                  onChange={(e) => setOwnerName(e.target.value)}
+                  placeholder="대표자명"
+                />
+              </div>
+            </div>
+          )}
+          <div>
+            {isCompany && <h3 className={styles.subtitle}>인사담당자 정보</h3>}
+            <div className={styles.box_input}>
+              <input
                 type="email"
                 autoComplete="off"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일"
               />
-              {!isEmailValid && (
-                <Form.Text className="text-success">
-                  이메일 형식이 올바르지 않습니다.
-                </Form.Text>
-              )}
-            </Form.Group>
 
-            <Form.Group controlId="registerPassword" className="mt-3">
-              <Form.Label>비밀번호</Form.Label>
-              <Form.Control
+              {!isEmailValid && <p>이메일 형식이 올바르지 않습니다.</p>}
+            </div>
+
+            <div className={styles.box_input}>
+              <input
                 type="password"
                 autoComplete="off"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호"
               />
               {!isPasswordValid && (
-                <Form.Text className="text-success">
-                  비밀번호는 4글자 이상으로 설정해 주세요.
-                </Form.Text>
+                <p>비밀번호는 4글자 이상으로 설정해 주세요.</p>
               )}
-            </Form.Group>
+            </div>
 
-            <Form.Group controlId="registerConfirmPassword" className="mt-3">
-              <Form.Label>비밀번호 재확인</Form.Label>
-              <Form.Control
+            <div className={styles.box_input}>
+              <input
                 type="password"
                 autoComplete="off"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="비밀번호 재확인"
               />
-              {!isPasswordSame && (
-                <Form.Text className="text-success">
-                  비밀번호가 일치하지 않습니다.
-                </Form.Text>
-              )}
-            </Form.Group>
+              {!isPasswordSame && <p>비밀번호가 일치하지 않습니다.</p>}
+            </div>
 
-            <Form.Group controlId="registerName" className="mt-3">
-              <Form.Label>이름</Form.Label>
-              <Form.Control
+            <div className={styles.box_input}>
+              <input
                 type="text"
                 autoComplete="off"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                placeholder="이름"
               />
-              {!isNameValid && (
-                <Form.Text className="text-success">
-                  이름은 2글자 이상으로 설정해 주세요.
-                </Form.Text>
-              )}
-            </Form.Group>
+              {!isNameValid && <p>이름은 2글자 이상으로 설정해 주세요.</p>}
+            </div>
+          </div>
+          <button
+            type="submit"
+            disabled={!isFormValid}
+            className={styles.button_register}
+          >
+            회원가입
+          </button>
 
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="primary" type="submit" disabled={!isFormValid}>
-                  회원가입
-                </Button>
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="light" onClick={() => navigate("/login")}>
-                  로그인하기
-                </Button>
-              </Col>
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+          <div className={styles.box_button_login}>
+            <button
+              onClick={() => navigate("/login")}
+              className={styles.button_login}
+            >
+              로그인
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 

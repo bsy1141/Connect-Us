@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 
 import { UserStateContext } from "../App";
 import * as Api from "../api";
+import Header from "./Header";
 
 function MyPage() {
   const navigate = useNavigate();
@@ -53,7 +54,13 @@ function MyPage() {
   }
 
   return (
-    <div style={{ textAlign: "center" }}>환영합니다 {userData?.name}님!</div>
+    <>
+      <Header />
+      <div style={{ textAlign: "center" }}>
+        환영합니다
+        {position == "user" ? userData?.name : userData?.companyName}님!
+      </div>
+    </>
   );
 }
 

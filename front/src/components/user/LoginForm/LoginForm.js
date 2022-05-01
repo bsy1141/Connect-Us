@@ -1,9 +1,14 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Container, Col, Row, Form, Button } from "react-bootstrap";
+import { ReactComponent as LogoImage } from "../../../assets/loginFormImg.svg";
+import styles from "../../../css/user/LoginForm.module.css";
+import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import * as Api from "../../../api";
 import { DispatchContext } from "../../../App";
+
+import "../../../css/reset.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -15,6 +20,9 @@ function LoginForm() {
   const [password, setPassword] = useState("");
 
   const [position, setPosition] = useState("user");
+
+  const [focusEmail, setFocusEmail] = useState(false);
+  const [focusPassword, setFocusPassword] = useState(false);
 
   //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
   const validateEmail = (email) => {
@@ -69,80 +77,94 @@ function LoginForm() {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col lg={8}>
-          <Form onSubmit={handleSubmit}>
-            <div
-              style={{ textAlign: "center" }}
-              onChange={(e) => setPosition(e.target.value)}
-            >
-              <input
-                type="radio"
-                value="user"
-                id="user"
-                name="position"
-                defaultChecked
-              />
-              <label htmlFor="user">개인 회원</label>
-              <input
-                type="radio"
-                value="company"
-                id="company"
-                name="position"
-              />
-              <label htmlFor="company">기업 회원</label>
-            </div>
+    <div className={styles.container}>
+      <div className={styles.loginForm}>
+        <h3>Connect Us</h3>
+        <h2>
+          일상의 기록이
+          <br />
+          포트폴리오가 되는 곳
+        </h2>
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div onChange={(e) => setPosition(e.target.value)}>
+            <input
+              type="radio"
+              value="user"
+              id="user"
+              name="position"
+              defaultChecked
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="user" style={{ marginRight: "20px" }}>
+              개인 회원
+            </label>
+            <input
+              type="radio"
+              value="company"
+              id="company"
+              name="position"
+              style={{ marginRight: "5px" }}
+            />
+            <label htmlFor="company">기업 회원</label>
+          </div>
 
-            <Form.Group controlId="loginEmail">
-              <Form.Label>이메일 주소</Form.Label>
-              <Form.Control
+          <div>
+            <div
+              className={`${styles.box} ${focusEmail ? styles.box_focus : ""}`}
+            >
+              <FontAwesomeIcon icon={faUser} style={{ color: "gray" }} />
+              <input
                 type="email"
-                autoComplete="on"
+                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일"
+                onFocus={() => setFocusEmail(true)}
+                onBlur={() => setFocusEmail(false)}
               />
-              {!isEmailValid && (
-                <Form.Text className="text-success">
-                  이메일 형식이 올바르지 않습니다.
-                </Form.Text>
-              )}
-            </Form.Group>
+            </div>
+            {!isEmailValid && <p>이메일 형식이 올바르지 않습니다.</p>}
+          </div>
 
-            <Form.Group controlId="loginPassword" className="mt-3">
-              <Form.Label>비밀번호</Form.Label>
-              <Form.Control
+          <div>
+            <div
+              className={`${styles.box} ${
+                focusPassword ? styles.box_focus : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faLock} style={{ color: "gray" }} />
+              <input
                 type="password"
-                autoComplete="on"
+                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호"
+                onFocus={() => setFocusPassword(true)}
+                onBlur={() => setFocusPassword(false)}
               />
-              {!isPasswordValid && (
-                <Form.Text className="text-success">
-                  비밀번호는 4글자 이상입니다.
-                </Form.Text>
-              )}
-            </Form.Group>
+            </div>
+            {!isPasswordValid && <p>비밀번호는 4글자 이상입니다.</p>}
+          </div>
 
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="primary" type="submit" disabled={!isFormValid}>
-                  로그인
-                </Button>
-              </Col>
-            </Form.Group>
-
-            <Form.Group as={Row} className="mt-3 text-center">
-              <Col sm={{ span: 20 }}>
-                <Button variant="light" onClick={() => navigate("/register")}>
-                  회원가입하기
-                </Button>
-              </Col>
-            </Form.Group>
-          </Form>
-        </Col>
-      </Row>
-    </Container>
+          <button
+            type="submit"
+            disabled={!isFormValid}
+            className={`${styles.button} ${styles.button_login}`}
+          >
+            로그인
+          </button>
+          <button
+            onClick={() => navigate("/register")}
+            className={`${styles.button} ${styles.button_register}`}
+          >
+            회원가입
+          </button>
+        </form>
+      </div>
+      <div className={styles.logoImg}>
+        <LogoImage width="100%" />
+      </div>
+    </div>
   );
 }
 

@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
 
-import Header from "./components/Header";
 import LoginForm from "./components/user/LoginForm/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import MyPage from "./components/MyPage";
@@ -55,7 +54,6 @@ function App() {
     <DispatchContext.Provider value={dispatch}>
       <UserStateContext.Provider value={userState}>
         <Router>
-          <Header />
           <Routes>
             <Route path="/" exact element={<MyPage />} />
             <Route path="/login" element={<LoginForm />} />
