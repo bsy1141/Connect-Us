@@ -4,9 +4,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
 
-import LoginForm from "./components/user/LoginForm/LoginForm";
+import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
-import MyPage from "./components/MyPage";
+import InitialPage from "./components/IntialPage";
+import MainFeed from "./components/MainFeed";
+import MyPage from "./components/user/MyPage";
+import RecommandPage from "./components/recommand/RecommandPage";
+import RecommandResultPage from "./components/recommand/RecommandResultPage";
+import SearchPage from "./components/SearchPage";
+import PostPage from "./components/PostPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -55,11 +61,16 @@ function App() {
       <UserStateContext.Provider value={userState}>
         <Router>
           <Routes>
-            <Route path="/" exact element={<MyPage />} />
+            <Route path="/" exact element={<MainFeed />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
+            <Route path="/initial" element={<InitialPage />} />
+            <Route path="/post" element={<PostPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
-            <Route path="*" element={<MyPage />} />
+            <Route path="/recommand" element={<RecommandPage />} />
+            <Route path="/result" element={<RecommandResultPage />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="*" element={<MainFeed />} />
           </Routes>
         </Router>
       </UserStateContext.Provider>

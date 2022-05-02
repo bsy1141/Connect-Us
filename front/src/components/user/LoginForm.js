@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as LogoImage } from "../../../assets/loginFormImg.svg";
-import styles from "../../../css/user/LoginForm.module.css";
+import { ReactComponent as LogoImage } from "../../assets/loginFormImg.svg";
+import styles from "../../css/user/LoginForm.module.css";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 
-import * as Api from "../../../api";
-import { DispatchContext } from "../../../App";
+import * as Api from "../../api";
+import { DispatchContext } from "../../App";
 
-import "../../../css/reset.css";
+import "../../css/reset.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function LoginForm() {
@@ -68,9 +68,8 @@ function LoginForm() {
         type: "LOGIN_SUCCESS",
         payload: user,
       });
-
       // 기본 페이지로 이동함.
-      navigate("/", { state: { position }, replace: true });
+      navigate("/initial", { state: { position }, replace: true });
     } catch (err) {
       console.log("로그인에 실패하였습니다.\n", err);
     }
@@ -126,7 +125,7 @@ function LoginForm() {
             {!isEmailValid && <p>이메일 형식이 올바르지 않습니다.</p>}
           </div>
 
-          <div>
+          <div style={{ marginBottom: "20px" }}>
             <div
               className={`${styles.box} ${
                 focusPassword ? styles.box_focus : ""

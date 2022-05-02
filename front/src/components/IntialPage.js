@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router";
 
 import { UserStateContext } from "../App";
 import * as Api from "../api";
 import Header from "./Header";
 
-function MyPage() {
+function InitialPage() {
   const navigate = useNavigate();
-  const params = useParams();
   const location = useLocation();
   const position = location.state?.position;
 
@@ -19,11 +18,11 @@ function MyPage() {
   const fetchUser = async (ownerId) => {
     if (position === "user") {
       const res = await Api.get("users", ownerId);
-      console.log(res.data);
+      //console.log(res.data);
       setUserData(res.data);
     } else {
       const res = await Api.get("companies", ownerId);
-      console.log(res.data);
+      //console.log(res.data);
       setUserData(res.data);
     }
     setIsFetchCompleted(true);
@@ -35,19 +34,11 @@ function MyPage() {
       navigate("/login", { replace: true });
       return;
     }
-
-    if (params.userId) {
-      // 만약 현재 URL이 "/users/:userId" 라면, 이 userId를 유저 id로 설정함.
-      const ownerId = params.userId;
-      // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
-      fetchUser(ownerId);
-    } else {
-      // 이외의 경우, 즉 URL이 "/" 라면, 전역 상태의 user.id를 유저 id로 설정함.
-      const ownerId = userState.user.id;
-      // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
-      fetchUser(ownerId);
-    }
-  }, [params, userState, navigate]);
+    // 이외의 경우, 즉 URL이 "/" 라면, 전역 상태의 user.id를 유저 id로 설정함.
+    const ownerId = userState.user.id;
+    // 해당 유저 id로 fetchPorfolioOwner 함수를 실행함.
+    fetchUser(ownerId);
+  }, [userState, navigate]);
 
   if (!isFetchCompleted) {
     return "loading...";
@@ -64,4 +55,4 @@ function MyPage() {
   );
 }
 
-export default MyPage;
+export default InitialPage;

@@ -24,7 +24,12 @@ function Header() {
         <Nav.Link onClick={() => navigate("/")}>Connect Us</Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link onClick={() => navigate("/")}>나의 페이지</Nav.Link>
+        <Nav.Link onClick={() => navigate(`/users/${userState.user.id}`)}>
+          나의 페이지
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
+        <Nav.Link onClick={() => navigate(`/search`)}>검색</Nav.Link>
       </Nav.Item>
       {isLogin && (
         <Nav.Item>
