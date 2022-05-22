@@ -24,11 +24,11 @@ const PostPage = () => {
   };
 
   const onUploadImage = async (blob, callback) => {
-    console.log(blob);
     const formData = new FormData();
     formData.append("image", blob);
     const res = await Api.postImage("uploadImage", formData);
-    console.log(res.data);
+    callback(res.data, "alt text");
+    return false;
   };
   return (
     <>
@@ -46,10 +46,6 @@ const PostPage = () => {
           addImageBlobHook: onUploadImage,
         }}
       />
-      <ReactMarkdown
-        children={markdown}
-        remarkPlugins={[remarkGfm]}
-      ></ReactMarkdown>
     </>
   );
 };
