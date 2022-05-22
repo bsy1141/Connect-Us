@@ -6,13 +6,12 @@ import { loginReducer } from "./reducer";
 
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
-import InitialPage from "./components/IntialPage";
 import MainFeed from "./components/MainFeed";
 import MyPage from "./components/user/MyPage";
 import RecommandPage from "./components/recommand/RecommandPage";
 import RecommandResultPage from "./components/recommand/RecommandResultPage";
 import SearchPage from "./components/SearchPage";
-import PostPage from "./components/PostPage";
+import PostPage from "./components/post/PostPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -64,7 +63,6 @@ function App() {
             <Route path="/" exact element={<MainFeed />} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/initial" element={<InitialPage />} />
             <Route path="/post" element={<PostPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
             <Route path="/recommand" element={<RecommandPage />} />

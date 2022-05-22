@@ -71,13 +71,13 @@ class companyAuthService {
 
     // 반환할 loginuser 객체를 위한 변수 설정
     const id = company.id;
-    const name = company.companyName;
+    const companyName = company.companyName;
 
     const loginCompany = {
       token,
       id,
       email,
-      name,
+      companyName,
       errorMessage: null,
     };
 
