@@ -48,6 +48,7 @@ function InitialPage() {
     <>
       <Header />
       <div style={{ textAlign: "center" }}>
+        <p>메인 피드</p>
         환영합니다
         {position == "user" ? userData?.name : userData?.companyName}님!
       </div>
