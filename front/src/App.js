@@ -8,10 +8,11 @@ import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import MainFeed from "./components/MainFeed";
 import MyPage from "./components/user/MyPage";
-import RecommandPage from "./components/recommand/RecommandPage";
-import RecommandResultPage from "./components/recommand/RecommandResultPage";
+//import RecommandPage from "./components/recommand/RecommandPage";
+//import RecommandResultPage from "./components/recommand/RecommandResultPage";
 import SearchPage from "./components/SearchPage";
 import PostPage from "./components/post/PostPage";
+import KeywordPage from "./components/user/keyword/KeywordPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);
@@ -65,8 +66,9 @@ function App() {
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/post" element={<PostPage />} />
             <Route path="/users/:userId" element={<MyPage />} />
-            <Route path="/recommand" element={<RecommandPage />} />
-            <Route path="/result" element={<RecommandResultPage />} />
+            <Route path="/users/keyword" element={<KeywordPage />} />
+            {/* <Route path="/recommand" element={<RecommandPage />} />
+            <Route path="/recommand/result" element={<RecommandResultPage />} /> */}
             <Route path="/search" element={<SearchPage />} />
             <Route path="*" element={<MainFeed />} />
           </Routes>

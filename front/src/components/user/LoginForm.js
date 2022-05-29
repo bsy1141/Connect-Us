@@ -122,7 +122,17 @@ function LoginForm() {
                 onBlur={() => setFocusEmail(false)}
               />
             </div>
-            {!isEmailValid && <p>이메일 형식이 올바르지 않습니다.</p>}
+            {!isEmailValid && (
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#ff758f",
+                  marginLeft: "10px",
+                }}
+              >
+                이메일 형식이 올바르지 않습니다.
+              </p>
+            )}
           </div>
 
           <div style={{ marginBottom: "20px" }}>
@@ -142,7 +152,17 @@ function LoginForm() {
                 onBlur={() => setFocusPassword(false)}
               />
             </div>
-            {!isPasswordValid && <p>비밀번호는 4글자 이상입니다.</p>}
+            {!isPasswordValid && (
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#ff758f",
+                  marginLeft: "10px",
+                }}
+              >
+                비밀번호는 4글자 이상입니다.
+              </p>
+            )}
           </div>
 
           <button

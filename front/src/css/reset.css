@@ -122,12 +122,6 @@ input {
   font-family: "Elice Digital Baeum", sans-serif !important;
 } */
 
-p {
-  font-size: 13px;
-  color: #ff758f;
-  margin-left: 10px;
-}
-
 input[type="radio"],
 input[type="radio"]:checked {
   appearance: none;

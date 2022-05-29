@@ -124,7 +124,17 @@ function RegisterForm() {
                 placeholder="이메일"
               />
 
-              {!isEmailValid && <p>이메일 형식이 올바르지 않습니다.</p>}
+              {!isEmailValid && (
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "#ff758f",
+                    marginLeft: "10px",
+                  }}
+                >
+                  이메일 형식이 올바르지 않습니다.
+                </p>
+              )}
             </div>
 
             <div className={styles.box_input}>
@@ -136,7 +146,15 @@ function RegisterForm() {
                 placeholder="비밀번호"
               />
               {!isPasswordValid && (
-                <p>비밀번호는 4글자 이상으로 설정해 주세요.</p>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "#ff758f",
+                    marginLeft: "10px",
+                  }}
+                >
+                  비밀번호는 4글자 이상으로 설정해 주세요.
+                </p>
               )}
             </div>
 
@@ -148,7 +166,17 @@ function RegisterForm() {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="비밀번호 재확인"
               />
-              {!isPasswordSame && <p>비밀번호가 일치하지 않습니다.</p>}
+              {!isPasswordSame && (
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "#ff758f",
+                    marginLeft: "10px",
+                  }}
+                >
+                  비밀번호가 일치하지 않습니다.
+                </p>
+              )}
             </div>
 
             <div className={styles.box_input}>
@@ -159,7 +187,17 @@ function RegisterForm() {
                 onChange={(e) => setName(e.target.value)}
                 placeholder="이름"
               />
-              {!isNameValid && <p>이름은 2글자 이상으로 설정해 주세요.</p>}
+              {!isNameValid && (
+                <p
+                  style={{
+                    fontSize: "13px",
+                    color: "#ff758f",
+                    marginLeft: "10px",
+                  }}
+                >
+                  이름은 2글자 이상으로 설정해 주세요.
+                </p>
+              )}
             </div>
           </div>
           <button
