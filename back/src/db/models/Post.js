@@ -3,11 +3,12 @@ import { PostModel } from "../schemas/post";
 class Post {
   static create = async ({ newPost }) => {
     const checkAlreadyExist = await PostModel.findOne({
-      post: newPost.post,
+      id: newPost.id,
     });
     if (checkAlreadyExist) {
       return checkAlreadyExist;
     }
+
     const createdNewPost = await PostModel.create(newPost);
     return createdNewPost;
   };

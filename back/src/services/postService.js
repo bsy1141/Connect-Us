@@ -11,6 +11,7 @@ class postService {
 
     const createNewPostResult = await Post.create({ newPost });
     createNewPostResult.errorMessage = null;
+
     return createNewPostResult;
   };
 

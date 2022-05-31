@@ -26,7 +26,7 @@ function MainFeed() {
       return;
     }
     fetchPosts();
-  }, [userState, navigate]);
+  }, [userState, navigate, posts]);
 
   return (
     <Container>
