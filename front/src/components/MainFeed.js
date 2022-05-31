@@ -34,17 +34,19 @@ function MainFeed() {
       <MainFeedWrapper>
         <FollowerContainer></FollowerContainer>
         <PostCardsContainer>
-          <PostCardContainer>
-            <PostCardContent>
-              <PostWriterWrapper>
-                <PostWriterImage />
-                <span>글쓴이</span>
-              </PostWriterWrapper>
-              <h3>title</h3>
-              <p>description</p>
-            </PostCardContent>
-            <PostCardImage />
-          </PostCardContainer>
+          {posts.map((post) => (
+            <PostCardContainer key={post.id}>
+              <PostCardContent>
+                <PostWriterWrapper>
+                  <PostWriterImage />
+                  <span>{post.userName}</span>
+                </PostWriterWrapper>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+              </PostCardContent>
+              <PostCardImage />
+            </PostCardContainer>
+          ))}
         </PostCardsContainer>
       </MainFeedWrapper>
       <button onClick={() => navigate("/post")} className={styles.button_add}>
@@ -63,7 +65,7 @@ const Container = styled.div`
 
 const MainFeedWrapper = styled.div`
   margin-top: 80px;
-  width: 90;
+  width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-between;
@@ -79,7 +81,7 @@ const FollowerContainer = styled.div`
 `;
 
 const PostCardsContainer = styled.div`
-  width: 80%;
+  width: 75%;
   height: 100%;
   margin-right: 30px;
 `;
