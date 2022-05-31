@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
+import styled from "styled-components";
 
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
@@ -60,18 +61,20 @@ function App() {
     <DispatchContext.Provider value={dispatch}>
       <UserStateContext.Provider value={userState}>
         <Router>
-          <Routes>
-            <Route path="/" exact element={<MainFeed />} />
-            <Route path="/login" element={<LoginForm />} />
-            <Route path="/register" element={<RegisterForm />} />
-            <Route path="/post" element={<PostPage />} />
-            <Route path="/users/:userId" element={<MyPage />} />
-            <Route path="/users/keyword" element={<KeywordPage />} />
-            {/* <Route path="/recommand" element={<RecommandPage />} />
-            <Route path="/recommand/result" element={<RecommandResultPage />} /> */}
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="*" element={<MainFeed />} />
-          </Routes>
+          <Container>
+            <Routes>
+              <Route path="/" exact element={<MainFeed />} />
+              <Route path="/login" element={<LoginForm />} />
+              <Route path="/register" element={<RegisterForm />} />
+              <Route path="/post" element={<PostPage />} />
+              <Route path="/users/:userId" element={<MyPage />} />
+              <Route path="/users/keyword" element={<KeywordPage />} />
+              {/* <Route path="/recommand" element={<RecommandPage />} />
+              <Route path="/recommand/result" element={<RecommandResultPage />} /> */}
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="*" element={<MainFeed />} />
+            </Routes>
+          </Container>
         </Router>
       </UserStateContext.Provider>
     </DispatchContext.Provider>
@@ -79,3 +82,13 @@ function App() {
 }
 
 export default App;
+
+const Container = styled.div`
+  width = 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;

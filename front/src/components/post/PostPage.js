@@ -33,12 +33,14 @@ const PostPage = () => {
 
   const handleSubmit = () => {
     try {
-      Api.post("post/create", {
+      const res = Api.post("post/create", {
         userId: userState.user.id,
         title: title,
         content: markdown,
         description: description,
       });
+      console.log(res.data);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +60,7 @@ const PostPage = () => {
     return false;
   };
   return (
-    <>
+    <Container>
       <Header />
       <PostHeader>
         <PostInputTitle
@@ -72,6 +74,7 @@ const PostPage = () => {
       </PostHeader>
       <Editor
         previewStyle="vertical"
+        height="800px"
         plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
         onChange={onChangeEditor}
         ref={editorRef}
@@ -79,17 +82,73 @@ const PostPage = () => {
           addImageBlobHook: onUploadImage,
         }}
       />
-      <SubmitButton onClick={() => handleSubmit()}>출간하기</SubmitButton>
-    </>
+      <MarginDiv></MarginDiv>
+      <ButtonContainer>
+        <ReturnButton onClick={() => navigate("/")}>돌아가기</ReturnButton>
+        <SubmitButton onClick={() => handleSubmit()}>출간하기</SubmitButton>
+      </ButtonContainer>
+    </Container>
   );
 };
 
 export default PostPage;
 
-const PostHeader = styled.div``;
+const Container = styled.div`
+  width: 100%;
+  position: relative;
+`;
 
-const PostInputTitle = styled.input``;
+const PostHeader = styled.div`
+  margin-top: 80px;
+`;
 
-const PostInputDescription = styled.input``;
+const PostInputTitle = styled.input`
+  width: 100%;
+  height: 100px;
+  font-size: 50px;
+  border: none;
+`;
 
-const SubmitButton = styled.button``;
+const PostInputDescription = styled.textarea`
+  display: block;
+  width: 100%;
+  height: 100px;
+  font-size: 20px;
+  border: none;
+`;
+
+const MarginDiv = styled.div`
+  height: 100px;
+`;
+
+const ButtonContainer = styled.div`
+  position: fixed;
+  z-index: 10;
+  bottom: 0px;
+  display: flex;
+  justify-content: right;
+  background: #fff;
+  height: 80px;
+  width: 100%;
+  box-shadow: rgb(0 0 0 / 10%) 0px 0px 8px;
+  align-items: center;
+`;
+
+const SubmitButton = styled.button`
+  border: none;
+  border-radius: 4px;
+  width: 100px;
+  height: 50px;
+  background: #ff758f;
+  color: #fff;
+  margin-right: 20px;
+`;
+
+const ReturnButton = styled.button`
+  border: none;
+  border-radius: 4px;
+  width: 100px;
+  height: 50px;
+  color: #ff758f;
+  background: transparent;
+`;

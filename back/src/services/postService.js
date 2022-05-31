@@ -1,10 +1,13 @@
-import { Post } from "../db";
+import { Post, User } from "../db";
 import { v4 as uuidv4 } from "uuid";
 
 class postService {
   static addPost = async ({ newPost }) => {
     const id = uuidv4();
     newPost.id = id;
+
+    const user = await User.findById({ user_id: newPost.userId });
+    newPost.userName = user.name;
 
     const createNewPostResult = await Post.create({ newPost });
     createNewPostResult.errorMessage = null;

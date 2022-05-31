@@ -12,7 +12,7 @@ postRouter.get("/postlist", login_required, async (req, res, next) => {
     if (postlist.errorMessage) {
       throw new Error(post.errorMessage);
     }
-    res.status(200).send(post);
+    res.status(200).send(postlist);
   } catch (error) {
     next(error);
   }
@@ -20,7 +20,6 @@ postRouter.get("/postlist", login_required, async (req, res, next) => {
 
 postRouter.post("/post/create", login_required, async (req, res, next) => {
   try {
-    console.log(req.body);
     if (
       is.emptyObject(req.body) ||
       !req.body.userId ||

@@ -19,21 +19,44 @@ function Header() {
   };
 
   return (
-    <Nav activeKey={location.pathname}>
+    <Nav
+      activeKey={location.pathname}
+      style={{
+        background: "#FF758F",
+        width: "100%",
+        height: "60px",
+        marginBottom: "30px",
+        lineHeight: "40px",
+        position: "fixed",
+        zIndex: 10,
+      }}
+    >
       <Nav.Item className="me-auto mb-5">
-        <Nav.Link onClick={() => navigate("/")}>Connect Us</Nav.Link>
+        <Nav.Link
+          onClick={() => navigate("/")}
+          style={{ color: "#fff", fontSize: "20px", fontWeight: "bold" }}
+        >
+          Connect Us
+        </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link onClick={() => navigate(`/users/${userState.user.id}`)}>
+        <Nav.Link
+          onClick={() => navigate(`/users/${userState.user.id}`)}
+          style={{ color: "#fff" }}
+        >
           나의 페이지
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link onClick={() => navigate(`/search`)}>검색</Nav.Link>
+        <Nav.Link onClick={() => navigate(`/search`)} style={{ color: "#fff" }}>
+          검색
+        </Nav.Link>
       </Nav.Item>
       {isLogin && (
         <Nav.Item>
-          <Nav.Link onClick={logout}>로그아웃</Nav.Link>
+          <Nav.Link onClick={logout} style={{ color: "#fff" }}>
+            로그아웃
+          </Nav.Link>
         </Nav.Item>
       )}
     </Nav>
