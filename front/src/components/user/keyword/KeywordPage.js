@@ -74,6 +74,7 @@ const KeywordPage = () => {
 export default KeywordPage;
 
 const Container = styled.div`
+  margin-top: 80px;
   width: 100%;
   height: 100%;
   overflow-y: scroll;
