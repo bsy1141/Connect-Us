@@ -26,11 +26,22 @@ class postService {
     return getPostsResult;
   };
 
+  static getPostsByUserId = async ({ getPosts }) => {
+    const getPostsResult = await Post.findAllToUser({ getPosts });
+
+    if (!getPostsResult) {
+      const errorMessage = "해당 유저의 포스트들을 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return getPostsResult;
+  };
+
   static getPost = async ({ getPost }) => {
     const getPostResult = await Post.findOne({ getPost });
 
     if (!getPostResult) {
-      const errorMessage = "특정 수상 이력을 불러오는 데 실패했습니다.";
+      const errorMessage = "특정 포스트를 불러오는 데 실패했습니다.";
       return { errorMessage };
     }
 

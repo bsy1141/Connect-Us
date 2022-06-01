@@ -8,7 +8,7 @@ import styled from "styled-components";
 import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import MainFeed from "./components/MainFeed";
-import MyPage from "./components/user/MyPage";
+import MyPage from "./components/user/mypage/MyPage";
 //import RecommandPage from "./components/recommand/RecommandPage";
 //import RecommandResultPage from "./components/recommand/RecommandResultPage";
 import SearchPage from "./components/SearchPage";

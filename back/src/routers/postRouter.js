@@ -18,6 +18,33 @@ postRouter.get("/postlist", login_required, async (req, res, next) => {
   }
 });
 
+postRouter.get("/postlist/:userId", login_required, async (req, res, next) => {
+  try {
+    if (is.emptyObject(req.query)) {
+      throw new Error("페이지네이션을 위한 쿼리를 확인해주세요.");
+    }
+
+    const page = Number(req.query.page) || 1;
+    const perPage = Number(req.query.perPage) || 3;
+
+    const getPosts = {
+      userId: req.params.userId,
+      page: page,
+      perPage: perPage,
+    };
+
+    const post = await postService.getPostsByUserId({ getPosts });
+
+    if (post.errorMessage) {
+      throw new Error(post.errorMessage);
+    }
+
+    res.status(200).send(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
 postRouter.post("/post/create", login_required, async (req, res, next) => {
   try {
     if (

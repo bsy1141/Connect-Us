@@ -18,6 +18,28 @@ class Post {
     return posts;
   };
 
+  static findAllToUser = async ({ getPosts }) => {
+    const total = await PostModel.countDocuments({
+      userId: getPosts.userId,
+    });
+
+    const limit = getPosts.perPage;
+    const offset = (getPosts.page - 1) * limit;
+
+    const posts = await PostModel.find({
+      userId: getPosts.userId,
+    })
+      .limit(limit)
+      .skip(offset);
+
+    const newPosts = {
+      total: total,
+      posts: posts,
+    };
+
+    return newPosts;
+  };
+
   static findOne = async ({ getPost }) => {
     const post = await PostModel.findOne({
       id: getPost.id,
