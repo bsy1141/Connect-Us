@@ -6,6 +6,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { UserStateContext } from "../App";
 import Header from "./Header";
 import styles from "../css/MainFeed.module.css";
+import KeywordModal from "./modal/KeywordModal";
 import * as Api from "../api";
 import styled from "styled-components";
 
@@ -13,6 +14,7 @@ function MainFeed() {
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(true);
 
   const fetchPosts = async () => {
     const res = await Api.get("postlist");
@@ -35,7 +37,12 @@ function MainFeed() {
         <FollowerContainer></FollowerContainer>
         <PostCardsContainer>
           {posts.map((post) => (
-            <PostCardContainer key={post.id}>
+            <PostCardContainer
+              key={post.id}
+              onClick={() =>
+                navigate(`/post/${post.id}`, { state: { post: post } })
+              }
+            >
               <PostCardContent>
                 <PostWriterWrapper>
                   <PostWriterImage />
@@ -52,6 +59,7 @@ function MainFeed() {
       <button onClick={() => navigate("/post")} className={styles.button_add}>
         <FontAwesomeIcon icon={faPlus} className={styles.icon} />
       </button>
+      {isModalOpen && <KeywordModal setIsModalOpen={setIsModalOpen} />}
     </Container>
   );
 }
@@ -84,6 +92,7 @@ const PostCardsContainer = styled.div`
   width: 75%;
   height: 100%;
   margin-right: 30px;
+  cursor: pointer;
 `;
 
 const PostCardContainer = styled.div`

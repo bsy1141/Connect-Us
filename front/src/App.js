@@ -12,6 +12,7 @@ import MyPage from "./components/user/MyPage";
 //import RecommandPage from "./components/recommand/RecommandPage";
 //import RecommandResultPage from "./components/recommand/RecommandResultPage";
 import SearchPage from "./components/SearchPage";
+import AddPostPage from "./components/post/AddPostPage";
 import PostPage from "./components/post/PostPage";
 import KeywordPage from "./components/user/keyword/KeywordPage";
 
@@ -66,9 +67,10 @@ function App() {
               <Route path="/" exact element={<MainFeed />} />
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
-              <Route path="/post" element={<PostPage />} />
+              <Route path="/post" element={<AddPostPage />} />
+              <Route path="/post/:id" element={<PostPage />} />
               <Route path="/users/:userId" element={<MyPage />} />
-              <Route path="/users/keyword" element={<KeywordPage />} />
+              <Route path="/keyword" element={<KeywordPage />} />
               {/* <Route path="/recommand" element={<RecommandPage />} />
               <Route path="/recommand/result" element={<RecommandResultPage />} /> */}
               <Route path="/search" element={<SearchPage />} />
