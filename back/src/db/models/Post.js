@@ -19,25 +19,14 @@ class Post {
   };
 
   static findAllToUser = async ({ getPosts }) => {
-    const total = await PostModel.countDocuments({
-      userId: getPosts.userId,
-    });
-
-    const limit = getPosts.perPage;
-    const offset = (getPosts.page - 1) * limit;
-
-    const posts = await PostModel.find({
-      userId: getPosts.userId,
-    })
-      .limit(limit)
-      .skip(offset);
-
-    const newPosts = {
-      total: total,
-      posts: posts,
-    };
-
-    return newPosts;
+    const { userId, page, perPage } = getPosts;
+    const totalDocuments = await PostModel.countDocuments({ userId });
+    const total = Math.ceil(totalDocuments / perPage);
+    const posts = await PostModel.find({ userId })
+      .sort({ createdAt: 1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { total, posts };
   };
 
   static findOne = async ({ getPost }) => {

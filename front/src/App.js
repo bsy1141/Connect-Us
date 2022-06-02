@@ -11,7 +11,7 @@ import MainFeed from "./components/MainFeed";
 import MyPage from "./components/user/mypage/MyPage";
 //import RecommandPage from "./components/recommand/RecommandPage";
 //import RecommandResultPage from "./components/recommand/RecommandResultPage";
-import SearchPage from "./components/SearchPage";
+import SearchPage from "./components/search/SearchPage";
 import AddPostPage from "./components/post/AddPostPage";
 import PostPage from "./components/post/PostPage";
 import KeywordPage from "./components/user/keyword/KeywordPage";
