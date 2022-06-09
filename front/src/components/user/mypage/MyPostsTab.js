@@ -1,52 +1,66 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { post } from "../../../api";
 
 const MyPosts = ({ posts, page, totalPage, setPage }) => {
   const navigate = useNavigate();
   return (
     <Container>
-      {posts.map((post) => (
-        <PostCardContainer
-          key={post.id}
-          onClick={() =>
-            navigate(`/post/${post.id}`, { state: { post: post } })
-          }
-        >
-          <PostCardContent>
-            <PostWriterWrapper>
-              <PostWriterImage />
-              <span>{post.userName}</span>
-            </PostWriterWrapper>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-          </PostCardContent>
-          <PostCardImage />
-        </PostCardContainer>
-      ))}
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
-      >
-        <PaginationButton>
-          <button
-            style={{ borderRight: "1px solid #c4c4c4", marginRight: "10px" }}
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page <= 1}
+      {posts.length == 0 ? (
+        <polygon>게시글이 없습니다. </polygon>
+      ) : (
+        <>
+          {posts.map((post) => (
+            <PostCardContainer
+              key={post.id}
+              onClick={() =>
+                navigate(`/post/${post.id}`, { state: { post: post } })
+              }
+            >
+              <PostCardContent>
+                <PostWriterWrapper>
+                  <PostWriterImage />
+                  <span>{post.userName}</span>
+                </PostWriterWrapper>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+              </PostCardContent>
+              <PostCardImage />
+            </PostCardContainer>
+          ))}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
           >
-            {"<"}
-          </button>
-          <span>
-            {page}/{totalPage}
-          </span>
-          <button
-            style={{ borderLeft: "1px solid #c4c4c4", marginLeft: "10px" }}
-            onClick={() => setPage((prev) => prev + 1)}
-            disabled={page >= totalPage}
-          >
-            {">"}
-          </button>
-        </PaginationButton>
-      </div>
+            <PaginationButton>
+              <button
+                style={{
+                  borderRight: "1px solid #c4c4c4",
+                  marginRight: "10px",
+                }}
+                onClick={() => setPage((prev) => prev + 1)}
+                disabled={page <= 1}
+              >
+                {"<"}
+              </button>
+              <span>
+                {page}/{totalPage}
+              </span>
+              <button
+                style={{ borderLeft: "1px solid #c4c4c4", marginLeft: "10px" }}
+                onClick={() => setPage((prev) => prev + 1)}
+                disabled={page >= totalPage}
+              >
+                {">"}
+              </button>
+            </PaginationButton>
+          </div>
+        </>
+      )}
     </Container>
   );
 };
@@ -104,7 +118,7 @@ const PostCardImage = styled.div`
 const PaginationButton = styled.div`
   border: 1px solid #c4c4c4;
   border-radius: 5px;
-  width: 10%;
+  width: 12%;
   text-align: center;
   font-size: 20px;
   > button {

@@ -1,5 +1,5 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { UserStateContext } from "../../../App";
 import Header from "../../Header";
 import UserCard from "./UserCard";
@@ -11,9 +11,8 @@ import * as Api from "../../../api";
 const PER_PAGE = 5;
 
 const MyPage = () => {
-  const userState = useContext(UserStateContext);
-  const { id, name, email } = userState.user;
-  const navigate = useNavigate();
+  const { userId } = useParams();
+
   const keyword = [
     "IT/인터넷",
     "웹프로그래머",
@@ -22,28 +21,38 @@ const MyPage = () => {
     "대학교 졸업(4년제)",
   ];
   const [tab, setTab] = useState("posts");
+  const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        if (page === 0) {
-          setPage(1);
-        }
-        const res = await Api.get(
-          "postlist",
-          `${id}?page=${page}&perPage=${PER_PAGE}`
-        );
-        console.log(res.data);
-        const { total, posts } = res.data;
-        setTotalPage(total);
-        setPosts(posts);
-      } catch (err) {
-        console.error(err);
+  const fetchUser = async () => {
+    try {
+      const res = await Api.get(`users/${userId}`);
+      setUser(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const fetchPosts = async () => {
+    try {
+      if (page === 0) {
+        setPage(1);
       }
-    };
+      const res = await Api.get(
+        "postlist",
+        `${userId}?page=${page}&perPage=${PER_PAGE}`
+      );
+      const { total, posts } = res.data;
+      setTotalPage(total);
+      setPosts(posts);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
     fetchPosts();
   }, [page, totalPage]);
 
@@ -51,7 +60,7 @@ const MyPage = () => {
     <Container>
       <Header />
       <Content>
-        <UserCard name={name} email={email} keyword={keyword} />
+        <UserCard name={user.name} email={user.email} keyword={keyword} />
         <UserContent>
           <TabButtons>
             <Button onClick={() => setTab("posts")} isClicked={tab === "posts"}>
