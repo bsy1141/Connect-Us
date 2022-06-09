@@ -8,7 +8,7 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
   return (
     <Container>
       {posts.length == 0 ? (
-        <polygon>게시글이 없습니다. </polygon>
+        <p>게시글이 없습니다. </p>
       ) : (
         <>
           {posts.map((post) => (
