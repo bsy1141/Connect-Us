@@ -10,6 +10,19 @@ import KeywordModal from "./modal/KeywordModal";
 import * as Api from "../api";
 import styled from "styled-components";
 
+const followers = [
+  { type: "user", name: "정혜정" },
+  { type: "company", name: "Connect Us" },
+  { type: "user", name: "김영희" },
+  { type: "user", name: "이윤지" },
+  { type: "company", name: "harmony" },
+  { type: "company", name: "oo닷컴" },
+  { type: "company", name: "엘리스" },
+  { type: "company", name: "네이버 페이" },
+  { type: "user", name: "이주영" },
+  { type: "user", name: "이지은" },
+];
+
 function MainFeed() {
   const navigate = useNavigate();
   const userState = useContext(UserStateContext);
@@ -23,6 +36,7 @@ function MainFeed() {
 
   useEffect(() => {
     // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
+    console.log(userState.user);
     if (!userState.user) {
       navigate("/login", { replace: true });
       return;
@@ -34,7 +48,17 @@ function MainFeed() {
     <Container>
       <Header />
       <MainFeedWrapper>
-        <FollowerContainer></FollowerContainer>
+        <FollowerContainer>
+          {followers.map((follower) => (
+            <Line>
+              <ProfileImage />
+              <Name>
+                <p>{follower.name}</p>
+                {follower.type === "company" && <span>기업회원</span>}
+              </Name>
+            </Line>
+          ))}
+        </FollowerContainer>
         <PostCardsContainer>
           {posts.map((post) => (
             <PostCardContainer
@@ -81,15 +105,46 @@ const MainFeedWrapper = styled.div`
 `;
 
 const FollowerContainer = styled.div`
-  width: 15%;
+  width: 20%;
   height: 100%;
   border: 1px solid #c4c4c4;
   border-radius: 15px;
   margin-left: 30px;
+  padding: 1%;
+`;
+
+const Line = styled.div`
+  display: flex;
+  margin-bottom: 20px;
+  align-items: center;
+`;
+
+const ProfileImage = styled.div`
+  width: 50px;
+  height: 50px;
+  background-image: url("./defaultImage.png");
+  background-size: 50px 50px;
+  border-radius: 50%;
+  margin-right: 20px;
+`;
+
+const Name = styled.div`
+  > span {
+    font-size: 10px;
+    margin-left: 10px;
+    background: #d9e5ff;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+  }
+  > p {
+    display: inline-block;
+    margin: 0;
+  }
 `;
 
 const PostCardsContainer = styled.div`
-  width: 75%;
+  width: 70%;
   height: 100%;
   margin-right: 30px;
   cursor: pointer;
@@ -122,12 +177,14 @@ const PostWriterWrapper = styled.div`
 const PostWriterImage = styled.div`
   width: 50px;
   height: 50px;
-  background: #c4c4c4;
+  background-image: url("./defaultImage.png");
+  background-size: cover;
   border-radius: 50%;
 `;
 
 const PostCardImage = styled.div`
   width: 150px;
   height: 150px;
-  background: #c4c4c4;
+  background-image: url("./defaultPostImg.jpeg");
+  background-size: cover;
 `;
