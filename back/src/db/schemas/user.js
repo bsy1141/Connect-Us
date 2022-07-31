@@ -1,5 +1,13 @@
 import { Schema, model } from "mongoose";
 
+const KeywordSchema = new Schema({
+  task: String,
+  location: String,
+  duration: String,
+  education: String,
+  employment: String,
+});
+
 const UserSchema = new Schema(
   {
     id: {
@@ -30,10 +38,7 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
-    keywords: {
-      type: Array,
-      default: [],
-    },
+    keywords: [KeywordSchema],
   },
   {
     timestamps: true,
