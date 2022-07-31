@@ -1,8 +1,8 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-import { UserStateContext } from "../../App";
+import { UserStateContext } from "../../components/ContextProvider";
 import Header from "../Header";
 import { formatDate, fakeComments } from "./postModule";
 
@@ -13,13 +13,19 @@ import Prism from "prismjs";
 import "prismjs/themes/prism.css";
 
 const PostPage = () => {
-  const userState = useContext(UserStateContext);
+  const { user } = useContext(UserStateContext);
   const navigate = useNavigate();
 
   const location = useLocation();
   const { post } = location.state;
   const { userName, userId, title, description, content, createdAt } = post;
-  const isMyContent = userState.user.id === userId;
+  const [id, setId] = useState(user?.id || "");
+
+  useEffect(() => {
+    if (user) {
+      setId(user.id);
+    }
+  }, [user]);
 
   return (
     <Container>
@@ -31,7 +37,7 @@ const PostPage = () => {
             <p>{userName}</p>
             <span>{formatDate(createdAt)}</span>
           </WriterInfo>
-          {isMyContent && (
+          {id === userId && (
             <WriterAuth>
               <span>수정</span>
               <span>삭제</span>
