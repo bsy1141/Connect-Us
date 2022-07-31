@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Nav from "react-bootstrap/Nav";
-import { UserStateContext, DispatchContext } from "../App";
+import { UserStateContext } from "../components/ContextProvider";
 
 function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const userState = useContext(UserStateContext);
-  const dispatch = useContext(DispatchContext);
+  // const userState = useContext(UserStateContext);
+  // const dispatch = useContext(DispatchContext);
+  const { user, dispatch } = useContext(UserStateContext);
 
-  const isLogin = !!userState.user;
+  const isLogin = !!user;
 
   const logout = () => {
     sessionStorage.removeItem("userToken");
@@ -41,7 +42,7 @@ function Header() {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link
-          onClick={() => navigate(`/users/${userState.user.id}`)}
+          onClick={() => navigate(`/users/${user.id}`)}
           style={{ color: "#fff" }}
         >
           나의 페이지

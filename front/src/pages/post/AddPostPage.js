@@ -1,6 +1,6 @@
 import { useRef, useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserStateContext } from "../../App";
+import { UserStateContext } from "../../components/ContextProvider";
 
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
@@ -16,15 +16,15 @@ import Header from "../Header";
 
 const AddPostPage = () => {
   const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
+  const { user } = useContext(UserStateContext);
 
   useEffect(() => {
     // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
-    if (!userState.user) {
+    if (!user) {
       navigate("/login", { replace: true });
       return;
     }
-  }, [userState, navigate]);
+  }, [user, navigate]);
   const editorRef = useRef(null);
 
   const [markdown, setMarkdown] = useState("");
@@ -34,7 +34,7 @@ const AddPostPage = () => {
   const handleSubmit = () => {
     try {
       const res = Api.post("post/create", {
-        userId: userState.user.id,
+        userId: user.id,
         title: title,
         content: markdown,
         description: description,

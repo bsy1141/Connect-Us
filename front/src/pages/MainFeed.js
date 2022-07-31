@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { UserStateContext } from "../App";
+import { UserStateContext } from "../components/ContextProvider";
 import Header from "./Header";
 import styles from "../style/MainFeed.module.css";
 import KeywordModal from "./modal/KeywordModal";
@@ -25,7 +25,7 @@ const followers = [
 
 function MainFeed() {
   const navigate = useNavigate();
-  const userState = useContext(UserStateContext);
+  const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(true);
 
@@ -35,14 +35,8 @@ function MainFeed() {
   };
 
   useEffect(() => {
-    // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
-    console.log(userState.user);
-    if (!userState.user) {
-      navigate("/login", { replace: true });
-      return;
-    }
     fetchPosts();
-  }, [userState, navigate]);
+  }, [user, navigate]);
 
   return (
     <Container>
@@ -50,7 +44,7 @@ function MainFeed() {
       <MainFeedWrapper>
         <FollowerContainer>
           {followers.map((follower) => (
-            <Line>
+            <Line key={follower.name}>
               <ProfileImage />
               <Name>
                 <p>{follower.name}</p>

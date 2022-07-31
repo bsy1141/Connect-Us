@@ -5,13 +5,13 @@ import styles from "../../style/user/LoginForm.module.css";
 import { faUser, faLock } from "@fortawesome/free-solid-svg-icons";
 
 import * as Api from "../../api";
-import { DispatchContext } from "../../App";
+import { UserStateContext } from "../../components/ContextProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function LoginForm() {
   const navigate = useNavigate();
-  const dispatch = useContext(DispatchContext);
+  const { dispatch } = useContext(UserStateContext);
 
   //useState로 email 상태를 생성함.
   const [email, setEmail] = useState("");
