@@ -2,6 +2,7 @@ import { User } from "../db"; // from을 폴더(db) 로 설정 시, 디폴트로
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import jwt from "jsonwebtoken";
+import { UserModel } from "../db/schemas/user";
 
 class userAuthService {
   //회원가입 시 사용하는 함수
@@ -94,12 +95,14 @@ class userAuthService {
     // 반환할 loginuser 객체를 위한 변수 설정
     const id = user.id;
     const name = user.name;
+    const keywords = user.keywords;
 
     const loginUser = {
       token,
       id,
       email,
       name,
+      keywords,
       errorMessage: null,
     };
 
@@ -111,9 +114,9 @@ class userAuthService {
     return users;
   }
 
-  static async setUser({ user_id, toUpdate }) {
+  static async setUser({ userId, toUpdate }) {
     // 우선 해당 id 의 유저가 db에 존재하는지 여부 확인
-    let user = await User.findById({ user_id });
+    let user = await User.findById({ userId });
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
@@ -125,26 +128,26 @@ class userAuthService {
     if (toUpdate.name) {
       const fieldToUpdate = "name";
       const newValue = toUpdate.name;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
+      user = await User.update({ userId, fieldToUpdate, newValue });
     }
 
     if (toUpdate.email) {
       const fieldToUpdate = "email";
       const newValue = toUpdate.email;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
+      user = await User.update({ userId, fieldToUpdate, newValue });
     }
 
     if (toUpdate.password) {
       const fieldToUpdate = "password";
       const newValue = toUpdate.password;
-      user = await User.update({ user_id, fieldToUpdate, newValue });
+      user = await User.update({ userId, fieldToUpdate, newValue });
     }
 
     return user;
   }
 
-  static async getUserInfo({ user_id }) {
-    const user = await User.findById({ user_id });
+  static async getUserInfo({ userId }) {
+    const user = await User.findById({ userId });
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
@@ -154,6 +157,20 @@ class userAuthService {
     }
 
     return user;
+  }
+
+  static async setKeywords({ userId, toUpdate }) {
+    const updatedKeywords = await UserModel.findOneAndUpdate(
+      { id: userId },
+      {
+        $set: {
+          keywords: toUpdate,
+        },
+      },
+      { returnOriginal: false }
+    );
+    console.log(updatedKeywords);
+    return updatedKeywords;
   }
 }
 
