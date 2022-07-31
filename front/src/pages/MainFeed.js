@@ -5,7 +5,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { UserStateContext } from "../App";
 import Header from "./Header";
-import styles from "../css/MainFeed.module.css";
+import styles from "../style/MainFeed.module.css";
 import KeywordModal from "./modal/KeywordModal";
 import * as Api from "../api";
 import styled from "styled-components";

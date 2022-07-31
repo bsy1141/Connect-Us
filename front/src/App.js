@@ -4,15 +4,16 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as Api from "./api";
 import { loginReducer } from "./reducer";
 import styled from "styled-components";
+import "./style/reset.css";
 
-import LoginForm from "./components/user/LoginForm";
-import RegisterForm from "./components/user/RegisterForm";
-import MainFeed from "./components/MainFeed";
-import MyPage from "./components/user/mypage/MyPage";
-import SearchPage from "./components/search/SearchPage";
-import AddPostPage from "./components/post/AddPostPage";
-import PostPage from "./components/post/PostPage";
-import KeywordPage from "./components/user/keyword/KeywordPage";
+import LoginForm from "./pages/user/LoginForm";
+import RegisterForm from "./pages/user/RegisterForm";
+import MainFeed from "./pages/MainFeed";
+import MyPage from "./pages/user/mypage/MyPage";
+import SearchPage from "./pages/search/SearchPage";
+import AddPostPage from "./pages/post/AddPostPage";
+import PostPage from "./pages/post/PostPage";
+import KeywordPage from "./pages/user/keyword/KeywordPage";
 
 export const UserStateContext = createContext(null);
 export const DispatchContext = createContext(null);

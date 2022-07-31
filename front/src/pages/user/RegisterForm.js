@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../../css/user/RegisterForm.module.css";
+import styles from "../../style/user/RegisterForm.module.css";
 import * as Api from "../../api";
 
 function RegisterForm() {
