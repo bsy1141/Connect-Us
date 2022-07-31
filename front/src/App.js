@@ -9,8 +9,6 @@ import LoginForm from "./components/user/LoginForm";
 import RegisterForm from "./components/user/RegisterForm";
 import MainFeed from "./components/MainFeed";
 import MyPage from "./components/user/mypage/MyPage";
-//import RecommandPage from "./components/recommand/RecommandPage";
-//import RecommandResultPage from "./components/recommand/RecommandResultPage";
 import SearchPage from "./components/search/SearchPage";
 import AddPostPage from "./components/post/AddPostPage";
 import PostPage from "./components/post/PostPage";
@@ -71,8 +69,6 @@ function App() {
               <Route path="/post/:id" element={<PostPage />} />
               <Route path="/users/:userId" element={<MyPage />} />
               <Route path="/keyword" element={<KeywordPage />} />
-              {/* <Route path="/recommand" element={<RecommandPage />} />
-              <Route path="/recommand/result" element={<RecommandResultPage />} /> */}
               <Route path="/search" element={<SearchPage />} />
               <Route path="*" element={<MainFeed />} />
             </Routes>
