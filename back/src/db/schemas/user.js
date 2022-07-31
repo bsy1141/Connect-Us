@@ -6,6 +6,10 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      required: true,
+    },
     email: {
       type: String,
       required: true,
@@ -17,6 +21,14 @@ const UserSchema = new Schema(
     password: {
       type: String,
       required: true,
+    },
+    registerNumber: {
+      type: String,
+      required: false,
+    },
+    ownerName: {
+      type: String,
+      required: false,
     },
   },
   {

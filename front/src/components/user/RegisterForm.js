@@ -9,7 +9,7 @@ function RegisterForm() {
   const [isCompany, setIsCompany] = useState(false);
 
   const [registerNumber, setRegisterNumber] = useState("");
-  const [companyName, setCompanyName] = useState("");
+  //const [companyName, setCompanyName] = useState("");
   const [ownerName, setOwnerName] = useState("");
 
   const [email, setEmail] = useState("");
@@ -38,19 +38,20 @@ function RegisterForm() {
 
     try {
       if (isCompany) {
-        await Api.post("company/register", {
+        await Api.post("user/register", {
+          type: "company",
           name,
           email,
           password,
-          companyName,
           registerNumber,
           ownerName,
         });
       } else {
         await Api.post("user/register", {
+          type: "user",
+          name,
           email,
           password,
-          name,
         });
       }
       // 로그인 페이지로 이동함.
@@ -96,8 +97,8 @@ function RegisterForm() {
                 <input
                   type="text"
                   autoComplete="off"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="회사명"
                 />
               </div>
@@ -175,27 +176,6 @@ function RegisterForm() {
                   }}
                 >
                   비밀번호가 일치하지 않습니다.
-                </p>
-              )}
-            </div>
-
-            <div className={styles.box_input}>
-              <input
-                type="text"
-                autoComplete="off"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="이름"
-              />
-              {!isNameValid && (
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#ff758f",
-                    marginLeft: "10px",
-                  }}
-                >
-                  이름은 2글자 이상으로 설정해 주세요.
                 </p>
               )}
             </div>

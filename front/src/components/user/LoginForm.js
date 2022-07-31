@@ -19,8 +19,6 @@ function LoginForm() {
   //useState로 password 상태를 생성함.
   const [password, setPassword] = useState("");
 
-  const [position, setPosition] = useState("user");
-
   const [focusEmail, setFocusEmail] = useState(false);
   const [focusPassword, setFocusPassword] = useState(false);
 
@@ -37,26 +35,18 @@ function LoginForm() {
   const isEmailValid = validateEmail(email);
   // 비밀번호가 4글자 이상인지 여부를 확인함.
   const isPasswordValid = password.length >= 4;
-  //
+
   // 이메일과 비밀번호 조건이 동시에 만족되는지 확인함.
   const isFormValid = isEmailValid && isPasswordValid;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let res = {};
     try {
       // "user/login" 엔드포인트로 post요청함.
-      if (position === "user") {
-        res = await Api.post("user/login", {
-          email,
-          password,
-        });
-      } else {
-        res = await Api.post("company/login", {
-          email,
-          password,
-        });
-      }
+      const res = await Api.post("user/login", {
+        email,
+        password,
+      });
       // 유저 정보는 response의 data임.
       const user = res.data;
       // JWT 토큰은 유저 정보의 token임.
@@ -85,28 +75,6 @@ function LoginForm() {
           포트폴리오가 되는 곳
         </h2>
         <form onSubmit={handleSubmit} className={styles.form}>
-          <div onChange={(e) => setPosition(e.target.value)}>
-            <input
-              type="radio"
-              value="user"
-              id="user"
-              name="position"
-              defaultChecked
-              style={{ marginRight: "5px" }}
-            />
-            <label htmlFor="user" style={{ marginRight: "20px" }}>
-              개인 회원
-            </label>
-            <input
-              type="radio"
-              value="company"
-              id="company"
-              name="position"
-              style={{ marginRight: "5px" }}
-            />
-            <label htmlFor="company">기업 회원</label>
-          </div>
-
           <div>
             <div
               className={`${styles.box} ${focusEmail ? styles.box_focus : ""}`}

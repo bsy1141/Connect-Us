@@ -12,18 +12,32 @@ userAuthRouter.post("/user/register", async function (req, res, next) {
         "headers의 Content-Type을 application/json으로 설정해주세요"
       );
     }
-
-    // req (request) 에서 데이터 가져오기
+    const type = req.body.type;
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
+    let newUser;
+    if (type === "user") {
+      // 위 데이터를 유저 db에 추가하기
+      newUser = await userAuthService.addUser({
+        type,
+        name,
+        email,
+        password,
+      });
+    } else {
+      const registerNumber = req.body.registerNumber;
+      const ownerName = req.body.ownerName;
 
-    // 위 데이터를 유저 db에 추가하기
-    const newUser = await userAuthService.addUser({
-      name,
-      email,
-      password,
-    });
+      newUser = await userAuthService.addCompanyUser({
+        type,
+        name,
+        email,
+        password,
+        registerNumber,
+        ownerName,
+      });
+    }
 
     if (newUser.errorMessage) {
       throw new Error(newUser.errorMessage);
@@ -136,14 +150,5 @@ userAuthRouter.get(
     }
   }
 );
-
-// jwt 토큰 기능 확인용, 삭제해도 되는 라우터임.
-userAuthRouter.get("/afterlogin", login_required, function (req, res, next) {
-  res
-    .status(200)
-    .send(
-      `안녕하세요 ${req.currentUserId}님, jwt 웹 토큰 기능 정상 작동 중입니다.`
-    );
-});
 
 export { userAuthRouter };

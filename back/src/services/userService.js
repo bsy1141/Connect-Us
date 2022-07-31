@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 class userAuthService {
   //회원가입 시 사용하는 함수
-  static async addUser({ name, email, password }) {
+  static async addUser({ type, name, email, password }) {
     // 이메일 중복 확인
     const user = await User.findByEmail({ email });
     if (user) {
@@ -19,7 +19,44 @@ class userAuthService {
 
     // id 는 유니크 값 부여
     const id = uuidv4();
-    const newUser = { id, name, email, password: hashedPassword };
+    const newUser = { id, type, name, email, password: hashedPassword };
+
+    // db에 저장
+    const createdNewUser = await User.create({ newUser });
+    createdNewUser.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
+
+    return createdNewUser;
+  }
+
+  static async addCompanyUser({
+    type,
+    name,
+    email,
+    password,
+    registerNumber,
+    ownerName,
+  }) {
+    const user = await User.findByEmail({ email });
+    if (user) {
+      const errorMessage =
+        "이 이메일은 현재 사용중입니다. 다른 이메일을 입력해 주세요.";
+      return { errorMessage };
+    }
+
+    // 비밀번호 해쉬화
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // id 는 유니크 값 부여
+    const id = uuidv4();
+    const newUser = {
+      id,
+      type,
+      name,
+      email,
+      password: hashedPassword,
+      registerNumber,
+      ownerName,
+    };
 
     // db에 저장
     const createdNewUser = await User.create({ newUser });
