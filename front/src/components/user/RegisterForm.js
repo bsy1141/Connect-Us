@@ -179,7 +179,30 @@ function RegisterForm() {
                 </p>
               )}
             </div>
+            {!isCompany && (
+              <div className={styles.box_input}>
+                <input
+                  type="text"
+                  autoComplete="off"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="이름"
+                />
+                {!isNameValid && (
+                  <p
+                    style={{
+                      fontSize: "13px",
+                      color: "#ff758f",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    이름은 2글자 이상으로 설정해 주세요.
+                  </p>
+                )}
+              </div>
+            )}
           </div>
+
           <button
             type="submit"
             disabled={!isFormValid}
