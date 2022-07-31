@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { User } from "./models/User";
-import { Company } from "./models/Company";
 import { Post } from "./models/Post";
 
 const DB_URL =
@@ -18,5 +17,4 @@ db.on("error", (error) =>
 );
 
 export { User };
-export { Company };
 export { Post };
