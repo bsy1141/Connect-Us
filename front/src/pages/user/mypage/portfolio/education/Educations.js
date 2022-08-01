@@ -12,7 +12,7 @@ const Educations = ({ userId, isEditable }) => {
 
   const [isAdding, setIsAdding] = useState(false);
 
-  const fetchEducations = async () => {
+  const getEducationList = async () => {
     try {
       const res = await Api.get(`educationlist/${userId}`);
       setEducations(res.data);
@@ -22,7 +22,7 @@ const Educations = ({ userId, isEditable }) => {
   };
 
   useEffect(() => {
-    fetchEducations();
+    getEducationList();
   }, [userId]);
 
   return (
