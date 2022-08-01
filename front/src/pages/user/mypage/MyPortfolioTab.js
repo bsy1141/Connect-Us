@@ -1,14 +1,24 @@
+import { useState, useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Educations from "./portfolio/education/Educations";
+import { UserStateContext } from "components/ContextProvider";
 
 const MyPortfolioTab = () => {
-  const types = ["학력", "경력", "대외활동", "프로젝트", "자격증"];
+  const { user } = useContext(UserStateContext);
+  const { userId } = useParams();
+
+  const [isEditable, setIsEditable] = useState(userId === user?.id);
+
+  useEffect(() => {
+    if (user) {
+      setIsEditable(userId === user.id);
+    }
+  }, [user]);
+
   return (
     <Container>
-      {types.map((type) => (
-        <PortfolioCard>
-          <p>{type}</p>
-        </PortfolioCard>
-      ))}
+      <Educations userId={userId} isEditable={isEditable} />
     </Container>
   );
 };
@@ -23,18 +33,5 @@ const Container = styled.div`
   -ms-overflow-style: none;
   &::-webkit-scrollbar {
     display: none;
-  }
-`;
-
-const PortfolioCard = styled.div`
-  width: 100%;
-  margin-bottom: 20px;
-  height: 200px;
-  border: solid 1px #c4c4c4;
-  border-radius: 5px;
-  padding: 1% 2%;
-  > p {
-    font-size: 20px;
-    font-weight: bold;
   }
 `;
