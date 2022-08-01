@@ -23,10 +23,10 @@ class educationService {
     };
 
     // db에 저장
-    const createdNewEducation = await Education.create({ newEducation });
-    createdNewEducation.errorMessage = null; // 문제 없이 db 저장 완료되었으므로 에러가 없음.
+    await Education.create({ newEducation });
 
-    return createdNewEducation;
+    const educationList = await Education.findByUserId({ userId });
+    return educationList;
   };
 
   static getEducation = async ({ educationId }) => {

@@ -13,7 +13,6 @@ class Education {
 
   static findByUserId = async ({ userId }) => {
     const educations = await educationModel.find({ userId });
-
     return educations;
   };
 
@@ -34,3 +33,5 @@ class Education {
     return isDataDeleted;
   };
 }
+
+export { Education };

@@ -18,7 +18,7 @@ educationRouter.post("/education/create", async function (req, res, next) {
     const { userId, school, major, position, admission, graduate } = req.body;
 
     // 위 데이터를 education db에 추가하기
-    const newEducation = await educationService.addEducation({
+    const EducationList = await educationService.addEducation({
       userId,
       school,
       major,
@@ -27,7 +27,7 @@ educationRouter.post("/education/create", async function (req, res, next) {
       graduate,
     });
 
-    res.status(201).json(newEducation);
+    res.status(201).json(EducationList);
   } catch (error) {
     next(error);
   }
