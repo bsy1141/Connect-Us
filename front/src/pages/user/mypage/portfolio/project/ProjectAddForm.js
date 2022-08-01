@@ -38,6 +38,29 @@ const ProjectAddForm = ({ userId, setIsAdding, setProjects }) => {
         .replace(/(\.{0,1})$/g, "")
     );
   };
+
+  const handleSubmit = async () => {
+    try {
+      await Api.post("project/create", {
+        userId,
+        title,
+        description,
+        fromDate,
+        toDate,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+
+    try {
+      const res = await Api.get(`projectlist/${userId}`);
+      setProjects(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setIsAdding(false);
+  };
+
   return (
     <FormContainer>
       <div>
@@ -77,7 +100,7 @@ const ProjectAddForm = ({ userId, setIsAdding, setProjects }) => {
         style={{ marginTop: "10px", width: "93%" }}
       />
       <Buttons>
-        <Button disabled={!isValid} valid={isValid}>
+        <Button disabled={!isValid} valid={isValid} onClick={handleSubmit}>
           확인
         </Button>
         <Button onClick={() => setIsAdding(false)} valid={true}>
