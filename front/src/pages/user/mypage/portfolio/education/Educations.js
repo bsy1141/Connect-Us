@@ -8,40 +8,22 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Educations = ({ userId, isEditable }) => {
-  const [educations, setEducations] = useState([
-    {
-      id: 1,
-      school: "숙명여자대학교",
-      major: "IT공학과",
-      position: "재학중",
-      admission: "2018.03",
-      graduate: "2023.02",
-    },
-    {
-      id: 2,
-      school: "test",
-      major: "test2",
-      position: "졸업예정",
-      admission: "2018.03",
-      graduate: "2023.02",
-    },
-  ]);
+  const [educations, setEducations] = useState([]);
 
   const [isAdding, setIsAdding] = useState(false);
 
-  // const fetchEducations = async () => {
-  //   try {
-  //     const res = await Api.get(`educationlist/${userId}`);
-  //     setEducations(res.data)
+  const fetchEducations = async () => {
+    try {
+      const res = await Api.get(`educationlist/${userId}`);
+      setEducations(res.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-  //   } catch (err) {
-  //     console.log(err.message);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchEducations();
-  // }, [user]);
+  useEffect(() => {
+    fetchEducations();
+  }, [userId]);
 
   return (
     <EductaionContainer>
@@ -59,6 +41,11 @@ const Educations = ({ userId, isEditable }) => {
           setIsAdding={setIsAdding}
           setEducations={setEducations}
         />
+      )}
+      {educations.length === 0 && !isAdding && (
+        <div style={{ textAlign: "center" }}>
+          <p>학력을 추가해주세요!</p>
+        </div>
       )}
       {educations.map((education) => (
         <EducationCard
@@ -89,6 +76,7 @@ const EductaionContainer = styled.div`
 
 const ButtonWrapper = styled.div`
   text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Button = styled.button`
