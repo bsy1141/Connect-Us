@@ -6,6 +6,16 @@ import * as Api from "api";
 const ProjectCard = ({ userId, project, setProjects, isEditable }) => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const handleDelete = async () => {
+    try {
+      await Api.delete("projects", project.id);
+      const res = await Api.get(`projectlist/${userId}`);
+      setProjects(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       {isEditing ? (
@@ -29,7 +39,7 @@ const ProjectCard = ({ userId, project, setProjects, isEditable }) => {
           {isEditable && (
             <Buttons>
               <button onClick={() => setIsEditing(true)}>편집</button>
-              <button>삭제</button>
+              <button onClick={handleDelete}>삭제</button>
             </Buttons>
           )}
         </CardContainer>
