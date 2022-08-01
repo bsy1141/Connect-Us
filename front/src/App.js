@@ -11,7 +11,7 @@ import MyPage from "./pages/user/mypage/MyPage";
 import SearchPage from "./pages/search/SearchPage";
 import AddPostPage from "./pages/post/AddPostPage";
 import PostPage from "./pages/post/PostPage";
-import KeywordPage from "./pages/user/keyword/KeywordPage";
+import KeywordPage from "./pages/keyword/KeywordPage";
 import ContextProvider from "./components/ContextProvider";
 import FetchCurrentUser from "./components/FetchCurrentUser";
 

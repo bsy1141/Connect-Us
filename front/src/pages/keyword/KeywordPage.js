@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
-import Header from "../../Header";
+import Header from "../Header";
 import {
   jobType,
   jobDetailType,
@@ -10,8 +10,8 @@ import {
   employType,
 } from "./KeywordData";
 import KeywordCard from "./KeywordCard";
-import * as Api from "../../../api";
-import { UserStateContext } from "../../../components/ContextProvider";
+import * as Api from "../../api";
+import { UserStateContext } from "../../components/ContextProvider";
 import { useNavigate } from "react-router-dom";
 
 const KeywordPage = () => {
