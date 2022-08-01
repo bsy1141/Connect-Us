@@ -19,11 +19,11 @@ const projectSchema = new Schema(
       required: true,
     },
     fromDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     toDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     createdAt: {
