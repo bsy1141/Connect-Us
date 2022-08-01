@@ -118,7 +118,7 @@ const Button = styled.button`
   background: #fff;
   border: 1px solid #c4c4c4;
   border-radius: 5px;
-  width: 13%;
+  min-width: 130px;
   height: 100%;
   ${(props) =>
     props.isClicked &&
