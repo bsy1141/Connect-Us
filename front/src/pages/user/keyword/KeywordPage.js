@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import Header from "../../Header";
 import {
@@ -10,8 +10,13 @@ import {
   employType,
 } from "./KeywordData";
 import KeywordCard from "./KeywordCard";
+import * as Api from "../../../api";
+import { UserStateContext } from "../../../components/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 const KeywordPage = () => {
+  const navigate = useNavigate();
+
   const [job, setJob] = useState(null);
   const [jobDetail, setJobDetail] = useState(null);
   const [workPlace, setWorkPlace] = useState(null);
@@ -19,7 +24,24 @@ const KeywordPage = () => {
   const [education, setEducation] = useState(null);
   const [employ, setEmploy] = useState(null);
 
-  const handleSubmit = () => {};
+  const { user } = useContext(UserStateContext);
+
+  const handleSubmit = () => {
+    try {
+      Api.post("users/keywords", {
+        id: user.id,
+        job,
+        jobDetail,
+        workPlace,
+        career,
+        education,
+        employ,
+      });
+      navigate("/");
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <>
@@ -63,7 +85,7 @@ const KeywordPage = () => {
           state={employ}
           setState={setEmploy}
         />
-        <KeywordSubmitButton onClick={() => handleSubmit()}>
+        <KeywordSubmitButton onClick={handleSubmit}>
           키워드 저장하기
         </KeywordSubmitButton>
       </Container>
