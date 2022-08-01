@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 import EducationCard from "./EducationCard";
