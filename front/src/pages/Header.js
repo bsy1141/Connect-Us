@@ -7,8 +7,6 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // const userState = useContext(UserStateContext);
-  // const dispatch = useContext(DispatchContext);
   const { user, dispatch } = useContext(UserStateContext);
 
   const isLogin = !!user;
