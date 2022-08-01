@@ -1,9 +1,20 @@
 import { useState } from "react";
 import styled from "styled-components";
 import EducationEditForm from "./EducationEditForm";
+import * as Api from "api";
 
 const EducationCard = ({ userId, education, setEducations, isEditable }) => {
   const [isEditing, setIsEditing] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      await Api.delete("educations", education.id);
+      const res = await Api.get(`educationlist/${userId}`);
+      setEducations(res.data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <>
@@ -31,7 +42,7 @@ const EducationCard = ({ userId, education, setEducations, isEditable }) => {
           {isEditable && (
             <Buttons>
               <button onClick={() => setIsEditing(true)}>편집</button>
-              <button>삭제</button>
+              <button onClick={handleDelete}>삭제</button>
             </Buttons>
           )}
         </CardContainer>
