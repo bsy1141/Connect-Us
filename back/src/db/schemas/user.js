@@ -1,11 +1,12 @@
 import { Schema, model } from "mongoose";
 
 const KeywordSchema = new Schema({
-  task: String,
-  location: String,
-  duration: String,
+  job: String,
+  jobDetail: String,
+  workPlace: String,
+  career: String,
   education: String,
-  employment: String,
+  employ: String,
 });
 
 const UserSchema = new Schema(

@@ -164,18 +164,20 @@ userAuthRouter.post(
         throw new Error(currentUserInfo.errorMessage);
       }
 
-      const task = req.body.task;
-      const location = req.body.location;
-      const duration = req.body.duration;
+      const job = req.body.job;
+      const jobDetail = req.body.jobDetail;
+      const workPlace = req.body.workPlace;
+      const career = req.body.career;
       const education = req.body.education;
-      const employment = req.body.employment;
+      const employ = req.body.employ;
 
       const toUpdate = {
-        task,
-        location,
-        duration,
+        job,
+        jobDetail,
+        workPlace,
+        career,
         education,
-        employment,
+        employ,
       };
 
       const updatedKeywordUser = await userAuthService.setKeywords({
