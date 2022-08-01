@@ -27,7 +27,7 @@ function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
 
   const fetchPosts = async () => {
     const res = await Api.get("postlist");
@@ -35,8 +35,11 @@ function MainFeed() {
   };
 
   useEffect(() => {
+    if (user) {
+      setIsModalOpen(user.keywords.length === 0);
+    }
     fetchPosts();
-  }, [user, navigate]);
+  }, [user]);
 
   return (
     <Container>
