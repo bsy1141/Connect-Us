@@ -41,14 +41,10 @@ class educationService {
     return education;
   };
 
-  static getEducationList = async ({ userId, page, perPage }) => {
+  static getEducationList = async ({ userId }) => {
     // education db에서 해당 유저의 학력 리스트를 가져옴
-    const { totalPage, educations } = await Education.findByUserId({
-      userId,
-      page,
-      perPage,
-    });
-    return { totalPage, educations };
+    const educations = await Education.findByUserId({ userId });
+    return educations;
   };
 
   static setEducation = async ({ educationId, toUpdate }) => {
