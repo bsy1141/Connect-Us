@@ -100,7 +100,7 @@ awardRouter.put("/award/:id", login_required, async (req, res, next) => {
   }
 });
 
-awardRouter.delete("/awards/:id", login_required, async (req, res, next) => {
+awardRouter.delete("/award/:id", login_required, async (req, res, next) => {
   try {
     if (is.emptyObject(req.params)) {
       throw new Error("award id가 없습니다. 다시 확인해주세요.");
