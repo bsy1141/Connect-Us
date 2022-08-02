@@ -95,7 +95,7 @@ certificateRouter.put(
   login_required,
   async (req, res, next) => {
     try {
-      if (is.emptyObject(req.body) || is.emptyObject(req.params)) {
+      if (is.emptyObject(req.params) || is.emptyObject(req.body)) {
         throw new Error(
           "자격증 업데이트에 실패했습니다. certificateID 혹은 Body의 데이터를 확인해주세요."
         );
@@ -112,7 +112,7 @@ certificateRouter.put(
       });
 
       if (updatedCertificate.errorMessage) {
-        throw new Error(certificate.errorMessage);
+        throw new Error(updatedCertificate.errorMessage);
       }
 
       res.status(200).send(updatedCertificate);
