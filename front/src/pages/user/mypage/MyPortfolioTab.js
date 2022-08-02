@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import Educations from "./portfolio/education/Educations";
 import Projects from "./portfolio/project/Projects";
+import Certificates from "./portfolio/certificate/Certificates";
 import { UserStateContext } from "components/ContextProvider";
 
 const MyPortfolioTab = () => {
@@ -21,6 +22,7 @@ const MyPortfolioTab = () => {
     <Container>
       <Educations userId={userId} isEditable={isEditable} />
       <Projects userId={userId} isEditable={isEditable} />
+      <Certificates userId={userId} isEditable={isEditable} />
     </Container>
   );
 };
