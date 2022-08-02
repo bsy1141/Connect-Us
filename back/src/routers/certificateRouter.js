@@ -43,8 +43,8 @@ certificateRouter.get(
   login_required,
   async (req, res, next) => {
     try {
-      if (is.emptyObject(req.query) || is.emptyObject(req.params)) {
-        throw new Error("pagination을 위한 쿼리 혹은 유저 아이디가 없습니다.");
+      if (is.emptyObject(req.params)) {
+        throw new Error("유저 아이디가 없습니다.");
       }
 
       const userId = req.params.userId;
@@ -115,7 +115,7 @@ certificateRouter.put(
         throw new Error(certificate.errorMessage);
       }
 
-      res.status(200).send(updateCertificate);
+      res.status(200).send(updatedCertificate);
     } catch (error) {
       next(error);
     }
