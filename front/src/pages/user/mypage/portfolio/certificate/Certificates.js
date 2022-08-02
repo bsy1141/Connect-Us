@@ -26,7 +26,7 @@ const Certificates = ({ userId, isEditable }) => {
 
   return (
     <CertificateContainer>
-      <h3>학력</h3>
+      <h3>자격증</h3>
       {isEditable && (
         <ButtonWrapper>
           <Button onClick={() => setIsAdding((prev) => !prev)}>
