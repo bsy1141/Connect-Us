@@ -37,7 +37,7 @@ function App() {
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/post" element={addpostPage} />
             <Route path="/post/:id" element={postPage} />
-            <Route path="/users/:userId" element={myPage} />
+            <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
             <Route path="*" element={mainfeed} />
