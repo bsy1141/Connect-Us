@@ -105,6 +105,49 @@ userAuthRouter.get(
 );
 
 userAuthRouter.put(
+  "/user/follow",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const userId = req.body.userId;
+      const followingId = req.body.followingId;
+
+      const { updatedUser, updatedFollowing } = await userAuthService.setFollow(
+        {
+          userId,
+          followingId,
+        }
+      );
+
+      res.status(200).send({ user: updatedUser, following: updatedFollowing });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+userAuthRouter.put(
+  "/user/unfollow",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const userId = req.body.userId;
+      const followingId = req.body.followingId;
+
+      const { updatedUser, updatedFollowing } =
+        await userAuthService.deleteFollow({
+          userId,
+          followingId,
+        });
+
+      res.status(200).send({ user: updatedUser, following: updatedFollowing });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
+
+userAuthRouter.put(
   "/users/:id",
   login_required,
   async function (req, res, next) {

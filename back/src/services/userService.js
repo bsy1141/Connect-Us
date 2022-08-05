@@ -169,8 +169,36 @@ class userAuthService {
       },
       { returnOriginal: false }
     );
-    console.log(updatedKeywords);
     return updatedKeywords;
+  }
+
+  static async setFollow({ userId, followingId }) {
+    const user = await User.findById({ userId });
+    const userOid = user._id;
+
+    const following = await User.findById({ userId: followingId });
+    const followingOid = following._id;
+
+    const updatedUser = await User.addFollowing({ userId, followingOid });
+    const updatedFollowing = await User.addFollower({ followingId, userOid });
+
+    return { updatedUser, updatedFollowing };
+  }
+
+  static async deleteFollow({ userId, followingId }) {
+    const user = await User.findById({ userId });
+    const userOid = user._id;
+
+    const following = await User.findById({ userId: followingId });
+    const followingOid = following._id;
+
+    const updatedUser = await User.deleteFollowing({ userId, followingOid });
+    const updatedFollowing = await User.deleteFollower({
+      followingId,
+      userOid,
+    });
+
+    return { updatedUser, updatedFollowing };
   }
 }
 

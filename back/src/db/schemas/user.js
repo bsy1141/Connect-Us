@@ -40,6 +40,22 @@ const UserSchema = new Schema(
       required: false,
     },
     keywords: [KeywordSchema],
+    followers: [
+      {
+        follower: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
+    followings: [
+      {
+        following: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+      },
+    ],
   },
   {
     timestamps: true,
