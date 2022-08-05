@@ -12,7 +12,10 @@ class User {
   }
 
   static async findById({ userId }) {
-    const user = await UserModel.findOne({ id: userId }).lean();
+    const user = await UserModel.findOne({ id: userId })
+      .populate({ path: "followings.following" })
+      .populate({ path: "followers.follower" })
+      .lean();
     return user;
   }
 
