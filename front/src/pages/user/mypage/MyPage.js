@@ -1,6 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserStateContext } from "../../../App";
+
+import { UserStateContext } from "components/ContextProvider";
 import Header from "../../Header";
 import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
@@ -11,7 +12,8 @@ import * as Api from "../../../api";
 const PER_PAGE = 5;
 
 const MyPage = () => {
-  const { userId } = useParams();
+  const { ownerId } = useParams();
+  const { user } = useContext(UserStateContext);
 
   const keyword = [
     "IT/인터넷",
@@ -21,19 +23,21 @@ const MyPage = () => {
     "대학교 졸업(4년제)",
   ];
   const [tab, setTab] = useState("posts");
-  const [user, setUser] = useState({});
+  const [owner, setOwner] = useState({});
+  const [userId, setUserId] = useState("");
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const fetchUser = async () => {
+  const fetchMyPageOwner = async () => {
     try {
-      const res = await Api.get(`users/${userId}`);
-      setUser(res.data);
+      const res = await Api.get(`users/${ownerId}`);
+      setOwner(res.data);
     } catch (err) {
       console.log(err);
     }
   };
+
   const fetchPosts = async () => {
     try {
       if (page === 0) {
@@ -41,7 +45,7 @@ const MyPage = () => {
       }
       const res = await Api.get(
         "postlist",
-        `${userId}?page=${page}&perPage=${PER_PAGE}`
+        `${ownerId}?page=${page}&perPage=${PER_PAGE}`
       );
       const { total, posts } = res.data;
       setTotalPage(total);
@@ -52,15 +56,23 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    fetchUser();
+    if (user) {
+      setUserId(user.id);
+    }
+    fetchMyPageOwner();
     fetchPosts();
-  }, [page, totalPage]);
+  }, [user, page, totalPage]);
 
   return (
     <Container>
       <Header />
       <Content>
-        <UserCard name={user.name} email={user.email} keyword={keyword} />
+        <UserCard
+          name={owner.name}
+          email={owner.email}
+          keyword={keyword}
+          isEditable={userId === ownerId}
+        />
         <UserContent>
           <TabButtons>
             <Button onClick={() => setTab("posts")} isClicked={tab === "posts"}>
