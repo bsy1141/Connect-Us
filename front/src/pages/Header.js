@@ -40,7 +40,7 @@ function Header() {
       </Nav.Item>
       <Nav.Item>
         <Nav.Link
-          onClick={() => navigate(`/users/${user.id}`)}
+          onClick={() => navigate(`/myPage/${user.id}`)}
           style={{ color: "#fff" }}
         >
           나의 페이지
