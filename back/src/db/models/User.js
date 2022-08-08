@@ -40,7 +40,7 @@ class User {
   static async addFollowing({ userId, followingOid }) {
     const filter = { id: userId };
     const update = {
-      $set: { followings: { following: followingOid } },
+      $push: { followings: { following: followingOid } },
     };
     const option = { upsert: true, returnOriginal: false };
 
@@ -56,7 +56,7 @@ class User {
   static async addFollower({ followingId, userOid }) {
     const filter = { id: followingId };
     const update = {
-      $set: { followers: { follower: userOid } },
+      $push: { followers: { follower: userOid } },
     };
     const option = { upsert: true, returnOriginal: false };
 
