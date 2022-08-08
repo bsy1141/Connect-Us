@@ -32,7 +32,7 @@ function App() {
       <Router>
         <Container>
           <Routes>
-            <Route path="/" exact element={mainfeed} />
+            <Route path="/" element={mainfeed} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/post" element={addpostPage} />
