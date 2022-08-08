@@ -6,6 +6,7 @@ import Header from "../../Header";
 import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
+import LoadingSpinner from "components/LoadingSpinner";
 import styled, { css } from "styled-components";
 import * as Api from "../../../api";
 
@@ -15,13 +16,7 @@ const MyPage = () => {
   const { ownerId } = useParams();
   const { user } = useContext(UserStateContext);
 
-  const keyword = [
-    "IT/인터넷",
-    "웹프로그래머",
-    "서울",
-    "신입",
-    "대학교 졸업(4년제)",
-  ];
+  //const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("posts");
   const [owner, setOwner] = useState({});
   const [userId, setUserId] = useState("");
@@ -59,20 +54,22 @@ const MyPage = () => {
     if (user) {
       setUserId(user.id);
     }
+  }, [user]);
+
+  useEffect(() => {
     fetchMyPageOwner();
     fetchPosts();
-  }, [user, page, totalPage]);
+  }, [ownerId, page, totalPage]);
+
+  // if (loading) {
+  //   return <LoadingSpinner />;
+  // }
 
   return (
     <Container>
       <Header />
       <Content>
-        <UserCard
-          name={owner.name}
-          email={owner.email}
-          keyword={keyword}
-          isEditable={userId === ownerId}
-        />
+        <UserCard userId={userId} owner={owner} setOwner={setOwner} />
         <UserContent>
           <TabButtons>
             <Button onClick={() => setTab("posts")} isClicked={tab === "posts"}>
