@@ -53,8 +53,8 @@ const PostPage = () => {
         </Content>
       </Post>
       <WriterProfile>
-        <ProfileImage onClick={() => navigate(`/users/${userId}`)} />
-        <h3 onClick={() => navigate(`/users/${userId}`)}>{userName}</h3>
+        <ProfileImage onClick={() => navigate(`/myPage/${userId}`)} />
+        <h3 onClick={() => navigate(`/myPage/${userId}`)}>{userName}</h3>
       </WriterProfile>
       <CommentContainer>
         <p>{fakeComments.length}개의 댓글</p>
@@ -65,7 +65,7 @@ const PostPage = () => {
         <Comments>
           {fakeComments.map((comment) => (
             <Comment>
-              <h3 onClick={() => navigate(`/users/${comment.authorId}`)}>
+              <h3 onClick={() => navigate(`/myPage/${comment.authorId}`)}>
                 {comment.authorName}
               </h3>
               <p>{comment.text}</p>
