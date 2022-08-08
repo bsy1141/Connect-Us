@@ -36,6 +36,23 @@ class commentService {
     return createdNewComment;
   }
 
+  static async updateComment({ id, toUpdate }) {
+    let CommentInfo = await Comment.findById({ id });
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!CommentInfo) {
+      const error = new Error("해당 id를 가진 댓글 데이터를 찾을 수 없습니다.");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const updatedComment = await Comment.update({
+      id,
+      toUpdate,
+    });
+    return updatedComment;
+  }
+
   static async deleteComment({ id }) {
     let CommentInfo = await Comment.findById({ id });
 

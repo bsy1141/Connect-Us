@@ -10,6 +10,17 @@ class Comment {
     const CommentInfo = await CommentModel.findOne({ _id: id }).lean();
     return CommentInfo;
   };
+
+  static update = async ({ id, toUpdate }) => {
+    const filter = { _id: id };
+    const option = { returnOriginal: false };
+    const updatedComment = await CommentModel.findOneAndUpdate(
+      filter,
+      toUpdate,
+      option
+    );
+    return updatedComment;
+  };
 }
 
 export { Comment };
