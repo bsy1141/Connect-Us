@@ -8,7 +8,7 @@ import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
 import LoadingSpinner from "components/LoadingSpinner";
 import styled, { css } from "styled-components";
-import * as Api from "../../../api";
+import * as Api from "api";
 
 const PER_PAGE = 5;
 
@@ -16,7 +16,7 @@ const MyPage = () => {
   const { ownerId } = useParams();
   const { user } = useContext(UserStateContext);
 
-  //const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState("posts");
   const [owner, setOwner] = useState({});
   const [userId, setUserId] = useState("");
@@ -24,29 +24,25 @@ const MyPage = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const fetchMyPageOwner = async () => {
+  const fetchMyPageData = async () => {
+    const getOwnerData = Api.get(`users/${ownerId}`);
+    const getOwnerPosts = Api.get(
+      "postlist",
+      `${ownerId}?page=${page}&perPage=${PER_PAGE}`
+    );
     try {
-      const res = await Api.get(`users/${ownerId}`);
-      setOwner(res.data);
+      setLoading(true);
+      const [ownerData, ownerPosts] = await Promise.all([
+        getOwnerData,
+        getOwnerPosts,
+      ]);
+      setOwner(ownerData.data);
+      setTotalPage(ownerPosts.data.total);
+      setPosts(ownerPosts.data.posts);
+
+      setLoading(false);
     } catch (err) {
       console.log(err);
-    }
-  };
-
-  const fetchPosts = async () => {
-    try {
-      if (page === 0) {
-        setPage(1);
-      }
-      const res = await Api.get(
-        "postlist",
-        `${ownerId}?page=${page}&perPage=${PER_PAGE}`
-      );
-      const { total, posts } = res.data;
-      setTotalPage(total);
-      setPosts(posts);
-    } catch (err) {
-      console.error(err);
     }
   };
 
@@ -57,13 +53,12 @@ const MyPage = () => {
   }, [user]);
 
   useEffect(() => {
-    fetchMyPageOwner();
-    fetchPosts();
+    fetchMyPageData();
   }, [ownerId, page, totalPage]);
 
-  // if (loading) {
-  //   return <LoadingSpinner />;
-  // }
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <Container>
