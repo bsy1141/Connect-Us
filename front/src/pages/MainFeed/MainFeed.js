@@ -3,31 +3,21 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-import { UserStateContext } from "../components/ContextProvider";
-import Header from "./Header";
-import styles from "../style/MainFeed.module.css";
-import KeywordModal from "./modal/KeywordModal";
-import * as Api from "../api";
+import { UserStateContext } from "../../components/ContextProvider";
+import Header from "../Header";
+import styles from "../../style/MainFeed.module.css";
+import KeywordModal from "../modal/KeywordModal";
+import * as Api from "../../api";
 import styled from "styled-components";
-
-const followers = [
-  { type: "user", name: "정혜정" },
-  { type: "company", name: "Connect Us" },
-  { type: "user", name: "김영희" },
-  { type: "user", name: "이윤지" },
-  { type: "company", name: "harmony" },
-  { type: "company", name: "oo닷컴" },
-  { type: "company", name: "엘리스" },
-  { type: "company", name: "네이버 페이" },
-  { type: "user", name: "이주영" },
-  { type: "user", name: "이지은" },
-];
+import LoadingSpinner from "components/LoadingSpinner";
 
 function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
+  const [following, setFollowing] = useState(user?.followings || []);
 
   const fetchPosts = async () => {
     const res = await Api.get("postlist");
@@ -35,30 +25,46 @@ function MainFeed() {
   };
 
   useEffect(() => {
+    setLoading(true);
+
     if (user) {
       setIsModalOpen(user.keywords.length === 0);
+      if ("followings" in user) {
+        setFollowing(user.followings);
+      }
     }
     fetchPosts();
+
+    setLoading(false);
   }, [user]);
 
-  console.log(user);
+  if (loading) {
+    return (
+      <Container>
+        <Header />
+        <LoadingSpinner />
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Header />
       <MainFeedWrapper>
-        <FollowerContainer>
-          {followers.map((follower) => (
-            <Line key={follower.name}>
-              <ProfileImage
-                src={`${process.env.PUBLIC_URL}/defaultImage.png`}
-              />
-              <Name>
-                <p>{follower.name}</p>
-                {follower.type === "company" && <span>기업회원</span>}
-              </Name>
-            </Line>
-          ))}
-        </FollowerContainer>
+        <FollowingContainer>
+          {following.length !== 0 &&
+            following.map((f) => (
+              <Line key={f.following.name}>
+                <ProfileImage
+                  src={`${process.env.PUBLIC_URL}/defaultImage.png`}
+                />
+                <Name>
+                  <p>{f.following.name}</p>
+                  {f.following?.type === "company" && <span>기업회원</span>}
+                </Name>
+              </Line>
+            ))}
+        </FollowingContainer>
         <PostCardsContainer>
           {posts.map((post) => (
             <PostCardContainer
@@ -108,13 +114,17 @@ const MainFeedWrapper = styled.div`
   padding: 0 5%;
 `;
 
-const FollowerContainer = styled.div`
+const FollowingContainer = styled.div`
   width: 20%;
-  height: 100%;
+  overflow: auto;
   border: 1px solid #c4c4c4;
   border-radius: 15px;
   margin-left: 30px;
   padding: 1%;
+`;
+
+const NoFollowingWrapper = styled.div`
+  text-align: center;
 `;
 
 const Line = styled.div`
