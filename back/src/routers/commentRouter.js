@@ -41,13 +41,6 @@ commentRouter.put(
   login_required,
   async function (req, res, next) {
     try {
-      // const errors = validationResult(req);
-      // if (!errors.isEmpty()) {
-      //   const error = new Error("요청 내용이 비어 있습니다.");
-      //   error.statusCode = 400;
-      //   throw error;
-      // }
-
       const id = req.params.commentId;
       const toUpdate = { text: req.body.text };
 
