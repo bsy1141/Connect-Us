@@ -17,6 +17,11 @@ function Header() {
     navigate("/login");
   };
 
+  const goPage = (router) => {
+    navigate(router);
+    window.location.reload();
+  };
+
   return (
     <Nav
       activeKey={location.pathname}
@@ -32,7 +37,7 @@ function Header() {
     >
       <Nav.Item className="me-auto mb-5">
         <Nav.Link
-          onClick={() => navigate("/")}
+          onClick={() => goPage("/")}
           style={{ color: "#fff", fontSize: "20px", fontWeight: "bold" }}
         >
           Connect Us
