@@ -9,22 +9,22 @@ import { UserStateContext } from "components/ContextProvider";
 
 const MyPortfolioTab = () => {
   const { user } = useContext(UserStateContext);
-  const { userId } = useParams();
+  const { ownerId } = useParams();
 
-  const [isEditable, setIsEditable] = useState(userId === user?.id);
+  const [isEditable, setIsEditable] = useState(ownerId === user?.id);
 
   useEffect(() => {
     if (user) {
-      setIsEditable(userId === user.id);
+      setIsEditable(ownerId === user.id);
     }
   }, [user]);
 
   return (
     <Container>
-      <Educations userId={userId} isEditable={isEditable} />
-      <Projects userId={userId} isEditable={isEditable} />
-      <Certificates userId={userId} isEditable={isEditable} />
-      <Awards userId={userId} isEditable={isEditable} />
+      <Educations userId={ownerId} isEditable={isEditable} />
+      <Projects userId={ownerId} isEditable={isEditable} />
+      <Certificates userId={ownerId} isEditable={isEditable} />
+      <Awards userId={ownerId} isEditable={isEditable} />
     </Container>
   );
 };
@@ -33,7 +33,7 @@ export default MyPortfolioTab;
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   margin-top: 10px;
   overflow-y: scroll;
   -ms-overflow-style: none;
