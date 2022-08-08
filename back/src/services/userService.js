@@ -96,6 +96,8 @@ class userAuthService {
     const id = user.id;
     const name = user.name;
     const keywords = user.keywords;
+    const followers = user.followers;
+    const followings = user.followings;
 
     const loginUser = {
       token,
@@ -103,6 +105,8 @@ class userAuthService {
       email,
       name,
       keywords,
+      followers,
+      followings,
       errorMessage: null,
     };
 

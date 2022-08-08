@@ -7,7 +7,10 @@ class User {
   }
 
   static async findByEmail({ email }) {
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email })
+      .populate({ path: "followings.following" })
+      .populate({ path: "followers.follower" })
+      .lean();
     return user;
   }
 
