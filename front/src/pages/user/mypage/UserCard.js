@@ -1,20 +1,61 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import * as Api from "api";
 
-const UserCard = ({ name, email, keyword }) => {
-  const [eMail, setEMail] = useState(email);
-  const [birthday, setBirthday] = useState("");
-  const [gender, setGender] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
-
+const UserCard = ({ userId, owner, setOwner }) => {
+  const { keywords, id, name, followers, followings, email } = owner;
   const navigate = useNavigate();
+
+  const isEditable = userId === id;
+  const keywordsArr = keywords ? Object.values(keywords[0]) : [];
+  keywordsArr.splice(keywordsArr.length - 1, 1);
+  const initalFollowState =
+    followers && followers.findIndex((i) => i.follower.id === userId) !== -1
+      ? true
+      : false;
+
+  const [password, setPassword] = useState("");
+  const [pwConfirmed, setPwConfirmed] = useState("");
+  //팔로우 중인지 아닌지 확인하는 state
+  const [isFollow, setIsFollow] = useState(false);
+  const [followerCount, setFollowerCount] = useState(0);
+  //const [phoneNumber, setPhoneNumber] = useState("");
+
+  useEffect(() => {
+    setIsFollow(initalFollowState);
+    setFollowerCount(followers?.length || 0);
+  }, [initalFollowState, followers]);
+
+  const handleClickFollow = async () => {
+    if (isFollow) {
+      const res = await Api.put("user/unfollow", {
+        userId,
+        followingId: id,
+      });
+      const { following } = res.data;
+      setFollowerCount(following.followers.length);
+    } else {
+      const res = await Api.put("user/follow", {
+        userId,
+        followingId: id,
+      });
+      const { following } = res.data;
+      setFollowerCount(following.followers.length);
+    }
+    setIsFollow((prev) => !prev);
+  };
 
   return (
     <Container>
       <UserInfo>
         <UserImage />
         <p>{name}님</p>
+        {!isEditable && (
+          <button onClick={handleClickFollow}>
+            {isFollow ? "언팔로우" : "팔로우"}
+          </button>
+        )}
       </UserInfo>
       <Follows>
         <FollowsTitle>
@@ -22,50 +63,46 @@ const UserCard = ({ name, email, keyword }) => {
           <p>팔로워</p>
         </FollowsTitle>
         <FollowsContent>
-          <p>200</p>
-          <p>230</p>
+          <p>{followings ? followings.length : 0}</p>
+          <p>{followerCount}</p>
         </FollowsContent>
       </Follows>
       <ExtraInfo>
-        {keyword && (
+        {keywordsArr.length !== 0 && (
           <>
             <p>관심 키워드</p>
             <div style={{ whiteSpace: "pre-line" }}>
-              {keyword.map((k) => (
-                <Keyword>{k}</Keyword>
+              {keywordsArr.map((k, idx) => (
+                <Keyword key={idx}>{k}</Keyword>
               ))}
             </div>
           </>
         )}
         <p>이메일</p>
+        <input type="text" value={email || ""} disabled />
+        <p>비밀번호</p>
         <input
           type="text"
-          value={eMail}
-          onChange={(e) => setEMail(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
         />
-        <p>생년월일</p>
+        <p>비밀번호 확인</p>
         <input
           type="text"
-          value={birthday}
-          onChange={(e) => setBirthday(e.target.value)}
+          value={pwConfirmed}
+          onChange={(e) => setPwConfirmed(e.target.value)}
         />
-        <p>성별</p>
-        <input
-          type="text"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        />
-        <p>휴대폰번호</p>
+        {/* <p>휴대폰번호</p>
         <input
           type="text"
           value={phoneNumber}
           onChange={(e) => setPhoneNumber(e.target.value)}
-        />
+        /> */}
         <div style={{ textAlign: "center" }}>
           <button>개인정보 수정</button>
         </div>
       </ExtraInfo>
-      {!keyword && (
+      {keywordsArr.length === 0 && (
         <RegisterKeyword>
           <button onClick={() => navigate("/keyword")}>
             관심 키워드 등록하기
@@ -85,13 +122,22 @@ const Container = styled.div`
 
 const UserInfo = styled.div`
   display: flex;
-  justify-content: space-between;
-  padding: 0 15%;
+  justify-content: center;
   > p {
     align-self: center;
     margin: 0;
-    font-size: 30px;
+    font-size: 25px;
     font-weight: bold;
+    padding: 0 20px;
+  }
+  > button {
+    align-self: center;
+    height: 25px;
+    font-size: 13px;
+    background: #ff758f;
+    border-radius: 5px;
+    color: #fff;
+    border: none;
   }
 `;
 
@@ -116,7 +162,7 @@ const FollowsTitle = styled.div`
     font-weight: bold;
     color: #ff758f;
     display: inline;
-    margin: 0 12%;
+    margin: 0 10%;
   }
 `;
 
@@ -126,7 +172,7 @@ const FollowsContent = styled.div`
     font-size: 30px;
     font-weight: bold;
     display: inline-block;
-    margin: 0 10%;
+    margin: 0 15%;
   }
 `;
 
@@ -160,7 +206,7 @@ const RegisterKeyword = styled.div`
   text-align: center;
   margin-top: 5%;
   > button {
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     padding: 3% 20%;
     border-radius: 10px;
