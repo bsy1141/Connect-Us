@@ -37,8 +37,8 @@ class postService {
     return getPostsResult;
   };
 
-  static getPost = async ({ getPost }) => {
-    const getPostResult = await Post.findOne({ getPost });
+  static getPostById = async ({ id }) => {
+    const getPostResult = await Post.findById({ id });
 
     if (!getPostResult) {
       const errorMessage = "특정 포스트를 불러오는 데 실패했습니다.";

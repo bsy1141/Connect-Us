@@ -4,6 +4,7 @@ import path from "path";
 import { userAuthRouter } from "./routers/userRouter";
 import { uploadRouter } from "./routers/uploadRouter";
 import { postRouter } from "./routers/postRouter";
+import { commentRouter } from "./routers/commentRouter";
 import { projectRouter } from "./routers/projectRouter";
 import { educationRouter } from "./routers/educationRouter";
 import { certificateRouter } from "./routers/certificateRouter";
@@ -35,6 +36,7 @@ app.use(educationRouter);
 app.use(projectRouter);
 app.use(certificateRouter);
 app.use(awardRouter);
+app.use(commentRouter);
 
 // 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
 app.use(errorMiddleware);

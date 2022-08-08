@@ -14,7 +14,7 @@ class Post {
   };
 
   static findAll = async () => {
-    const posts = await PostModel.find({});
+    const posts = await PostModel.find({}).populate("comments").lean();
     return posts;
   };
 
@@ -29,11 +29,37 @@ class Post {
     return { total, posts };
   };
 
-  static findOne = async ({ getPost }) => {
-    const post = await PostModel.findOne({
-      id: getPost.id,
-    });
+  static findById = async ({ id }) => {
+    const post = await PostModel.findOne({ id });
     return post;
+  };
+
+  static addComment = async ({ id, commentId }) => {
+    const filter = { id };
+    const update = { $push: { comments: commentId } };
+    const option = { returnOriginal: false };
+
+    const updatedPost = await PostModel.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
+
+    return updatedPost;
+  };
+
+  static deleteComment = async ({ id, commentId }) => {
+    const filter = { id };
+    const update = { $pull: { comments: commentId } };
+    const option = { returnOriginal: false };
+
+    const updatedReview = await PostModel.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
+
+    return updatedReview;
   };
 }
 

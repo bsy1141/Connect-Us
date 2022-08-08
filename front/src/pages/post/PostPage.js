@@ -18,6 +18,7 @@ const PostPage = () => {
 
   const location = useLocation();
   const { post } = location.state;
+  console.log(post);
   const { userName, userId, title, description, content, createdAt } = post;
   const [id, setId] = useState(user?.id || "");
 
