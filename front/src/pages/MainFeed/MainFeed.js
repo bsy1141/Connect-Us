@@ -9,13 +9,11 @@ import styles from "../../style/MainFeed.module.css";
 import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";
 import styled from "styled-components";
-import LoadingSpinner from "components/LoadingSpinner";
 
 function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
-  //const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
   const [following, setFollowing] = useState(user?.followings || []);
 
@@ -37,7 +35,7 @@ function MainFeed() {
       <Header />
       <MainFeedWrapper>
         <FollowingContainer>
-          {following.length !== 0 &&
+          {following.length !== 0 ? (
             following.map((f) => (
               <Line key={f.following.name}>
                 <ProfileImage
@@ -48,7 +46,13 @@ function MainFeed() {
                   {f.following?.type === "company" && <span>기업회원</span>}
                 </Name>
               </Line>
-            ))}
+            ))
+          ) : (
+            <NoFollowingWrapper>
+              <p>팔로우하는 유저가 없습니다</p>
+              <button onClick={() => navigate("/search")}>검색하기</button>
+            </NoFollowingWrapper>
+          )}
         </FollowingContainer>
         <PostCardsContainer>
           {posts.map((post) => (
@@ -109,7 +113,20 @@ const FollowingContainer = styled.div`
 `;
 
 const NoFollowingWrapper = styled.div`
-  text-align: center;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > button {
+    width: 60%;
+    border-radius: 10px;
+    background: #ff758e;
+    color: #fff;
+    border: none;
+    padding: 5px 0;
+    font-weight: bold;
+  }
 `;
 
 const Line = styled.div`
