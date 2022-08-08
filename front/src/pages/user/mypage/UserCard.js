@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 
-const UserCard = ({ userId, owner, setOwner }) => {
+const UserCard = ({ userId, owner }) => {
   const { keywords, id, name, followers, followings, email } = owner;
   const navigate = useNavigate();
 

@@ -69,7 +69,7 @@ const MyPage = () => {
     <Container>
       <Header />
       <Content>
-        <UserCard userId={userId} owner={owner} setOwner={setOwner} />
+        <UserCard userId={userId} owner={owner} />
         <UserContent>
           <TabButtons>
             <Button onClick={() => setTab("posts")} isClicked={tab === "posts"}>
@@ -102,7 +102,8 @@ export default MyPage;
 const Container = styled.div`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  overflow-y: hidden;
 `;
 
 const Content = styled.div`
@@ -110,7 +111,7 @@ const Content = styled.div`
   height: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 100px 3%;
+  padding: 100px 3% 0;
 `;
 
 const UserContent = styled.div`
