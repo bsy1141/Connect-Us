@@ -42,7 +42,6 @@ function MainFeed() {
   }, [user]);
 
   console.log(user);
-  console.log(sessionStorage.getItem("userToken"));
   return (
     <Container>
       <Header />
@@ -50,7 +49,9 @@ function MainFeed() {
         <FollowerContainer>
           {followers.map((follower) => (
             <Line key={follower.name}>
-              <ProfileImage />
+              <ProfileImage
+                src={`${process.env.PUBLIC_URL}/defaultImage.png`}
+              />
               <Name>
                 <p>{follower.name}</p>
                 {follower.type === "company" && <span>기업회원</span>}
@@ -68,13 +69,17 @@ function MainFeed() {
             >
               <PostCardContent>
                 <PostWriterWrapper>
-                  <PostWriterImage />
+                  <PostWriterImage
+                    src={`${process.env.PUBLIC_URL}/defaultImage.png`}
+                  />
                   <span>{post.userName}</span>
                 </PostWriterWrapper>
                 <h3>{post.title}</h3>
                 <p>{post.description}</p>
               </PostCardContent>
-              <PostCardImage />
+              <PostCardImage
+                src={`${process.env.PUBLIC_URL}/defaultPostImg.jpeg`}
+              />
             </PostCardContainer>
           ))}
         </PostCardsContainer>
@@ -118,10 +123,9 @@ const Line = styled.div`
   align-items: center;
 `;
 
-const ProfileImage = styled.div`
+const ProfileImage = styled.img`
   width: 50px;
   height: 50px;
-  background-image: url("./defaultImage.png");
   background-size: 50px 50px;
   border-radius: 50%;
   margin-right: 20px;
@@ -173,17 +177,15 @@ const PostWriterWrapper = styled.div`
   }
 `;
 
-const PostWriterImage = styled.div`
+const PostWriterImage = styled.img`
   width: 50px;
   height: 50px;
-  background-image: url("./defaultImage.png");
   background-size: cover;
   border-radius: 50%;
 `;
 
-const PostCardImage = styled.div`
+const PostCardImage = styled.img`
   width: 150px;
   height: 150px;
-  background-image: url("./defaultPostImg.jpeg");
   background-size: cover;
 `;
