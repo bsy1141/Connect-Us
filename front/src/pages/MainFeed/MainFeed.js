@@ -15,7 +15,7 @@ function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
   const [following, setFollowing] = useState(user?.followings || []);
 
@@ -25,27 +25,12 @@ function MainFeed() {
   };
 
   useEffect(() => {
-    setLoading(true);
-
     if (user) {
       setIsModalOpen(user.keywords.length === 0);
-      if ("followings" in user) {
-        setFollowing(user.followings);
-      }
+      setFollowing(user.followings);
     }
     fetchPosts();
-
-    setLoading(false);
   }, [user]);
-
-  if (loading) {
-    return (
-      <Container>
-        <Header />
-        <LoadingSpinner />
-      </Container>
-    );
-  }
 
   return (
     <Container>
