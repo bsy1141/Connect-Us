@@ -48,6 +48,19 @@ class postService {
     return getPostResult;
   };
 
+  static updatePost = async ({ id, toUpdate }) => {
+    const postInfo = await Post.findById({ id });
+
+    if (!postInfo) {
+      const errorMessage = "해당 id를 가진 포스트를 찾을 수 없습니다.";
+      return { errorMessage };
+    }
+
+    const updatedPost = await Post.update({ id, toUpdate });
+
+    return updatedPost;
+  };
+
   static deletePost = async ({ id }) => {
     const deletedPost = await Post.delete({ id });
     const deletedPostComment = await Comment.deleteByPostId({ postId: id });

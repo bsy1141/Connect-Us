@@ -34,6 +34,14 @@ class Post {
     return post;
   };
 
+  static update = async ({ id, toUpdate }) => {
+    const filter = { id };
+    const option = { returnOriginal: false };
+    const updatedReview = PostModel.findOneAndUpdate(filter, toUpdate, option);
+
+    return updatedReview;
+  };
+
   static delete = async ({ id }) => {
     const result = await PostModel.deleteOne({ id });
     const isDataDeleted = result.deletedCount === 1;

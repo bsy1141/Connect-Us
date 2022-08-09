@@ -93,21 +93,33 @@ postRouter.post("/post/create", login_required, async (req, res, next) => {
   }
 });
 
-postRouter.delete(
-  "/post/:postId",
-  login_required,
-  async function (req, res, next) {
-    try {
-      const id = req.params.postId;
+postRouter.put("/post/:postId", login_required, async (req, res, next) => {
+  try {
+    const id = req.params.postId;
+    const toUpdate = { text: req.body.text };
 
-      // 해당 리뷰 아이디로 리뷰 정보를 db에서 찾아 삭제함.
-      const result = await postService.deletePost({ id });
+    const updatedPost = await postService.updatePost({
+      id,
+      toUpdate,
+    });
 
-      res.status(200).send(result);
-    } catch (error) {
-      next(error);
-    }
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
   }
-);
+});
+
+postRouter.delete("/post/:postId", login_required, async (req, res, next) => {
+  try {
+    const id = req.params.postId;
+
+    // 해당 리뷰 아이디로 리뷰 정보를 db에서 찾아 삭제함.
+    const result = await postService.deletePost({ id });
+
+    res.status(200).send(result);
+  } catch (error) {
+    next(error);
+  }
+});
 
 export { postRouter };
