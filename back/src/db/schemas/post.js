@@ -1,5 +1,12 @@
 import { Schema, model } from "mongoose";
 
+const LikeSchema = new Schema({
+  userId: {
+    type: String,
+    required: true,
+  },
+});
+
 const PostSchema = new Schema(
   {
     id: {
@@ -26,6 +33,7 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
+    likes: [LikeSchema],
     comments: [
       {
         type: Schema.Types.ObjectId,
