@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -9,26 +9,37 @@ import styles from "../../style/MainFeed.module.css";
 import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";
 import styled from "styled-components";
+import LoadingSpinner from "components/LoadingSpinner";
 
 function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
-  const [following, setFollowing] = useState(user?.followings || []);
-
+  const [following, setFollowing] = useState(null);
   const fetchPosts = async () => {
     const res = await Api.get("postlist");
     setPosts(res.data);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (user) {
       setIsModalOpen(user.keywords.length === 0);
       setFollowing(user.followings);
     }
     fetchPosts();
   }, [user]);
+
+  if (!following) {
+    return (
+      <Container>
+        <Header />
+        <LoadingWrapper>
+          <LoadingSpinner />
+        </LoadingWrapper>
+      </Container>
+    );
+  }
 
   return (
     <Container>
@@ -89,6 +100,14 @@ function MainFeed() {
 }
 
 export default MainFeed;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Container = styled.div`
   width: 100%;
