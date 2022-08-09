@@ -35,8 +35,8 @@ function App() {
             <Route path="/" element={mainfeed} />
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
-            <Route path="/post" element={addpostPage} />
-            <Route path="/post/:id" element={postPage} />
+            <Route path="/post/create" element={addpostPage} />
+            <Route path="/post" element={postPage} />
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />

@@ -58,9 +58,7 @@ function MainFeed() {
           {posts.map((post) => (
             <PostCardContainer
               key={post.id}
-              onClick={() =>
-                navigate(`/post/${post.id}`, { state: { post: post } })
-              }
+              onClick={() => navigate(`/post`, { state: { postId: post.id } })}
             >
               <PostCardContent>
                 <PostWriterWrapper>
@@ -79,7 +77,10 @@ function MainFeed() {
           ))}
         </PostCardsContainer>
       </MainFeedWrapper>
-      <button onClick={() => navigate("/post")} className={styles.button_add}>
+      <button
+        onClick={() => navigate("/post/create")}
+        className={styles.button_add}
+      >
         <FontAwesomeIcon icon={faPlus} className={styles.icon} />
       </button>
       {isModalOpen && <KeywordModal setIsModalOpen={setIsModalOpen} />}
