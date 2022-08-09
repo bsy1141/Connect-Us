@@ -1,4 +1,4 @@
-import { Post, User } from "../db";
+import { Post, User, Comment } from "../db";
 import { v4 as uuidv4 } from "uuid";
 
 class postService {
@@ -6,7 +6,7 @@ class postService {
     const id = uuidv4();
     newPost.id = id;
 
-    const user = await User.findById({ user_id: newPost.userId });
+    const user = await User.findById({ userId: newPost.userId });
     newPost.userName = user.name;
 
     const createNewPostResult = await Post.create({ newPost });
@@ -46,6 +46,18 @@ class postService {
     }
 
     return getPostResult;
+  };
+
+  static deletePost = async ({ id }) => {
+    const deletedPost = await Post.delete({ id });
+    const deletedPostComment = await Comment.deleteByPostId({ postId: id });
+
+    if (!deletedPost || !deletedPostComment) {
+      const errorMessage = "게시글 삭제에 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return { deletedPost, deletedPostComment };
   };
 }
 
