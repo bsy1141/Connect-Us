@@ -21,6 +21,11 @@ class Comment {
     );
     return updatedComment;
   };
+
+  static deleteByPostId = async ({ postId }) => {
+    const result = await CommentModel.deleteMany({ postId });
+    return result;
+  };
 }
 
 export { Comment };
