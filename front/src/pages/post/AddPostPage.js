@@ -33,14 +33,14 @@ const AddPostPage = () => {
 
   const handleSubmit = () => {
     try {
-      const res = Api.post("post/create", {
+      Api.post("post/create", {
         userId: user.id,
         title: title,
         content: markdown,
         description: description,
       });
-      console.log(res.data);
       navigate("/");
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }

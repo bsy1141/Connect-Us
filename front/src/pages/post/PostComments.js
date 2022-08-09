@@ -64,6 +64,7 @@ const PostComments = ({ comments, postId, setPost }) => {
       </CommentContainer>
       {isModalOpen && (
         <DeleteModal
+          isComment
           setIsModalOpen={setIsModalOpen}
           handleDelete={handleDelete}
         />

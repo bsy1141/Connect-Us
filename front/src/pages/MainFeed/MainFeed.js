@@ -17,6 +17,7 @@ function MainFeed() {
   const [posts, setPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
   const [following, setFollowing] = useState(null);
+
   const fetchPosts = async () => {
     const res = await Api.get("postlist");
     setPosts(res.data);

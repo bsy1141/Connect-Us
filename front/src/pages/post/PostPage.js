@@ -14,6 +14,7 @@ import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
 import PostComment from "./PostComments";
+import DeleteModal from "pages/modal/DeleteModal";
 
 const PostPage = () => {
   const { user } = useContext(UserStateContext);
@@ -24,12 +25,24 @@ const PostPage = () => {
   const [id, setId] = useState(user?.id || "");
   const [post, setPost] = useState({});
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const getPost = async () => {
     setLoading(true);
     const res = await Api.get(`post/${postId}`);
     setPost(res.data);
     setLoading(false);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await Api.delete(`post/${post.id}`);
+      setIsModalOpen(false);
+      navigate("/");
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
@@ -63,8 +76,8 @@ const PostPage = () => {
           </WriterInfo>
           {id === post.userId && (
             <WriterAuth>
-              <span>수정</span>
-              <span>삭제</span>
+              <button>수정</button>
+              <button onClick={() => setIsModalOpen(true)}>삭제</button>
             </WriterAuth>
           )}
         </PostInfo>
@@ -87,6 +100,12 @@ const PostPage = () => {
         postId={post.id}
         setPost={setPost}
       />
+      {isModalOpen && (
+        <DeleteModal
+          setIsModalOpen={setIsModalOpen}
+          handleDelete={handleDelete}
+        />
+      )}
     </Container>
   );
 };
@@ -134,12 +153,13 @@ const WriterInfo = styled.div`
 `;
 
 const WriterAuth = styled.div`
-  > span {
-    margin-right: 10px;
+  > button {
     cursor: pointer;
     color: #969696;
+    background: transparent;
+    border: none;
   }
-  > span:hover {
+  > button:hover {
     color: #000;
   }
 `;

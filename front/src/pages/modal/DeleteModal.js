@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-const DeleteModal = ({ setIsModalOpen, handleDelete }) => {
+const DeleteModal = ({ isComment, setIsModalOpen, handleDelete }) => {
   return (
     <Container>
       <Section>
         <Content>
-          <h4>댓글 삭제</h4>
-          <p>댓글을 정말로 삭제하시겠습니까?</p>
+          <h4>{isComment ? "댓글 " : "게시글 "}삭제</h4>
+          <p>{isComment ? "댓글" : "게시글"}을 정말로 삭제하시겠습니까?</p>
         </Content>
         <Buttons>
           <button
