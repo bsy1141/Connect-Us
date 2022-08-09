@@ -4,81 +4,102 @@ import styled from "styled-components";
 
 import { UserStateContext } from "../../components/ContextProvider";
 import Header from "../Header";
-import { formatDate, fakeComments } from "./postModule";
+import LoadingSpinner from "components/LoadingSpinner";
+import { formatDate } from "./postModule";
+import * as Api from "api";
 
 import { Viewer } from "@toast-ui/react-editor";
 import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css";
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
+import PostComment from "./PostComment";
 
 const PostPage = () => {
   const { user } = useContext(UserStateContext);
   const navigate = useNavigate();
-
   const location = useLocation();
-  const { post } = location.state;
-  console.log(post);
-  const { userName, userId, title, description, content, createdAt } = post;
+  const { postId } = location.state;
+
   const [id, setId] = useState(user?.id || "");
+  const [post, setPost] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const getPost = async () => {
+    setLoading(true);
+    const res = await Api.get(`post/${postId}`);
+    setPost(res.data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (user) {
       setId(user.id);
     }
+    getPost();
   }, [user]);
 
+  if (loading) {
+    return (
+      <Container>
+        <Header />
+        <LoadingWrapper>
+          <LoadingSpinner />
+        </LoadingWrapper>
+      </Container>
+    );
+  }
+
+  console.log(post);
   return (
     <Container>
       <Header />
       <Post>
-        <h1>{title}</h1>
+        <h1>{post.title}</h1>
         <PostInfo>
           <WriterInfo>
-            <p>{userName}</p>
-            <span>{formatDate(createdAt)}</span>
+            <p>{post.userName}</p>
+            <span>{formatDate(post.createdAt || "")}</span>
           </WriterInfo>
-          {id === userId && (
+          {id === post.userId && (
             <WriterAuth>
               <span>수정</span>
               <span>삭제</span>
             </WriterAuth>
           )}
         </PostInfo>
-        <Description>{description}</Description>
+        <Description>{post.description}</Description>
         <Content>
           <Viewer
             plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
-            initialValue={content}
+            initialValue={post.content}
           />
         </Content>
       </Post>
       <WriterProfile>
-        <ProfileImage onClick={() => navigate(`/myPage/${userId}`)} />
-        <h3 onClick={() => navigate(`/myPage/${userId}`)}>{userName}</h3>
+        <ProfileImage onClick={() => navigate(`/myPage/${post.userId}`)} />
+        <h3 onClick={() => navigate(`/myPage/${post.userId}`)}>
+          {post.userName}
+        </h3>
       </WriterProfile>
-      <CommentContainer>
-        <p>{fakeComments.length}개의 댓글</p>
-        <textarea placeholder="댓글을 작성하세요" />
-        <CommentButton>
-          <button>댓글 작성</button>
-        </CommentButton>
-        <Comments>
-          {fakeComments.map((comment) => (
-            <Comment>
-              <h3 onClick={() => navigate(`/myPage/${comment.authorId}`)}>
-                {comment.authorName}
-              </h3>
-              <p>{comment.text}</p>
-            </Comment>
-          ))}
-        </Comments>
-      </CommentContainer>
+      <PostComment
+        comments={post.comments || []}
+        postId={post.id}
+        setPost={setPost}
+      />
     </Container>
   );
 };
 
 export default PostPage;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Container = styled.div`
   position: relative;
@@ -155,43 +176,4 @@ const ProfileImage = styled.div`
   border-radius: 50%;
   width: 100px;
   height: 100px;
-`;
-
-const CommentContainer = styled.div`
-  padding: 0 200px;
-  box-sizing: border-box;
-  margin-top: 50px;
-  > textarea {
-    width: 100%;
-    height: 100px;
-    box-sizing: border-box;
-    padding: 10px;
-  }
-`;
-
-const CommentButton = styled.div`
-  text-align: right;
-  > button {
-    border: none;
-    border-radius: 5px;
-    background-color: #ff758f;
-    box-sizing: border-box;
-    padding: 5px 10px;
-    color: #fff;
-    margin-top: 10px;
-  }
-`;
-
-const Comments = styled.div`
-  margin-top: 30px;
-`;
-
-const Comment = styled.div`
-  > h3 {
-    font-size: 20px;
-    cursor: pointer;
-  }
-  > h3:hover {
-    text-decoration: underline;
-  }
 `;
