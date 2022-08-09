@@ -122,7 +122,7 @@ postRouter.delete("/post/:postId", login_required, async (req, res, next) => {
   }
 });
 
-postRouter.post("/posts/like", login_required, async (req, res, next) => {
+postRouter.put("/posts/like", login_required, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const id = req.body.postId;
@@ -140,7 +140,7 @@ postRouter.post("/posts/like", login_required, async (req, res, next) => {
   }
 });
 
-postRouter.delete("/posts/like", login_required, async (req, res, next) => {
+postRouter.put("/posts/dislike", login_required, async (req, res, next) => {
   try {
     const userId = req.currentUserId;
     const id = req.body.postId;
