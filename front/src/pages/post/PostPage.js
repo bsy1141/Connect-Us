@@ -13,7 +13,7 @@ import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
-import PostComment from "./PostComment";
+import PostComment from "./PostComments";
 
 const PostPage = () => {
   const { user } = useContext(UserStateContext);
