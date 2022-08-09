@@ -10,7 +10,7 @@ postRouter.get("/postlist", login_required, async (req, res, next) => {
     const postlist = await postService.getPosts();
 
     if (postlist.errorMessage) {
-      throw new Error(post.errorMessage);
+      throw new Error(postlist.errorMessage);
     }
     res.status(200).send(postlist);
   } catch (error) {
@@ -34,6 +34,22 @@ postRouter.get("/postlist/:userId", login_required, async (req, res, next) => {
     };
 
     const post = await postService.getPostsByUserId({ getPosts });
+
+    if (post.errorMessage) {
+      throw new Error(post.errorMessage);
+    }
+
+    res.status(200).send(post);
+  } catch (error) {
+    next(error);
+  }
+});
+
+postRouter.get("/post/:postId", login_required, async (req, res, next) => {
+  try {
+    const postId = req.params.postId;
+
+    const post = await postService.getPostById({ id: postId });
 
     if (post.errorMessage) {
       throw new Error(post.errorMessage);
@@ -76,5 +92,22 @@ postRouter.post("/post/create", login_required, async (req, res, next) => {
     next(error);
   }
 });
+
+postRouter.delete(
+  "/post/:postId",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const id = req.params.postId;
+
+      // 해당 리뷰 아이디로 리뷰 정보를 db에서 찾아 삭제함.
+      const result = await postService.deletePost({ id });
+
+      res.status(200).send(result);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 export { postRouter };
