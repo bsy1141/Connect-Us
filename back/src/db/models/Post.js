@@ -37,9 +37,13 @@ class Post {
   static update = async ({ id, toUpdate }) => {
     const filter = { id };
     const option = { returnOriginal: false };
-    const updatedReview = PostModel.findOneAndUpdate(filter, toUpdate, option);
+    const updatedPost = await PostModel.findOneAndUpdate(
+      filter,
+      toUpdate,
+      option
+    );
 
-    return updatedReview;
+    return updatedPost;
   };
 
   static delete = async ({ id }) => {
@@ -74,6 +78,36 @@ class Post {
     );
 
     return updatedReview;
+  };
+
+  static addLike = async ({ id, toUpdate }) => {
+    const filter = { id };
+    const option = { returnOriginal: false };
+    const updatedPost = await PostModel.findOneAndUpdate(
+      filter,
+      {
+        $push: {
+          likes: toUpdate,
+        },
+      },
+      option
+    );
+    return updatedPost;
+  };
+
+  static deleteLike = async ({ id, toUpdate }) => {
+    const filter = { id };
+    const option = { returnOriginal: false };
+    const updatedPost = await PostModel.findOneAndUpdate(
+      filter,
+      {
+        $pull: {
+          likes: toUpdate,
+        },
+      },
+      option
+    );
+    return updatedPost;
   };
 }
 

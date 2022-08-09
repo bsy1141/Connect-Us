@@ -72,6 +72,32 @@ class postService {
 
     return { deletedPost, deletedPostComment };
   };
+
+  static addLike = async ({ id, toUpdate }) => {
+    const post = await Post.findById({ id });
+
+    if (!post) {
+      const errorMessage = "특정 포스트를 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    const updatedPost = await Post.addLike({ id, toUpdate });
+
+    return updatedPost;
+  };
+
+  static deleteLike = async ({ id, toUpdate }) => {
+    const post = await Post.findById({ id });
+
+    if (!post) {
+      const errorMessage = "특정 포스트를 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    const updatedPost = await Post.deleteLike({ id, toUpdate });
+
+    return updatedPost;
+  };
 }
 
 export { postService };
