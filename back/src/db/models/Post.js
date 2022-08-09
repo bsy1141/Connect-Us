@@ -14,7 +14,7 @@ class Post {
   };
 
   static findAll = async () => {
-    const posts = await PostModel.find({}).populate("comments").lean();
+    const posts = await PostModel.find({});
     return posts;
   };
 
@@ -30,8 +30,14 @@ class Post {
   };
 
   static findById = async ({ id }) => {
-    const post = await PostModel.findOne({ id });
+    const post = await PostModel.findOne({ id }).populate("comments").lean();
     return post;
+  };
+
+  static delete = async ({ id }) => {
+    const result = await PostModel.deleteOne({ id });
+    const isDataDeleted = result.deletedCount === 1;
+    return isDataDeleted;
   };
 
   static addComment = async ({ id, commentId }) => {
