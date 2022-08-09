@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { UserStateContext } from "../../components/ContextProvider";
 import Header from "../Header";
 import LoadingSpinner from "components/LoadingSpinner";
+import PostComment from "./PostComments";
+import DeleteModal from "pages/modal/DeleteModal";
 import { formatDate } from "./postModule";
 import * as Api from "api";
 
@@ -13,8 +15,6 @@ import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
-import PostComment from "./PostComments";
-import DeleteModal from "pages/modal/DeleteModal";
 
 const PostPage = () => {
   const { user } = useContext(UserStateContext);
@@ -102,7 +102,9 @@ const PostPage = () => {
       </WriterProfile>
       <PostComment
         comments={post.comments || []}
+        likes={post.likes || []}
         postId={post.id}
+        userId={id}
         setPost={setPost}
       />
       {isModalOpen && (
