@@ -19,9 +19,7 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
       {posts.map((post) => (
         <PostCardContainer
           key={post.id}
-          onClick={() =>
-            navigate(`/post/${post.id}`, { state: { post: post } })
-          }
+          onClick={() => navigate(`/post/${post.id}`)}
         >
           <PostCardContent>
             <PostWriterWrapper>
@@ -109,6 +107,7 @@ const Container = styled.div`
 `;
 
 const PostCardContainer = styled.div`
+  cursor: pointer;
   height: 230px;
   padding: 30px;
   border-bottom: solid 1px #c4c4c4;

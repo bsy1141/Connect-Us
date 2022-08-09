@@ -14,6 +14,7 @@ import PostPage from "./pages/post/PostPage";
 import KeywordPage from "./pages/keyword/KeywordPage";
 import ContextProvider from "./components/ContextProvider";
 import FetchCurrentUser from "./components/FetchCurrentUser";
+import EditPostPage from "pages/post/EditPostPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -22,6 +23,7 @@ function App() {
 
   const mainfeed = wrapFetchUser(<MainFeed />);
   const addpostPage = wrapFetchUser(<AddPostPage />);
+  const editpostPage = wrapFetchUser(<EditPostPage />);
   const postPage = wrapFetchUser(<PostPage />);
   const myPage = wrapFetchUser(<MyPage />);
   const keywordPage = wrapFetchUser(<KeywordPage />);
@@ -36,7 +38,8 @@ function App() {
             <Route path="/login" element={<LoginForm />} />
             <Route path="/register" element={<RegisterForm />} />
             <Route path="/post/create" element={addpostPage} />
-            <Route path="/post" element={postPage} />
+            <Route path="/post/write" element={editpostPage} />
+            <Route path="/post/:postId" element={postPage} />
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />

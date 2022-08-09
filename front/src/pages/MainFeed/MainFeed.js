@@ -70,7 +70,7 @@ function MainFeed() {
           {posts.map((post) => (
             <PostCardContainer
               key={post.id}
-              onClick={() => navigate(`/post`, { state: { postId: post.id } })}
+              onClick={() => navigate(`/post/${post.id}`)}
             >
               <PostCardContent>
                 <PostWriterWrapper>

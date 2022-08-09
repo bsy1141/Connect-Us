@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { UserStateContext } from "../../components/ContextProvider";
@@ -19,8 +19,9 @@ import DeleteModal from "pages/modal/DeleteModal";
 const PostPage = () => {
   const { user } = useContext(UserStateContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { postId } = location.state;
+
+  const params = useParams();
+  const { postId } = params;
 
   const [id, setId] = useState(user?.id || "");
   const [post, setPost] = useState({});
@@ -76,7 +77,11 @@ const PostPage = () => {
           </WriterInfo>
           {id === post.userId && (
             <WriterAuth>
-              <button>수정</button>
+              <button
+                onClick={() => navigate("/post/write", { state: { post } })}
+              >
+                수정
+              </button>
               <button onClick={() => setIsModalOpen(true)}>삭제</button>
             </WriterAuth>
           )}

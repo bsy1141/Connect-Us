@@ -1,6 +1,6 @@
-import { useRef, useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { UserStateContext } from "../../components/ContextProvider";
+import Header from "pages/Header";
+import { useState, useRef } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import Prism from "prismjs";
 import "prismjs/themes/prism.css";
@@ -11,36 +11,25 @@ import "@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin
 import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import styled from "styled-components";
 
-import * as Api from "../../api";
-import Header from "../Header";
+import * as Api from "api";
 
-const AddPostPage = () => {
+const EditPostPage = () => {
   const navigate = useNavigate();
-  const { user } = useContext(UserStateContext);
+  const location = useLocation();
+  const { post } = location.state;
 
-  useEffect(() => {
-    // 전역 상태의 user가 null이라면 로그인이 안 된 상태이므로, 로그인 페이지로 돌림.
-    if (!user) {
-      navigate("/login", { replace: true });
-      return;
-    }
-  }, [user, navigate]);
   const editorRef = useRef(null);
 
-  const [markdown, setMarkdown] = useState("");
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [markdown, setMarkdown] = useState(post.content);
+  const [title, setTitle] = useState(post.title);
+  const [description, setDescription] = useState(post.description);
 
   const handleSubmit = async () => {
     try {
-      await Api.post("post/create", {
-        userId: user.id,
-        title: title,
+      await Api.put(`post/${post.id}`, {
         content: markdown,
-        description: description,
       });
-      navigate("/");
-      window.location.reload();
+      navigate(`/post/${post.id}`);
     } catch (error) {
       console.log(error);
     }
@@ -59,6 +48,7 @@ const AddPostPage = () => {
     callback(res.data, "alt text");
     return false;
   };
+
   return (
     <Container>
       <Header />
@@ -75,6 +65,7 @@ const AddPostPage = () => {
         />
       </PostHeader>
       <Editor
+        initialValue={markdown}
         previewStyle="vertical"
         height="800px"
         plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
@@ -86,14 +77,16 @@ const AddPostPage = () => {
       />
       <MarginDiv></MarginDiv>
       <ButtonContainer>
-        <ReturnButton onClick={() => navigate("/")}>돌아가기</ReturnButton>
-        <SubmitButton onClick={() => handleSubmit()}>출간하기</SubmitButton>
+        <ReturnButton onClick={() => navigate(`/post/${post.id}`)}>
+          돌아가기
+        </ReturnButton>
+        <SubmitButton onClick={handleSubmit}>수정하기</SubmitButton>
       </ButtonContainer>
     </Container>
   );
 };
 
-export default AddPostPage;
+export default EditPostPage;
 
 const Container = styled.div`
   width: 100%;

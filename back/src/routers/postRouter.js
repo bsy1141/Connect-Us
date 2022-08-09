@@ -96,7 +96,7 @@ postRouter.post("/post/create", login_required, async (req, res, next) => {
 postRouter.put("/post/:postId", login_required, async (req, res, next) => {
   try {
     const id = req.params.postId;
-    const toUpdate = { text: req.body.text };
+    const toUpdate = { content: req.body.content };
 
     const updatedPost = await postService.updatePost({
       id,
