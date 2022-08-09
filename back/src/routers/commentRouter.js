@@ -1,6 +1,5 @@
 import is from "@sindresorhus/is";
 import { Router } from "express";
-//import { body, validationResult } from "express-validator";
 import { login_required } from "../middlewares/login_required";
 import { commentService } from "../services/commentService";
 
