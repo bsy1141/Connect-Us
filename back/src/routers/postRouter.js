@@ -95,7 +95,7 @@ postRouter.get("/posts/following", login_required, async (req, res, next) => {
 
 postRouter.get("/posts/popular", login_required, async (req, res, next) => {
   try {
-    const count = req.body.count;
+    const count = Number(req.query.count) || 5;
     const type = "all";
 
     const postlist = await postService.getPopularPosts({ type, count });
@@ -114,7 +114,7 @@ postRouter.get(
   login_required,
   async (req, res, next) => {
     try {
-      const count = req.body.count;
+      const count = Number(req.query.count) || 5;
       const type = "user";
 
       const postlist = await postService.getPopularPosts({ type, count });
@@ -134,7 +134,7 @@ postRouter.get(
   login_required,
   async (req, res, next) => {
     try {
-      const count = req.body.count;
+      const count = Number(req.query.count) || 5;
       const type = "company";
 
       const postlist = await postService.getPopularPosts({ type, count });

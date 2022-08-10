@@ -10,6 +10,9 @@ import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";
 import styled from "styled-components";
 import LoadingSpinner from "components/LoadingSpinner";
+import PostCard from "./PostCard";
+
+const COUNT = 5;
 
 function MainFeed() {
   const navigate = useNavigate();
@@ -20,17 +23,18 @@ function MainFeed() {
   const [following, setFollowing] = useState(null);
 
   const fetchPosts = async () => {
-    const res = await Api.get("posts/following");
-    // if (res.data.length < 3) {
-    //   const res = await Api.get("postlist");
-    //   setPopularPosts()
-    // }
-    setPosts(res.data);
+    const followingPosts = await Api.get("posts/following");
+    if (followingPosts.data.length < 3) {
+      const posts = await Api.get(`posts/popular?count=${COUNT}`);
+      setPopularPosts(posts.data);
+    }
+    setPosts(followingPosts.data);
   };
 
   useEffect(() => {
     if (user) {
-      setIsModalOpen(user.keywords.length === 0);
+      //setIsModalOpen(user.keywords.length === 0);
+      setIsModalOpen(false);
       setFollowing(user.followings || []);
     }
     fetchPosts();
@@ -77,26 +81,24 @@ function MainFeed() {
           )}
         </FollowingContainer>
         <PostCardsContainer>
-          {posts.map((post) => (
-            <PostCardContainer
-              key={post.id}
-              onClick={() => navigate(`/post/${post.id}`)}
-            >
-              <PostCardContent>
-                <PostWriterWrapper>
-                  <PostWriterImage
-                    src={`${process.env.PUBLIC_URL}/defaultImage.png`}
-                  />
-                  <span>{post.userName}</span>
-                </PostWriterWrapper>
-                <h3>{post.title}</h3>
-                <p>{post.description}</p>
-              </PostCardContent>
-              <PostCardImage
-                src={`${process.env.PUBLIC_URL}/defaultPostImg.jpeg`}
-              />
-            </PostCardContainer>
-          ))}
+          {posts.map((post, idx) => {
+            if (idx === posts.length - 1) {
+              return <PostCard key={post.id} post={post} isLast />;
+            }
+            return <PostCard key={post.id} post={post} />;
+          })}
+          {popularPosts.length !== 0 && (
+            <PopularPostsContainer>
+              <h3>추천 게시글</h3>
+              <p>추천 게시글을 확인해보세요!</p>
+              {popularPosts.map((post, idx) => {
+                if (idx === popularPosts.length - 1) {
+                  return <PostCard key={post.id} post={post} isLast />;
+                }
+                return <PostCard key={post.id} post={post} />;
+              })}
+            </PopularPostsContainer>
+          )}
         </PostCardsContainer>
       </MainFeedWrapper>
       <button
@@ -128,7 +130,6 @@ const Container = styled.div`
 const MainFeedWrapper = styled.div`
   margin-top: 80px;
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   padding: 0 5%;
@@ -137,6 +138,7 @@ const MainFeedWrapper = styled.div`
 const FollowingContainer = styled.div`
   width: 20%;
   overflow: auto;
+  height: 80vh;
   border: 1px solid #c4c4c4;
   border-radius: 15px;
   margin-left: 30px;
@@ -196,39 +198,16 @@ const PostCardsContainer = styled.div`
   cursor: pointer;
 `;
 
-const PostCardContainer = styled.div`
-  height: 230px;
-  padding: 30px;
-  border-bottom: solid 1px #c4c4c4;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const PostCardContent = styled.div`
-  width: 70%;
+const PopularPostsContainer = styled.div`
+  width: 100%;
+  margin-bottom: 5%;
+  border: 1px solid #c4c4c4;
+  border-radius: 15px;
+  padding: 20px;
+  > h3 {
+    font-size: 20px;
+  }
   > p {
-    color: #828282;
+    color: #c4c4c4;
   }
-`;
-
-const PostWriterWrapper = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-  > span {
-    margin-left: 10px;
-    align-self: center;
-  }
-`;
-
-const PostWriterImage = styled.img`
-  width: 50px;
-  height: 50px;
-  background-size: cover;
-  border-radius: 50%;
-`;
-
-const PostCardImage = styled.img`
-  width: 150px;
-  height: 150px;
-  background-size: cover;
 `;
