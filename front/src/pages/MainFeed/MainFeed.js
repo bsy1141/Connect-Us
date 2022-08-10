@@ -31,6 +31,9 @@ function MainFeed() {
     fetchPosts();
   }, [user]);
 
+  console.log(user);
+  console.log(sessionStorage.getItem("userToken"));
+
   if (!following) {
     return (
       <Container>

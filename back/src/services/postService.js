@@ -48,6 +48,22 @@ class postService {
     return getPostResult;
   };
 
+  static getFollwingPostsByUserId = async ({ userId }) => {
+    const user = await User.findById({ userId });
+
+    const followingUserId = user.followings.map((i) => i.following.id);
+    const getPostsResult = await Post.findByFollowingUserId({
+      followingUserId,
+    });
+
+    if (!getPostsResult) {
+      const errorMessage = "포스트를 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return getPostsResult;
+  };
+
   static updatePost = async ({ id, toUpdate }) => {
     const postInfo = await Post.findById({ id });
 

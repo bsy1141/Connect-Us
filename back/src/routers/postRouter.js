@@ -77,6 +77,22 @@ postRouter.get("/postlist/:userId", login_required, async (req, res, next) => {
   }
 });
 
+postRouter.get("/posts/following", login_required, async (req, res, next) => {
+  try {
+    const userId = req.currentUserId;
+    const followingPosts = await postService.getFollwingPostsByUserId({
+      userId,
+    });
+
+    if (followingPosts.errorMessage) {
+      throw new Error(post.errorMessage);
+    }
+    res.status(200).send(followingPosts);
+  } catch (error) {
+    next(error);
+  }
+});
+
 postRouter.get("/post/:postId", login_required, async (req, res, next) => {
   try {
     const postId = req.params.postId;

@@ -34,6 +34,13 @@ class Post {
     return post;
   };
 
+  static findByFollowingUserId = async ({ followingUserId }) => {
+    const posts = await PostModel.find({
+      userId: { $in: followingUserId },
+    }).sort({ createdAt: -1 });
+    return posts;
+  };
+
   static update = async ({ id, toUpdate }) => {
     const filter = { id };
     const option = { returnOriginal: false };
