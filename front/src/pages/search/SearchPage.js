@@ -1,10 +1,55 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Header from "../Header";
 import styled from "styled-components";
 import SearchInputForm from "./SearchInputForm";
-import { JobSeeker, JobRecruiter } from "./SearchMockData";
+import * as Api from "api";
+import LoadingSpinner from "components/LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faComment } from "@fortawesome/free-regular-svg-icons";
+import { useNavigate } from "react-router-dom";
 
 const SearchPage = () => {
+  const navigate = useNavigate();
+  const [userPosts, setUserPosts] = useState([]);
+  const [companyPosts, setCompanyPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const getPopularPosts = async () => {
+    const getUserPopularPosts = Api.get("posts/popular/user?count=10");
+    const getCompanyPopularPosts = Api.get("posts/popular/company?count=10");
+
+    try {
+      setLoading(true);
+
+      const [userPopularPosts, companyPopularPosts] = await Promise.all([
+        getUserPopularPosts,
+        getCompanyPopularPosts,
+      ]);
+
+      setUserPosts(userPopularPosts.data);
+      setCompanyPosts(companyPopularPosts.data);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getPopularPosts();
+  }, []);
+
+  if (loading) {
+    return (
+      <Container>
+        <Header />
+        <LoadingWrapper>
+          <LoadingSpinner />
+        </LoadingWrapper>
+      </Container>
+    );
+  }
+
   return (
     <Container>
       <Header />
@@ -12,28 +57,52 @@ const SearchPage = () => {
         <SearchInputForm />
         <PopularPostsContainer>
           <PopularContent>
-            <p>구직자 인기글</p>
-            {JobSeeker.map((js) => (
-              <Card>
+            <Title>
+              <p>구직자 인기글</p>
+            </Title>
+            {userPosts.map((post) => (
+              <Card key={post.id} onClick={() => navigate(`/post/${post.id}`)}>
                 <WriterInfo>
                   <WriterImage />
-                  <p>{js.name}</p>
+                  <p>{post.userName}</p>
                 </WriterInfo>
-                <h3>{js.title}</h3>
-                <p>{js.content}</p>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+                <Infos>
+                  <div>
+                    <FontAwesomeIcon icon={faHeart} />
+                    {` ${post?.likes?.length || 0}`}
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faComment} />
+                    {` ${post?.comments?.length || 0}`}
+                  </div>
+                </Infos>
               </Card>
             ))}
           </PopularContent>
           <PopularContent>
-            <p>구인자 인기글</p>
-            {JobRecruiter.map((jr) => (
-              <Card>
+            <Title>
+              <p>구인자 인기글</p>
+            </Title>
+            {companyPosts.map((post) => (
+              <Card key={post.id} onClick={() => navigate(`/post/${post.id}`)}>
                 <WriterInfo>
                   <WriterImage />
-                  <p>{jr.name}</p>
+                  <p>{post.userName}</p>
                 </WriterInfo>
-                <h3>{jr.title}</h3>
-                <p>{jr.content}</p>
+                <h3>{post.title}</h3>
+                <p>{post.description}</p>
+                <Infos>
+                  <div>
+                    <FontAwesomeIcon icon={faHeart} />
+                    {` ${post?.likes?.length || 0}`}
+                  </div>
+                  <div>
+                    <FontAwesomeIcon icon={faComment} />
+                    {` ${post?.comments?.length || 0}`}
+                  </div>
+                </Infos>
               </Card>
             ))}
           </PopularContent>
@@ -44,6 +113,14 @@ const SearchPage = () => {
 };
 
 export default SearchPage;
+
+const LoadingWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
 const Container = styled.div`
   position: relative;
@@ -70,12 +147,20 @@ const PopularContent = styled.div`
   border: 3px solid #ff758f;
   border-radius: 10px;
   width: 40%;
-  padding: 1% 2%;
+  padding: 0 2% 1%;
   overflow: scroll;
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const Title = styled.div`
+  background: #fff;
+  height: 60px;
+  position: sticky;
+  top: 0px;
   > p {
+    padding: 15px 0;
     font-size: 20px;
     font-weight: bold;
   }
@@ -114,4 +199,13 @@ const WriterImage = styled.div`
   height: 50px;
   border-radius: 50%;
   background: #c4c4c4;
+`;
+
+const Infos = styled.div`
+  text-align: right;
+  > div {
+    display: inline-block;
+    margin-right: 10px;
+    color: #7b7b7b;
+  }
 `;
