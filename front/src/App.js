@@ -6,7 +6,7 @@ import "./style/reset.css";
 
 import LoginForm from "./pages/user/LoginForm";
 import RegisterForm from "./pages/user/RegisterForm";
-import MainFeed from "./pages/MainFeed/MainFeed";
+import MainFeed from "./pages/mainFeed/MainFeed";
 import MyPage from "./pages/user/mypage/MyPage";
 import SearchPage from "./pages/search/SearchPage";
 import AddPostPage from "./pages/post/AddPostPage";
