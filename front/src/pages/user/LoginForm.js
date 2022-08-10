@@ -8,6 +8,7 @@ import * as Api from "../../api";
 import { UserStateContext } from "../../components/ContextProvider";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import LoginErrorModal from "pages/modal/LoginErrorModal";
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -20,6 +21,9 @@ function LoginForm() {
 
   const [focusEmail, setFocusEmail] = useState(false);
   const [focusPassword, setFocusPassword] = useState(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   //이메일이 abc@example.com 형태인지 regex를 이용해 확인함.
   const validateEmail = (email) => {
@@ -39,8 +43,8 @@ function LoginForm() {
   const isFormValid = isEmailValid && isPasswordValid;
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
       // "user/login" 엔드포인트로 post요청함.
       const res = await Api.post("user/login", {
         email,
@@ -59,8 +63,11 @@ function LoginForm() {
       });
       // 기본 페이지로 이동함.
       navigate("/", { replace: true });
-    } catch (err) {
-      console.log("로그인에 실패하였습니다.\n", err);
+    } catch (error) {
+      setEmail("");
+      setPassword("");
+      setIsModalOpen(true);
+      setErrorMessage(error.response.data);
     }
   };
 
@@ -150,6 +157,12 @@ function LoginForm() {
       <div className={styles.logoImg}>
         <LogoImage width="100%" />
       </div>
+      {isModalOpen && (
+        <LoginErrorModal
+          setIsModalOpen={setIsModalOpen}
+          errorMessage={errorMessage}
+        />
+      )}
     </div>
   );
 }
