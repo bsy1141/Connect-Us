@@ -95,7 +95,10 @@ postRouter.get("/posts/following", login_required, async (req, res, next) => {
 
 postRouter.get("/posts/popular", login_required, async (req, res, next) => {
   try {
-    const postlist = await postService.getPopularPosts("all");
+    const count = req.body.count;
+    const type = "all";
+
+    const postlist = await postService.getPopularPosts({ type, count });
 
     if (postlist.errorMessage) {
       throw new Error(postlist.errorMessage);
@@ -111,7 +114,10 @@ postRouter.get(
   login_required,
   async (req, res, next) => {
     try {
-      const postlist = await postService.getPopularPosts("user");
+      const count = req.body.count;
+      const type = "user";
+
+      const postlist = await postService.getPopularPosts({ type, count });
 
       if (postlist.errorMessage) {
         throw new Error(postlist.errorMessage);
@@ -128,7 +134,10 @@ postRouter.get(
   login_required,
   async (req, res, next) => {
     try {
-      const postlist = await postService.getPopularPosts("company");
+      const count = req.body.count;
+      const type = "company";
+
+      const postlist = await postService.getPopularPosts({ type, count });
 
       if (postlist.errorMessage) {
         throw new Error(postlist.errorMessage);

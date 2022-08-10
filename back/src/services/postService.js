@@ -27,15 +27,15 @@ class postService {
     return getPostsResult;
   };
 
-  static getPopularPosts = async (userType) => {
+  static getPopularPosts = async ({ type, count }) => {
     let getPostsResult;
 
-    if (userType === "user") {
-      getPostsResult = await Post.findPopularUserPosts();
-    } else if (userType === "company") {
-      getPostsResult = await Post.findPopularCompanyPosts();
-    } else if (userType === "all") {
-      getPostsResult = await Post.findPopularPosts();
+    if (type === "user") {
+      getPostsResult = await Post.findPopularUserPosts({ count });
+    } else if (type === "company") {
+      getPostsResult = await Post.findPopularCompanyPosts({ count });
+    } else if (type === "all") {
+      getPostsResult = await Post.findPopularPosts({ count });
     }
 
     if (!getPostsResult) {

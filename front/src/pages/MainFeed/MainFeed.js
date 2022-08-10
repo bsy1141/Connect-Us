@@ -15,17 +15,16 @@ function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
+  const [popularPosts, setPopularPosts] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(user?.keywords?.length === 0);
   const [following, setFollowing] = useState(null);
 
   const fetchPosts = async () => {
     const res = await Api.get("posts/following");
-    if (res.data.length === 0) {
-      //인기글로 바꿀 것
-      const res = await Api.get("postlist");
-      setPosts(res.data);
-      return;
-    }
+    // if (res.data.length < 3) {
+    //   const res = await Api.get("postlist");
+    //   setPopularPosts()
+    // }
     setPosts(res.data);
   };
 

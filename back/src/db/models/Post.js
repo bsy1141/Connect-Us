@@ -18,7 +18,7 @@ class Post {
     return posts;
   };
 
-  static findPopularPosts = async () => {
+  static findPopularPosts = async ({ count }) => {
     const posts = await PostModel.aggregate([
       {
         $addFields: { likes_count: { $size: { $ifNull: ["$likes", []] } } },
@@ -26,12 +26,15 @@ class Post {
       {
         $sort: { likes_count: -1 },
       },
+      {
+        $limit: count,
+      },
     ]);
 
     return posts;
   };
 
-  static findPopularUserPosts = async () => {
+  static findPopularUserPosts = async ({ count }) => {
     const posts = await PostModel.aggregate([
       {
         $match: {
@@ -44,12 +47,15 @@ class Post {
       {
         $sort: { likes_count: -1 },
       },
+      {
+        $limit: count,
+      },
     ]);
 
     return posts;
   };
 
-  static findPopularCompanyPosts = async () => {
+  static findPopularCompanyPosts = async ({ count }) => {
     const posts = await PostModel.aggregate([
       {
         $match: {
@@ -61,6 +67,9 @@ class Post {
       },
       {
         $sort: { likes_count: -1 },
+      },
+      {
+        $limit: count,
       },
     ]);
 
