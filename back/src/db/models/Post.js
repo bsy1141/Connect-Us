@@ -18,6 +18,55 @@ class Post {
     return posts;
   };
 
+  static findPopularPosts = async () => {
+    const posts = await PostModel.aggregate([
+      {
+        $addFields: { likes_count: { $size: { $ifNull: ["$likes", []] } } },
+      },
+      {
+        $sort: { likes_count: -1 },
+      },
+    ]);
+
+    return posts;
+  };
+
+  static findPopularUserPosts = async () => {
+    const posts = await PostModel.aggregate([
+      {
+        $match: {
+          userType: "user",
+        },
+      },
+      {
+        $addFields: { likes_count: { $size: { $ifNull: ["$likes", []] } } },
+      },
+      {
+        $sort: { likes_count: -1 },
+      },
+    ]);
+
+    return posts;
+  };
+
+  static findPopularCompanyPosts = async () => {
+    const posts = await PostModel.aggregate([
+      {
+        $match: {
+          userType: "company",
+        },
+      },
+      {
+        $addFields: { likes_count: { $size: { $ifNull: ["$likes", []] } } },
+      },
+      {
+        $sort: { likes_count: -1 },
+      },
+    ]);
+
+    return posts;
+  };
+
   static findAllToUser = async ({ getPosts }) => {
     const { userId, page, perPage } = getPosts;
     const totalDocuments = await PostModel.countDocuments({ userId });

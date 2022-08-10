@@ -27,6 +27,25 @@ class postService {
     return getPostsResult;
   };
 
+  static getPopularPosts = async (userType) => {
+    let getPostsResult;
+
+    if (userType === "user") {
+      getPostsResult = await Post.findPopularUserPosts();
+    } else if (userType === "company") {
+      getPostsResult = await Post.findPopularCompanyPosts();
+    } else if (userType === "all") {
+      getPostsResult = await Post.findPopularPosts();
+    }
+
+    if (!getPostsResult) {
+      const errorMessage = "포스트들을 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return getPostsResult;
+  };
+
   static getPostsByUserId = async ({ getPosts }) => {
     const getPostsResult = await Post.findAllToUser({ getPosts });
 
@@ -53,6 +72,8 @@ class postService {
   //   const user = await User.findById({ userId });
 
   //   const followingUserId = user.followings.map((i) => i.following.id);
+  //   followingUserId.push(userId);
+
   //   const getPostsResult = await Post.findByFollowingUserId({
   //     followingUserId,
   //   });

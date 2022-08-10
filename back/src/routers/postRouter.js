@@ -93,6 +93,53 @@ postRouter.get("/posts/following", login_required, async (req, res, next) => {
   }
 });
 
+postRouter.get("/posts/popular", login_required, async (req, res, next) => {
+  try {
+    const postlist = await postService.getPopularPosts("all");
+
+    if (postlist.errorMessage) {
+      throw new Error(postlist.errorMessage);
+    }
+    res.status(200).send(postlist);
+  } catch (error) {
+    next(error);
+  }
+});
+
+postRouter.get(
+  "/posts/popular/user",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const postlist = await postService.getPopularPosts("user");
+
+      if (postlist.errorMessage) {
+        throw new Error(postlist.errorMessage);
+      }
+      res.status(200).send(postlist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+postRouter.get(
+  "/posts/popular/company",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const postlist = await postService.getPopularPosts("company");
+
+      if (postlist.errorMessage) {
+        throw new Error(postlist.errorMessage);
+      }
+      res.status(200).send(postlist);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 postRouter.get("/post/:postId", login_required, async (req, res, next) => {
   try {
     const postId = req.params.postId;

@@ -15,7 +15,7 @@ function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
   const [posts, setPosts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(user?.keywords.length === 0);
+  const [isModalOpen, setIsModalOpen] = useState(user?.keywords?.length === 0);
   const [following, setFollowing] = useState(null);
 
   const fetchPosts = async () => {
@@ -32,7 +32,7 @@ function MainFeed() {
   useEffect(() => {
     if (user) {
       setIsModalOpen(user.keywords.length === 0);
-      setFollowing(user.followings);
+      setFollowing(user.followings || []);
     }
     fetchPosts();
   }, [user]);
