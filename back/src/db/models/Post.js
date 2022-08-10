@@ -14,7 +14,7 @@ class Post {
   };
 
   static findAll = async () => {
-    const posts = await PostModel.find({});
+    const posts = await PostModel.find({}).sort({ createdAt: -1 });
     return posts;
   };
 
@@ -23,7 +23,7 @@ class Post {
     const totalDocuments = await PostModel.countDocuments({ userId });
     const total = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({ userId })
-      .sort({ createdAt: 1 })
+      .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
     return { total, posts };
@@ -38,6 +38,7 @@ class Post {
     const posts = await PostModel.find({
       userId: { $in: followingUserId },
     }).sort({ createdAt: -1 });
+
     return posts;
   };
 

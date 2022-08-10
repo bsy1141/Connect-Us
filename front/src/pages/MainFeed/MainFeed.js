@@ -19,7 +19,13 @@ function MainFeed() {
   const [following, setFollowing] = useState(null);
 
   const fetchPosts = async () => {
-    const res = await Api.get("postlist");
+    const res = await Api.get("posts/following");
+    if (res.data.length === 0) {
+      //인기글로 바꿀 것
+      const res = await Api.get("postlist");
+      setPosts(res.data);
+      return;
+    }
     setPosts(res.data);
   };
 
@@ -32,7 +38,7 @@ function MainFeed() {
   }, [user]);
 
   console.log(user);
-  console.log(sessionStorage.getItem("userToken"));
+  //console.log(sessionStorage.getItem("userToken"));
 
   if (!following) {
     return (
@@ -57,8 +63,10 @@ function MainFeed() {
                   src={`${process.env.PUBLIC_URL}/defaultImage.png`}
                 />
                 <Name>
-                  <p>{f.following.name}</p>
-                  {f.following?.type === "company" && <span>기업회원</span>}
+                  <p onClick={() => navigate(`/mypage/${f.following.id}`)}>
+                    {f.following.name}
+                  </p>
+                  {f.following.type === "company" && <span>기업회원</span>}
                 </Name>
               </Line>
             ))

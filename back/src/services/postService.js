@@ -8,6 +8,7 @@ class postService {
 
     const user = await User.findById({ userId: newPost.userId });
     newPost.userName = user.name;
+    newPost.userType = user.type;
 
     const createNewPostResult = await Post.create({ newPost });
     createNewPostResult.errorMessage = null;
@@ -48,10 +49,34 @@ class postService {
     return getPostResult;
   };
 
+  // static getFollwingPostsByUserId = async ({ userId }) => {
+  //   const user = await User.findById({ userId });
+
+  //   const followingUserId = user.followings.map((i) => i.following.id);
+  //   const getPostsResult = await Post.findByFollowingUserId({
+  //     followingUserId,
+  //   });
+
+  //   if (!getPostsResult) {
+  //     const errorMessage = "포스트를 불러오는 데 실패했습니다.";
+  //     return { errorMessage };
+  //   }
+
+  //   return getPostsResult;
+  // };
+
   static getFollwingPostsByUserId = async ({ userId }) => {
     const user = await User.findById({ userId });
+    let followingUserId;
+    //db 다시 갱신하고 나면 없어져도 될 내용..! 위에 걸로 바꿔주기
 
-    const followingUserId = user.followings.map((i) => i.following.id);
+    if (!user.followings) {
+      followingUserId = [];
+    } else {
+      followingUserId = user.followings.map((i) => i.following.id);
+      followingUserId.push(userId);
+    }
+
     const getPostsResult = await Post.findByFollowingUserId({
       followingUserId,
     });
