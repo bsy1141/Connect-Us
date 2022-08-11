@@ -37,6 +37,10 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
+    previewImageLink: {
+      type: String,
+      required: false,
+    },
     likes: [LikeSchema],
     comments: [
       {

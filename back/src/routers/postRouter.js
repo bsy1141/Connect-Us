@@ -2,6 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { postService } from "../services/postService";
+import { previewImgUpload } from "../utils/s3";
 
 const postRouter = Router();
 
@@ -180,6 +181,31 @@ postRouter.put("/post/:postId", login_required, async (req, res, next) => {
     next(error);
   }
 });
+
+postRouter.put(
+  "/post/:postId/preview",
+  login_required,
+  previewImgUpload.single("image"),
+  async (req, res, next) => {
+    try {
+      const id = req.params.postId;
+      const previewImageLink = req.file?.location ?? null;
+
+      const toUpdate = {
+        previewImageLink,
+      };
+
+      const updatedPost = await postService.updatePost({
+        id,
+        toUpdate,
+      });
+
+      res.status(200).json(updatedPost);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 postRouter.delete("/post/:postId", login_required, async (req, res, next) => {
   try {
