@@ -9,6 +9,16 @@ const KeywordSchema = new Schema({
   employ: String,
 });
 
+const SocialSchema = new Schema({
+  github: String,
+  behance: String,
+  twitter: String,
+  facebook: String,
+  linkedIn: String,
+  homepage: String,
+  blog: String,
+});
+
 const UserSchema = new Schema(
   {
     id: {
@@ -45,7 +55,13 @@ const UserSchema = new Schema(
       default:
         "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png",
     },
+    introduction: {
+      type: String,
+      required: false,
+      default: "",
+    },
     keywords: [KeywordSchema],
+    socialData: [SocialSchema],
     followers: [
       {
         follower: {
