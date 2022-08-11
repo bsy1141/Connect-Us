@@ -19,6 +19,15 @@ class User {
       .populate({ path: "followings.following" })
       .populate({ path: "followers.follower" })
       .lean();
+
+    if (!user.imageLink) {
+      user.imageLink =
+        "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
+    }
+    if (!user.introduction) {
+      user.introduction = "";
+    }
+
     return user;
   }
 
@@ -30,6 +39,23 @@ class User {
   static async update({ userId, fieldToUpdate, newValue }) {
     const filter = { id: userId };
     const update = { [fieldToUpdate]: newValue };
+    const option = { returnOriginal: false };
+
+    const updatedUser = await UserModel.findOneAndUpdate(
+      filter,
+      update,
+      option
+    );
+    return updatedUser;
+  }
+
+  static async updateSocialData({ userId, toUpdate }) {
+    const filter = { id: userId };
+    const update = {
+      $set: {
+        socialData: toUpdate,
+      },
+    };
     const option = { returnOriginal: false };
 
     const updatedUser = await UserModel.findOneAndUpdate(
