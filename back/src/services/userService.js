@@ -182,6 +182,11 @@ class userAuthService {
     return updatedKeywords;
   }
 
+  static async setSocials({ userId, toUpdate }) {
+    const updatedSocials = await User.updateSocialData({ userId, toUpdate });
+    return updatedSocials;
+  }
+
   static async setFollow({ userId, followingId }) {
     const user = await User.findById({ userId });
     const userOid = user._id;
