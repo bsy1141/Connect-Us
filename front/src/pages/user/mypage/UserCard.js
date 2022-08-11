@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
+import UserEditModal from "pages/modal/UserEditModal";
 
 const UserCard = ({ userId, owner }) => {
-  const { keywords, id, name, followers, followings, email } = owner;
+  const {
+    imageLink,
+    introduction,
+    keywords,
+    id,
+    name,
+    followers,
+    followings,
+    email,
+  } = owner;
   const navigate = useNavigate();
 
   const isEditable = userId === id;
@@ -16,12 +26,10 @@ const UserCard = ({ userId, owner }) => {
       ? true
       : false;
 
-  const [password, setPassword] = useState("");
-  const [pwConfirmed, setPwConfirmed] = useState("");
   //팔로우 중인지 아닌지 확인하는 state
   const [isFollow, setIsFollow] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
-  //const [phoneNumber, setPhoneNumber] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsFollow(initalFollowState);
@@ -48,70 +56,66 @@ const UserCard = ({ userId, owner }) => {
   };
 
   return (
-    <Container>
-      <UserInfo>
-        <UserImage />
-        <p>{name}님</p>
-        {!isEditable && (
-          <button onClick={handleClickFollow}>
-            {isFollow ? "언팔로우" : "팔로우"}
-          </button>
-        )}
-      </UserInfo>
-      <Follows>
-        <FollowsTitle>
-          <p>팔로우</p>
-          <p>팔로워</p>
-        </FollowsTitle>
-        <FollowsContent>
-          <p>{followings ? followings.length : 0}</p>
-          <p>{followerCount}</p>
-        </FollowsContent>
-      </Follows>
-      <ExtraInfo>
-        {keywordsArr.length !== 0 && (
-          <>
-            <p>관심 키워드</p>
-            <div style={{ whiteSpace: "pre-line" }}>
-              {keywordsArr.map((k, idx) => (
-                <Keyword key={idx}>{k}</Keyword>
-              ))}
+    <>
+      <Container>
+        <UserInfo>
+          <UserImage src={imageLink} />
+          <UserContent>
+            <UserContentTitle>
+              <h3>{name}님</h3>
+              {!isEditable && (
+                <button onClick={handleClickFollow}>
+                  {isFollow ? "언팔로우" : "팔로우"}
+                </button>
+              )}
+            </UserContentTitle>
+            <p>{introduction}</p>
+          </UserContent>
+        </UserInfo>
+        <Follows>
+          <FollowsTitle>
+            <p>팔로우</p>
+            <p>팔로워</p>
+          </FollowsTitle>
+          <FollowsContent>
+            <p>{followings ? followings.length : 0}</p>
+            <p>{followerCount}</p>
+          </FollowsContent>
+        </Follows>
+        <ExtraInfo>
+          <p>이메일</p>
+          <input type="text" value={email || ""} disabled />
+          {keywordsArr.length !== 0 && (
+            <>
+              <p>관심 키워드</p>
+              <div style={{ whiteSpace: "pre-line" }}>
+                {keywordsArr.map((k, idx) => (
+                  <Keyword key={idx}>{k}</Keyword>
+                ))}
+              </div>
+            </>
+          )}
+          {isEditable && (
+            <div style={{ textAlign: "center", marginTop: "20px" }}>
+              <button onClick={() => setIsModalOpen(true)}>
+                개인정보 수정
+              </button>
             </div>
-          </>
+          )}
+        </ExtraInfo>
+        {isEditable && keywordsArr.length === 0 && (
+          <RegisterKeyword>
+            <button onClick={() => navigate("/keyword")}>
+              관심 키워드 등록하기
+            </button>
+            <p>등록된 관심 키워드를 바탕으로 맞춤 기업을 추천해드립니다</p>
+          </RegisterKeyword>
         )}
-        <p>이메일</p>
-        <input type="text" value={email || ""} disabled />
-        <p>비밀번호</p>
-        <input
-          type="text"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <p>비밀번호 확인</p>
-        <input
-          type="text"
-          value={pwConfirmed}
-          onChange={(e) => setPwConfirmed(e.target.value)}
-        />
-        {/* <p>휴대폰번호</p>
-        <input
-          type="text"
-          value={phoneNumber}
-          onChange={(e) => setPhoneNumber(e.target.value)}
-        /> */}
-        <div style={{ textAlign: "center" }}>
-          <button>개인정보 수정</button>
-        </div>
-      </ExtraInfo>
-      {keywordsArr.length === 0 && (
-        <RegisterKeyword>
-          <button onClick={() => navigate("/keyword")}>
-            관심 키워드 등록하기
-          </button>
-          <p>등록된 관심 키워드를 바탕으로 맞춤 기업을 추천해드립니다</p>
-        </RegisterKeyword>
+      </Container>
+      {isEditable && isModalOpen && (
+        <UserEditModal setIsModalOpen={setIsModalOpen} />
       )}
-    </Container>
+    </>
   );
 };
 
@@ -119,30 +123,46 @@ export default UserCard;
 
 const Container = styled.div`
   width: 25%;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const UserInfo = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const UserContent = styled.div`
+  align-self: center;
+  margin: 0;
+  padding: 0 20px;
   > p {
-    align-self: center;
     margin: 0;
+  }
+`;
+
+const UserContentTitle = styled.div`
+  display: flex;
+  align-items: center;
+  > h3 {
     font-size: 25px;
     font-weight: bold;
-    padding: 0 20px;
+    margin: 0;
   }
   > button {
-    align-self: center;
-    height: 25px;
-    font-size: 13px;
+    height: 23px;
+    font-size: 12px;
     background: #ff758f;
     border-radius: 5px;
     color: #fff;
     border: none;
+    margin-left: 10px;
   }
 `;
-
-const UserImage = styled.div`
+const UserImage = styled.img`
   background: #c4c4c4;
   border-radius: 50%;
   width: 70px;
@@ -194,12 +214,16 @@ const ExtraInfo = styled.div`
     margin-bottom: 8%;
   }
   > div > button {
-    background: #ffb8b8;
+    background: #fff;
     font-weight: bold;
     padding: 3% 10%;
-    color: #fff;
+    color: #ff758e;
     border-radius: 10px;
-    border: none;
+    border: 2px solid #ff758e;
+  }
+  > div > button:hover {
+    background: #ff758e;
+    color: #fff;
   }
 `;
 

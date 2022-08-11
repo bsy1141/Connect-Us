@@ -36,8 +36,4 @@ const Container = styled.div`
   height: 90%;
   margin-top: 10px;
   overflow-y: scroll;
-  -ms-overflow-style: none;
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
