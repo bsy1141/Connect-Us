@@ -2,6 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
+import { userImgUpload } from "../utils/s3";
 
 const userAuthRouter = Router();
 
@@ -98,6 +99,31 @@ userAuthRouter.get(
       }
 
       res.status(200).send(currentUserInfo);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+userAuthRouter.put(
+  "/user/:userId/profileImage",
+  login_required,
+  userImgUpload.single("image"),
+  async function (req, res, next) {
+    try {
+      const userId = req.params.userId;
+
+      if (userId !== req.currentUserId) {
+        throw new Error("다른 소유자의 프로필 사진을 변경할 권한이 없습니다.");
+      }
+
+      const toUpdate = { imageLink: req.file.location };
+      const updatedUser = await userAuthService.setUser({ userId, toUpdate });
+
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+      res.status(200).send(updatedUser);
     } catch (error) {
       next(error);
     }

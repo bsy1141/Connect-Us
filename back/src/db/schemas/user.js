@@ -39,6 +39,12 @@ const UserSchema = new Schema(
       type: String,
       required: false,
     },
+    imageLink: {
+      type: String,
+      required: false,
+      default:
+        "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png",
+    },
     keywords: [KeywordSchema],
     followers: [
       {
