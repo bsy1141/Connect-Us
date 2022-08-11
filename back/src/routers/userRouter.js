@@ -184,8 +184,9 @@ userAuthRouter.put(
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
+      const introduction = req.body.introduction ?? null;
 
-      const toUpdate = { name, email, password };
+      const toUpdate = { name, email, password, introduction };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ userId, toUpdate });
@@ -250,6 +251,48 @@ userAuthRouter.post(
       };
 
       const updatedKeywordUser = await userAuthService.setKeywords({
+        userId,
+        toUpdate,
+      });
+
+      res.status(200).send(updatedKeywordUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+userAuthRouter.post(
+  "/users/social",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const userId = req.currentUserId;
+      const currentUserInfo = await userAuthService.getUserInfo({ userId });
+
+      if (currentUserInfo.errorMessage) {
+        throw new Error(currentUserInfo.errorMessage);
+      }
+
+      const github = req.body.github ?? "";
+      const behance = req.body.behance ?? "";
+      const twitter = req.body.twitter ?? "";
+      const facebook = req.body.facebook ?? "";
+      const linkedIn = req.body.linkedIn ?? "";
+      const homepage = req.body.homepage ?? "";
+      const blog = req.body.blog ?? "";
+
+      const toUpdate = {
+        github,
+        behance,
+        twitter,
+        facebook,
+        linkedIn,
+        homepage,
+        blog,
+      };
+
+      const updatedKeywordUser = await userAuthService.setSocials({
         userId,
         toUpdate,
       });
