@@ -1,9 +1,24 @@
 import { useState } from "react";
 import styled from "styled-components";
+import * as Api from "api";
 
-const ProfileEditCard = ({ user }) => {
+const ProfileEditCard = ({ user, setUser }) => {
+  const [isProfileEdit, setIsProfileEdit] = useState(false);
   const [name, setName] = useState(user.name);
   const [introduction, setIntroduction] = useState(user.introduction);
+
+  const handleSubmitContent = async () => {
+    try {
+      const res = await Api.put(`users/${user.id}`, {
+        name,
+        introduction,
+      });
+      setUser(res.data);
+      setIsProfileEdit(false);
+    } catch (error) {
+      alert(error.response.data);
+    }
+  };
 
   return (
     <ProfileContainer>
@@ -13,22 +28,30 @@ const ProfileEditCard = ({ user }) => {
         <button>이미지 삭제</button>
       </ProfileImageContainer>
       <ProfileContentContainer>
-        <ProfileEditForm>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            value={introduction}
-            onChange={(e) => setIntroduction(e.target.value)}
-            placeholder="나를 나타내는 한 줄 소개를 작성해주세요."
-          />
-          <div>
-            <button>저장</button>
-          </div>
-        </ProfileEditForm>
+        {isProfileEdit ? (
+          <ProfileEditForm>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <input
+              type="text"
+              value={introduction}
+              onChange={(e) => setIntroduction(e.target.value)}
+              placeholder="나를 나타내는 한 줄 소개를 작성해주세요."
+            />
+            <div>
+              <button onClick={handleSubmitContent}>저장</button>
+            </div>
+          </ProfileEditForm>
+        ) : (
+          <>
+            <h3>{user.name}</h3>
+            <p>{user.introduction}</p>
+            <button onClick={() => setIsProfileEdit(true)}>수정</button>
+          </>
+        )}
       </ProfileContentContainer>
     </ProfileContainer>
   );

@@ -1,5 +1,6 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import PasswordEditCard from "./PasswordEditCard";
@@ -8,6 +9,7 @@ import SocialDataEditCard from "./SocialDataEditCard";
 
 const UserEditModal = ({ setIsModalOpen, user }) => {
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(user);
 
   return (
     <Container>
@@ -19,13 +21,13 @@ const UserEditModal = ({ setIsModalOpen, user }) => {
           <FontAwesomeIcon icon={faXmark} />
         </CloseButton>
         <Content>
-          <ProfileCard user={user} />
+          <ProfileCard user={userData} setUser={setUserData} />
           <PasswordEditCard />
           <ContentEditCard>
             <h3>키워드 수정</h3>
             <button onClick={() => navigate("/keyword")}>수정</button>
           </ContentEditCard>
-          <SocialDataEditCard user={user} />
+          <SocialDataEditCard user={userData} setUser={setUserData} />
           <ContentEditCard>
             <h3>회원 탈퇴</h3>
             <div>
