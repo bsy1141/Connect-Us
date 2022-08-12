@@ -1,6 +1,4 @@
-//import is from "@sindresorhus/is";
 import { Router } from "express";
-//import multer from "multer";
 import { login_required } from "../middlewares/login_required";
 
 const { postImgUpload } = require("../utils/s3");
