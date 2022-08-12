@@ -11,16 +11,16 @@ import {
 import { faHouse, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const SocialDataEditCard = ({ user }) => {
-  const socialData = user.socialData[0];
+  const socialData = user?.socialData ?? [];
   const [isEditSocialData, setIsEditSocialData] = useState(false);
 
-  const [github, setGithub] = useState(socialData.github);
-  const [behance, setBehance] = useState(socialData.behance);
-  const [twitter, setTwitter] = useState(socialData.twitter);
-  const [facebook, setFacebook] = useState(socialData.facebook);
-  const [linkedIn, setLinkedIn] = useState(socialData.linkedIn);
-  const [homepage, setHomepage] = useState(socialData.homepage);
-  const [blog, setBlog] = useState(socialData.blog);
+  const [github, setGithub] = useState(socialData[0]?.github ?? "");
+  const [behance, setBehance] = useState(socialData[0]?.behance ?? "");
+  const [twitter, setTwitter] = useState(socialData[0]?.twitter ?? "");
+  const [facebook, setFacebook] = useState(socialData[0]?.facebook ?? "");
+  const [linkedIn, setLinkedIn] = useState(socialData[0]?.linkedIn ?? "");
+  const [homepage, setHomepage] = useState(socialData[0]?.homepage ?? "");
+  const [blog, setBlog] = useState(socialData[0]?.blog ?? "");
 
   const socialDataCategory = [
     {
