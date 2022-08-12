@@ -105,7 +105,7 @@ userAuthRouter.get(
   }
 );
 
-userAuthRouter.put(
+userAuthRouter.post(
   "/user/:userId/profileImage",
   login_required,
   userImgUpload.single("image"),
