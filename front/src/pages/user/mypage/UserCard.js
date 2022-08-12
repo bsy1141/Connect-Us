@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
-import UserEditModal from "pages/modal/UserEditModal";
+import UserEditModal from "pages/modal/userEditModal/UserEditModal";
 
 const UserCard = ({ userId, owner }) => {
   const {
@@ -113,7 +113,7 @@ const UserCard = ({ userId, owner }) => {
         )}
       </Container>
       {isEditable && isModalOpen && (
-        <UserEditModal setIsModalOpen={setIsModalOpen} />
+        <UserEditModal user={owner} setIsModalOpen={setIsModalOpen} />
       )}
     </>
   );
