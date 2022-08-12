@@ -22,7 +22,7 @@ const PasswordEditCard = () => {
           />
           <input
             type="password"
-            placeholder="비밀번호 변경"
+            placeholder="신규 비밀번호"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
