@@ -163,10 +163,10 @@ const UserContentTitle = styled.div`
   }
 `;
 const UserImage = styled.img`
-  background: #c4c4c4;
   border-radius: 50%;
   width: 70px;
   height: 70px;
+  object-fit: cover;
 `;
 
 const Follows = styled.div`

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 
 const ProfileEditCard = ({ user, setUser }) => {
   const [isProfileEdit, setIsProfileEdit] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [name, setName] = useState(user.name);
   const [introduction, setIntroduction] = useState(user.introduction);
 
@@ -20,11 +21,39 @@ const ProfileEditCard = ({ user, setUser }) => {
     }
   };
 
+  const handleProfileImageChange = async (e) => {
+    const img = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", img);
+    try {
+      setIsUploading(true);
+
+      const res = await Api.postImage(`user/${user.id}/profileImage`, formData);
+      console.log(res.data);
+      setIsUploading(false);
+
+      setUser(res.data);
+    } catch (error) {
+      alert(error.response.data);
+    }
+  };
+
+  console.log(user);
+
   return (
     <ProfileContainer>
       <ProfileImageContainer>
         <img src={user.imageLink} alt="profile_image" />
-        <button>이미지 업로드</button>
+        <label htmlFor="profile">
+          <div>{isUploading ? "업로드 중.." : "이미지 업로드"}</div>
+        </label>
+        <input
+          type="file"
+          id="profile"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleProfileImageChange}
+        />
         <button>이미지 삭제</button>
       </ProfileImageContainer>
       <ProfileContentContainer>
@@ -74,12 +103,19 @@ const ProfileImageContainer = styled.div`
     border-radius: 50%;
     margin-bottom: 10px;
   }
-  > button {
+  > label {
+    width: 100%;
+    position: absoulte;
+  }
+  > button,
+  > label > div {
     width: 100%;
     border: none;
     border-radius: 10px;
     margin-bottom: 10px;
     padding: 1%;
+    cursor: pointer;
+    background: #efefef;
   }
 `;
 

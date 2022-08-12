@@ -11,13 +11,18 @@ const UserEditModal = ({ setIsModalOpen, user }) => {
   const navigate = useNavigate();
   const [userData, setUserData] = useState(user);
 
+  const handleClose = () => {
+    setIsModalOpen(false);
+    window.location.reload();
+  };
+
   return (
     <Container>
       <Section>
         <Title>
           <h4>나의 정보 수정</h4>
         </Title>
-        <CloseButton onClick={() => setIsModalOpen(false)}>
+        <CloseButton onClick={handleClose}>
           <FontAwesomeIcon icon={faXmark} />
         </CloseButton>
         <Content>
