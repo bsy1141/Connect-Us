@@ -2,7 +2,7 @@ import is from "@sindresorhus/is";
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { userAuthService } from "../services/userService";
-import { userImgUpload } from "../utils/s3";
+import { userImgUpload, deleteImg } from "../utils/s3";
 
 const userAuthRouter = Router();
 
@@ -130,6 +130,20 @@ userAuthRouter.post(
   }
 );
 
+userAuthRouter.post(
+  "/user/deleteImage",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const fileName = req.body.fileName;
+      deleteImg("users", fileName);
+      res.status(200).send("delete success!");
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 userAuthRouter.put(
   "/user/follow",
   login_required,
@@ -185,8 +199,9 @@ userAuthRouter.put(
       const email = req.body.email ?? null;
       const password = req.body.password ?? null;
       const introduction = req.body.introduction ?? null;
+      const imageLink = req.body.imageLink ?? null;
 
-      const toUpdate = { name, email, password, introduction };
+      const toUpdate = { name, email, password, introduction, imageLink };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ userId, toUpdate });

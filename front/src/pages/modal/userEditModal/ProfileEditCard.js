@@ -1,6 +1,9 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
+
+const DEFAULT_IMAGE =
+  "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
 const ProfileEditCard = ({ user, setUser }) => {
   const [isProfileEdit, setIsProfileEdit] = useState(false);
@@ -38,7 +41,22 @@ const ProfileEditCard = ({ user, setUser }) => {
     }
   };
 
-  console.log(user);
+  const deleteProfileImage = async () => {
+    const splitted = user.imageLink.split("/");
+    const fileName = splitted[splitted.length - 1];
+
+    try {
+      await Api.post("user/deleteImage", {
+        fileName,
+      });
+      const res = await Api.put(`users/${user.id}`, {
+        imageLink: DEFAULT_IMAGE,
+      });
+      setUser(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <ProfileContainer>
@@ -54,7 +72,7 @@ const ProfileEditCard = ({ user, setUser }) => {
           style={{ display: "none" }}
           onChange={handleProfileImageChange}
         />
-        <button>이미지 삭제</button>
+        <button onClick={deleteProfileImage}>이미지 삭제</button>
       </ProfileImageContainer>
       <ProfileContentContainer>
         {isProfileEdit ? (

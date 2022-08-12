@@ -64,6 +64,20 @@ let userImgUpload = multer({
   fileFilter: fileFilter,
 });
 
+const deleteImg = (fileDir, fileName) => {
+  s3.deleteObject(
+    {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: fileDir.concat("/", fileName),
+    },
+    (err, data) => {
+      if (err) console.log(err);
+      else console.log(data);
+    }
+  );
+};
+
 exports.postImgUpload = multer(postImgUpload);
 exports.previewImgUpload = multer(previewImgUpload);
 exports.userImgUpload = multer(userImgUpload);
+exports.deleteImg = deleteImg;
