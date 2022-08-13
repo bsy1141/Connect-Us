@@ -9,8 +9,9 @@ import {
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
 import { faHouse, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import * as Api from "api";
 
-const SocialDataEditCard = ({ user }) => {
+const SocialDataEditCard = ({ user, setUser }) => {
   const socialData = user?.socialData ?? [];
   const [isEditSocialData, setIsEditSocialData] = useState(false);
 
@@ -67,6 +68,24 @@ const SocialDataEditCard = ({ user }) => {
     },
   ];
 
+  const handleSubmit = async () => {
+    try {
+      const res = await Api.post("users/social", {
+        github,
+        behance,
+        twitter,
+        facebook,
+        linkedIn,
+        homepage,
+        blog,
+      });
+      setUser(res.data);
+      setIsEditSocialData(false);
+    } catch (err) {
+      alert(err.response.data);
+    }
+  };
+
   return (
     <ContentEditCard>
       <h3>소셜 정보</h3>
@@ -91,7 +110,7 @@ const SocialDataEditCard = ({ user }) => {
             ))}
           </ul>
           <div>
-            <button onClick={() => setIsEditSocialData(false)}>저장</button>
+            <button onClick={handleSubmit}>저장</button>
           </div>
         </EditForm>
       )}

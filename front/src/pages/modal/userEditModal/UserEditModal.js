@@ -27,7 +27,7 @@ const UserEditModal = ({ setIsModalOpen, user }) => {
         </CloseButton>
         <Content>
           <ProfileCard user={userData} setUser={setUserData} />
-          <PasswordEditCard />
+          <PasswordEditCard userId={userData.id} setUser={setUserData} />
           <ContentEditCard>
             <h3>키워드 수정</h3>
             <button onClick={() => navigate("/keyword")}>수정</button>
