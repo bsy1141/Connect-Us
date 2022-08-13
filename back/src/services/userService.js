@@ -141,12 +141,6 @@ class userAuthService {
       user = await User.update({ userId, fieldToUpdate, newValue });
     }
 
-    if (toUpdate.password) {
-      const fieldToUpdate = "password";
-      const newValue = toUpdate.password;
-      user = await User.update({ userId, fieldToUpdate, newValue });
-    }
-
     if (toUpdate.introduction) {
       const fieldToUpdate = "introduction";
       const newValue = toUpdate.introduction;
@@ -185,6 +179,37 @@ class userAuthService {
       { returnOriginal: false }
     );
     return updatedKeywords;
+  }
+
+  static async setPassowrd({ userId, password, newPassword }) {
+    const user = await User.findById({ userId });
+    if (!user) {
+      const errorMessage =
+        "해당 이메일은 가입 내역이 없습니다. 다시 한 번 확인해 주세요.";
+      return { errorMessage };
+    }
+
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(
+      password,
+      correctPasswordHash
+    );
+    if (!isPasswordCorrect) {
+      const errorMessage =
+        "비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.";
+      return { errorMessage };
+    }
+
+    const fieldToUpdate = "password";
+    const newValue = await bcrypt.hash(newPassword, 10);
+    const updatedUser = await User.update({ userId, fieldToUpdate, newValue });
+
+    if (!updatedUser) {
+      const errorMessage = "비밀번호 업데이트에 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return updatedUser;
   }
 
   static async setSocials({ userId, toUpdate }) {

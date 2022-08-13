@@ -197,11 +197,10 @@ userAuthRouter.put(
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const name = req.body.name ?? null;
       const email = req.body.email ?? null;
-      const password = req.body.password ?? null;
       const introduction = req.body.introduction ?? null;
       const imageLink = req.body.imageLink ?? null;
 
-      const toUpdate = { name, email, password, introduction, imageLink };
+      const toUpdate = { name, email, introduction, imageLink };
 
       // 해당 사용자 아이디로 사용자 정보를 db에서 찾아 업데이트함. 업데이트 요소가 없을 시 생략함
       const updatedUser = await userAuthService.setUser({ userId, toUpdate });
@@ -211,6 +210,31 @@ userAuthRouter.put(
       }
 
       res.status(200).json(updatedUser);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+userAuthRouter.put(
+  "/users/:id/password",
+  login_required,
+  async function (req, res, next) {
+    try {
+      const userId = req.params.id;
+      const password = req.body.password;
+      const newPassword = req.body.newPassword;
+
+      const updatedUser = await userAuthService.setPassowrd({
+        userId,
+        password,
+        newPassword,
+      });
+
+      if (updatedUser.errorMessage) {
+        throw new Error(updatedUser.errorMessage);
+      }
+      res.status(200).send(updatedUser);
     } catch (error) {
       next(error);
     }
