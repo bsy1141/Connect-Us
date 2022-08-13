@@ -1,11 +1,25 @@
 import styled from "styled-components";
 import { useState } from "react";
+import * as Api from "api";
 
-const PasswordEditCard = () => {
+const PasswordEditCard = ({ userId, setUser }) => {
   const [isEditPassword, setIsEditPassword] = useState(false);
   const [curPassword, setCurPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPw, setConfirmedPw] = useState("");
+
+  const handleSubmit = async () => {
+    try {
+      const res = await Api.put(`users/${userId}/password`, {
+        password: curPassword,
+        newPassword: password,
+      });
+      setUser(res.data);
+      setIsEditPassword(false);
+    } catch (err) {
+      alert(err.response.data);
+    }
+  };
 
   return (
     <ContentEditCard>
@@ -33,7 +47,7 @@ const PasswordEditCard = () => {
             onChange={(e) => setConfirmedPw(e.target.value)}
           />
           <div>
-            <button onClick={() => setIsEditPassword(false)}>저장</button>
+            <button onClick={handleSubmit}>저장</button>
           </div>
         </EditForm>
       )}
