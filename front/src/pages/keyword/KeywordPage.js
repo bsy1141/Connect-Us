@@ -17,12 +17,12 @@ import { useNavigate } from "react-router-dom";
 const KeywordPage = () => {
   const navigate = useNavigate();
 
-  const [job, setJob] = useState(null);
-  const [jobDetail, setJobDetail] = useState(null);
-  const [workPlace, setWorkPlace] = useState(null);
-  const [career, setCareer] = useState(null);
-  const [education, setEducation] = useState(null);
-  const [employ, setEmploy] = useState(null);
+  const [job, setJob] = useState("");
+  const [jobDetail, setJobDetail] = useState("");
+  const [workPlace, setWorkPlace] = useState("");
+  const [career, setCareer] = useState("");
+  const [education, setEducation] = useState("");
+  const [employ, setEmploy] = useState("");
 
   const { user } = useContext(UserStateContext);
 
@@ -43,6 +43,14 @@ const KeywordPage = () => {
       console.log(err);
     }
   };
+
+  const isValid =
+    job.length !== 0 &&
+    jobDetail.length !== 0 &&
+    workPlace.length !== 0 &&
+    career.length !== 0 &&
+    education.length !== 0 &&
+    employ.length !== 0;
 
   return (
     <>
@@ -86,7 +94,11 @@ const KeywordPage = () => {
           state={employ}
           setState={setEmploy}
         />
-        <KeywordSubmitButton onClick={handleSubmit}>
+        <KeywordSubmitButton
+          onClick={handleSubmit}
+          disabled={!isValid}
+          isValid={isValid}
+        >
           키워드 저장하기
         </KeywordSubmitButton>
       </Container>
@@ -111,7 +123,7 @@ const KeywordSubmitButton = styled.button`
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: #ff758f;
+  background: ${(props) => (props.isValid ? "#ff758f" : "#c4c4c4")};
   padding: 10px 20px;
   color: #fff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
