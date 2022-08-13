@@ -40,6 +40,8 @@ const PostSchema = new Schema(
     previewImageLink: {
       type: String,
       required: false,
+      default:
+        "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultPostImg.jpeg",
     },
     likes: [LikeSchema],
     comments: [
