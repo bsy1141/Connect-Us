@@ -59,6 +59,10 @@ const AddPostPage = () => {
     callback(res.data, "alt text");
     return false;
   };
+
+  const isValid =
+    markdown.length !== 0 && title.length !== 0 && description.length !== 0;
+
   return (
     <Container>
       <Header />
@@ -87,7 +91,13 @@ const AddPostPage = () => {
       <MarginDiv></MarginDiv>
       <ButtonContainer>
         <ReturnButton onClick={() => navigate("/")}>돌아가기</ReturnButton>
-        <SubmitButton onClick={() => handleSubmit()}>출간하기</SubmitButton>
+        <SubmitButton
+          onClick={handleSubmit}
+          disabled={!isValid}
+          isValid={isValid}
+        >
+          출간하기
+        </SubmitButton>
       </ButtonContainer>
     </Container>
   );
@@ -141,7 +151,7 @@ const SubmitButton = styled.button`
   border-radius: 4px;
   width: 100px;
   height: 50px;
-  background: #ff758f;
+  background: ${(props) => (props.isValid ? "#ff758f" : "#c4c4c4")};
   color: #fff;
   margin-right: 20px;
 `;
