@@ -29,7 +29,7 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
             <h3>{post.title}</h3>
             <p>{post.description}</p>
           </PostCardContent>
-          <PostCardImage />
+          <PostCardImage src={post.previewImageLink} />
         </PostCardContainer>
       ))}
       <div
@@ -134,14 +134,13 @@ const PostWriterWrapper = styled.div`
 const PostWriterImage = styled.div`
   width: 50px;
   height: 50px;
-  background: #c4c4c4;
   border-radius: 50%;
+  background: #c4c4c4;
 `;
 
-const PostCardImage = styled.div`
+const PostCardImage = styled.img`
   width: 150px;
   height: 150px;
-  background: #c4c4c4;
 `;
 
 const PaginationButton = styled.div`
