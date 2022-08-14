@@ -182,7 +182,7 @@ postRouter.put("/post/:postId", login_required, async (req, res, next) => {
   }
 });
 
-postRouter.put(
+postRouter.post(
   "/post/:postId/preview",
   login_required,
   previewImgUpload.single("image"),
