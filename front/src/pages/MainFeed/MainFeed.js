@@ -13,7 +13,7 @@ import LoadingSpinner from "components/LoadingSpinner";
 import PostCard from "./PostCard";
 
 const COUNT = 5;
-const DEFAULT_IMAGE =
+const DEFAULT_PROFILE_IMAGE =
   "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
 function MainFeed() {
@@ -64,7 +64,9 @@ function MainFeed() {
           {following.length !== 0 ? (
             following.map((f) => (
               <Line key={f.following.name}>
-                <ProfileImage src={f.following.imageLink || DEFAULT_IMAGE} />
+                <ProfileImage
+                  src={f.following.imageLink || DEFAULT_PROFILE_IMAGE}
+                />
                 <Name>
                   <p onClick={() => navigate(`/mypage/${f.following.id}`)}>
                     {f.following.name}
