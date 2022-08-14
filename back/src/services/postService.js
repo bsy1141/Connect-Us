@@ -89,14 +89,13 @@ class postService {
   static getFollwingPostsByUserId = async ({ userId }) => {
     const user = await User.findById({ userId });
     let followingUserId;
-    //db 다시 갱신하고 나면 없어져도 될 내용..! 위에 걸로 바꿔주기
 
     if (!user.followings) {
       followingUserId = [];
     } else {
       followingUserId = user.followings.map((i) => i.following.id);
-      followingUserId.push(userId);
     }
+    followingUserId.push(userId);
 
     const getPostsResult = await Post.findByFollowingUserId({
       followingUserId,
