@@ -15,6 +15,7 @@ import KeywordPage from "./pages/keyword/KeywordPage";
 import ContextProvider from "./components/ContextProvider";
 import FetchCurrentUser from "./components/FetchCurrentUser";
 import EditPostPage from "pages/post/EditPostPage";
+import ChattingPage from "pages/chat/ChattingPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -28,6 +29,7 @@ function App() {
   const myPage = wrapFetchUser(<MyPage />);
   const keywordPage = wrapFetchUser(<KeywordPage />);
   const searchPage = wrapFetchUser(<SearchPage />);
+  const chattingPage = wrapFetchUser(<ChattingPage />);
 
   return (
     <ContextProvider>
@@ -43,6 +45,7 @@ function App() {
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
+            <Route path="/chat" element={chattingPage} />
             <Route path="*" element={mainfeed} />
           </Routes>
         </Container>
