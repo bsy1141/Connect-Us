@@ -1,6 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
+const DEFAULT_POST_IMAGE =
+  "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultPostImg.jpeg";
+const DEFAULT_PROFILE_IMAGE =
+  "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
+
 const PostCard = ({ post, isLast }) => {
   const navigate = useNavigate();
 
@@ -12,13 +17,13 @@ const PostCard = ({ post, isLast }) => {
     >
       <PostCardContent>
         <PostWriterWrapper>
-          <PostWriterImage src={`${process.env.PUBLIC_URL}/defaultImage.png`} />
+          <PostWriterImage src={DEFAULT_PROFILE_IMAGE} />
           <span>{post.userName}</span>
         </PostWriterWrapper>
         <h3>{post.title}</h3>
         <p>{post.description}</p>
       </PostCardContent>
-      <PostCardImage src={`${process.env.PUBLIC_URL}/defaultPostImg.jpeg`} />
+      <PostCardImage src={post.previewImageLink || DEFAULT_POST_IMAGE} />
     </PostCardContainer>
   );
 };
