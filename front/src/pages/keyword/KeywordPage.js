@@ -26,9 +26,9 @@ const KeywordPage = () => {
 
   const { user } = useContext(UserStateContext);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
-      Api.post("users/keywords", {
+      await Api.post("users/keywords", {
         id: user.id,
         job,
         jobDetail,
