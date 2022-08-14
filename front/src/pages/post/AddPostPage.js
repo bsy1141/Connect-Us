@@ -13,6 +13,7 @@ import styled from "styled-components";
 
 import * as Api from "../../api";
 import Header from "../Header";
+import PreviewModal from "pages/modal/PreviewModal";
 
 const AddPostPage = () => {
   const navigate = useNavigate();
@@ -30,17 +31,17 @@ const AddPostPage = () => {
   const [markdown, setMarkdown] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState("");
 
-  const handleSubmit = async () => {
+  const handleContentSubmit = async () => {
     try {
-      await Api.post("post/create", {
+      const res = await Api.post("post/create", {
         userId: user.id,
         title: title,
         content: markdown,
         description: description,
       });
-      navigate("/");
-      window.location.reload();
+      return res.data.id;
     } catch (error) {
       console.log(error);
     }
@@ -92,13 +93,19 @@ const AddPostPage = () => {
       <ButtonContainer>
         <ReturnButton onClick={() => navigate("/")}>돌아가기</ReturnButton>
         <SubmitButton
-          onClick={handleSubmit}
+          onClick={() => setIsModalOpen(true)}
           disabled={!isValid}
           isValid={isValid}
         >
           출간하기
         </SubmitButton>
       </ButtonContainer>
+      {isModalOpen && (
+        <PreviewModal
+          setIsModalOpen={setIsModalOpen}
+          handleContentSubmit={handleContentSubmit}
+        />
+      )}
     </Container>
   );
 };
