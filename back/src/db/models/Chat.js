@@ -6,12 +6,18 @@ class Chat {
     return createdNewChat.populate("user");
   }
 
-  static async findyByRoomId({ roomId }) {
+  static async findByRoomId({ roomId }) {
     const chats = await ChatModel.find({ roomId })
       .sort({ createdAt: 1 })
       .populate("user")
       .lean();
     return chats;
+  }
+
+  static async findByRoomIdLastOne({ roomId }) {
+    const chats = await ChatModel.find({ roomId }).sort({ createdAt: -1 });
+    console.log(chats[0]);
+    return chats[0];
   }
 }
 

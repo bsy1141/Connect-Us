@@ -38,4 +38,14 @@ chatRouter.get("/room/:id", login_required, async (req, res, next) => {
   }
 });
 
+chatRouter.get("/rooms/:userId", login_required, async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    const rooms = await chatService.getRoomList({ userId });
+    res.status(200).send(rooms);
+  } catch (err) {
+    next(err);
+  }
+});
+
 export { chatRouter };
