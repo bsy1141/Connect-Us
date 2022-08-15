@@ -7,6 +7,7 @@ import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
 import LoadingSpinner from "components/LoadingSpinner";
+import ChatModal from "pages/chat/ChatModal";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage } from "@fortawesome/free-solid-svg-icons";
@@ -22,12 +23,14 @@ const MyPage = () => {
   const { user } = useContext(UserStateContext);
 
   const [loading, setLoading] = useState(true);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
   const [tab, setTab] = useState("posts");
   const [owner, setOwner] = useState({});
   const [userId, setUserId] = useState("");
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [roomId, setRoomId] = useState("");
 
   const fetchMyPageData = async () => {
     const getOwnerData = Api.get(`users/${ownerId}`);
@@ -56,9 +59,11 @@ const MyPage = () => {
       users: [user.id, ownerId],
     });
     console.log(room.data);
-    navigate(`/chat/${room.data.id}`, {
-      state: { user, owner },
-    });
+    setRoomId(room.data.id);
+    setIsChatModalOpen(true);
+    // navigate(`/chat/${room.data.id}`, {
+    //   state: { user, owner },
+    // });
   };
 
   useEffect(() => {
@@ -107,6 +112,13 @@ const MyPage = () => {
         <button onClick={openChatRoom} className={styles.button_add}>
           <FontAwesomeIcon icon={faMessage} className={styles.icon} />
         </button>
+      )}
+      {isChatModalOpen && (
+        <ChatModal
+          setIsChatModalOpen={setIsChatModalOpen}
+          roomId={roomId}
+          user={user}
+        />
       )}
     </Container>
   );
