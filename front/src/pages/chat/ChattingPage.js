@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import * as Api from "api";
 
 const socket = io.connect("http://localhost:5001/chat");
 
 const ChattingPage = () => {
   const params = useParams();
   const { roomId } = params;
+
+  const location = useLocation();
+  const { user, owner } = location?.state;
 
   const [message, setMessage] = useState("");
   const [totalMsg, setTotalMsg] = useState([]);
@@ -16,14 +20,17 @@ const ChattingPage = () => {
   }, [socket]);
 
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setTotalMsg((cur) => [...cur, { message: data, user: "you" }]);
+    socket.on("chat", (data) => {
+      console.log(data);
+      setTotalMsg((cur) => [...cur, data.chat]);
     });
   }, [socket]);
 
-  const handleClick = () => {
-    socket.emit("send_message", { message, roomId });
-    setTotalMsg((cur) => [...cur, { message, user: "me" }]);
+  const handleClick = async () => {
+    await Api.post(`room/${roomId}/chat`, {
+      chat: message,
+      userId: user._id,
+    });
   };
 
   // const joinRoom = () => {
@@ -41,19 +48,11 @@ const ChattingPage = () => {
       />
       <button onClick={handleClick}>Emit the message</button>
       <div>
-        {totalMsg.map((msg, idx) => {
-          if (msg.user === "me")
-            return (
-              <div style={{ textAlign: "right" }} key={idx}>
-                <p>{msg.message}</p>
-              </div>
-            );
-          return (
-            <div key={idx}>
-              <p>{msg.message}</p>
-            </div>
-          );
-        })}
+        {totalMsg.map((msg, idx) => (
+          <div key={idx}>
+            <p>{msg}</p>
+          </div>
+        ))}
       </div>
     </div>
   );

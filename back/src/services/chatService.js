@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 class chatService {
   static async createRoom({ users }) {
     const room = await Room.findByUsers({ users });
-    console.log(room);
+
     if (room) {
       return room;
     }
@@ -13,6 +13,17 @@ class chatService {
     const createdNewRoom = await Room.create(newRoom);
 
     return createdNewRoom;
+  }
+
+  static async createChat({ id, chat, userId }) {
+    const room = await Room.findById({ id });
+    const newChat = {
+      roomId: room.id,
+      user: userId,
+      chat,
+    };
+    const createdNewChat = await Chat.create({ newChat });
+    return createdNewChat;
   }
 }
 

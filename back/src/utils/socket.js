@@ -20,14 +20,13 @@ module.exports = (server, app) => {
       //console.log(roomId);
       rid = roomId;
     });
-
-    socket.on("send_message", (data) => {
-      socket.to(data.roomId).emit("receive_message", data.message);
-    });
-
     socket.on("disconnect", () => {
       //console.log("chat 네임스페이스 접속 해제");
       socket.leave(rid);
+    });
+
+    socket.on("chat", (data) => {
+      socket.to(data.roomId).emit(data);
     });
   });
 };

@@ -56,7 +56,9 @@ const MyPage = () => {
       users: [user.id, ownerId],
     });
     console.log(room.data);
-    navigate(`/chat/${room.data.id}`);
+    navigate(`/chat/${room.data.id}`, {
+      state: { user, owner },
+    });
   };
 
   useEffect(() => {
@@ -101,9 +103,11 @@ const MyPage = () => {
           {tab === "portfolio" && <MyPortfolioTab />}
         </UserContent>
       </Content>
-      <button onClick={openChatRoom} className={styles.button_add}>
-        <FontAwesomeIcon icon={faMessage} className={styles.icon} />
-      </button>
+      {user.id !== ownerId && (
+        <button onClick={openChatRoom} className={styles.button_add}>
+          <FontAwesomeIcon icon={faMessage} className={styles.icon} />
+        </button>
+      )}
     </Container>
   );
 };
