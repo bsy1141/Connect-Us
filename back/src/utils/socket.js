@@ -9,6 +9,7 @@ module.exports = (server, app) => {
       origin: "*",
     },
   });
+  app.set("io", io);
   const chat = io.of("/chat");
 
   chat.on("connection", (socket) => {

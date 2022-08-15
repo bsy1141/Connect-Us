@@ -13,6 +13,6 @@ const RoomSchema = new Schema(
   }
 );
 
-const RoomModel = model("Room", RommSchema);
+const RoomModel = model("Room", RoomSchema);
 
 export { RoomModel };

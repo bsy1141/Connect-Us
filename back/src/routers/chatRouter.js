@@ -1,19 +1,17 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
-import { socketIOMiddleware } from "../middlewares/socketIOMiddleware";
-
+import { chatService } from "../services/chatService";
 const chatRouter = Router();
 
-chatRouter.get(
-  "/room/:id",
-  login_required,
-  socketIOMiddleware,
-  async function (req, res, next) {
-    try {
-      const io = req.io;
-      //const currentRoom=io.adapter.rooms.get(req.params.id);
-    } catch (err) {
-      next(err);
-    }
+chatRouter.post("/room", login_required, async function (req, res, next) {
+  try {
+    const users = req.body.users;
+    const newRoom = await chatService.createRoom({ users });
+
+    res.status(200).send(newRoom);
+  } catch (err) {
+    next(err);
   }
-);
+});
+
+export { chatRouter };
