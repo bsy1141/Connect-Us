@@ -2,6 +2,10 @@ import { Schema, model } from "mongoose";
 
 const ChatSchema = new Schema(
   {
+    roomId: {
+      type: String,
+      required: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: true,

@@ -12,15 +12,11 @@ import { awardRouter } from "./routers/awardRouter";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 const app = express();
-const socketUtils = require("./utils/socket");
+const websocket = require("./utils/socket");
 const server = require("http").createServer(app);
-const io = socketUtils.sio(server);
-socketUtils.connection(io);
-
-const socketIOMiddleware = (req, res, next) => {
-  req.io = io;
-  next();
-};
+websocket(server, app);
+// const io = socketUtils.sio(server);
+// socketUtils.connection(io);
 
 // CORS 에러 방지
 app.use(cors());
@@ -39,10 +35,6 @@ app.get("/", (req, res) => {
 });
 
 // router, service 구현 (userAuthRouter는 맨 위에 있어야 함.)
-app.use("/socket", socketIOMiddleware, (req, res) => {
-  req.io.emit("message", `hello ${req.originalUrl}`);
-  res.send("hello world!!!");
-});
 app.use(userAuthRouter);
 app.use(uploadRouter);
 app.use(postRouter);
@@ -51,6 +43,7 @@ app.use(projectRouter);
 app.use(certificateRouter);
 app.use(awardRouter);
 app.use(commentRouter);
+//app.use(chatRouter);
 
 // 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
 app.use(errorMiddleware);

@@ -45,7 +45,7 @@ function App() {
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
-            <Route path="/chat" element={chattingPage} />
+            <Route path="/chat/:roomId" element={chattingPage} />
             <Route path="*" element={mainfeed} />
           </Routes>
         </Container>

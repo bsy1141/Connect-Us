@@ -1,25 +1,32 @@
 const SocketIO = require("socket.io");
+//const cookieParser = require("cookie-parser");
+const cookie = require("cookie-signature");
 
-exports.sio = (server) => {
-  return SocketIO(server, {
+module.exports = (server, app) => {
+  const io = SocketIO(server, {
     transport: ["polling"],
     cors: {
       origin: "*",
     },
   });
-};
+  const chat = io.of("/chat");
 
-exports.connection = (io) => {
-  io.on("connection", (socket) => {
-    console.log("connected");
-
-    socket.on("message", (message) => {
-      console.log(`message from ${socket.id} : ${message}`);
+  chat.on("connection", (socket) => {
+    //console.log("chat 네임스페이스에 접속");
+    let rid;
+    socket.on("join_room", (roomId) => {
+      socket.join(roomId);
+      //console.log(roomId);
+      rid = roomId;
     });
-    socket.emit("init", "hi react");
+
+    socket.on("send_message", (data) => {
+      socket.to(data.roomId).emit("receive_message", data.message);
+    });
 
     socket.on("disconnect", () => {
-      console.log(`socket ${socket.id} disconnected`);
+      //console.log("chat 네임스페이스 접속 해제");
+      socket.leave(rid);
     });
   });
 };
