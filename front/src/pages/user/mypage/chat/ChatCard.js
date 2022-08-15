@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 const ChatCard = ({ message, userId }) => {
-  console.log(message);
   const isMyChat = userId === message.user.id;
   return (
     <CardContainer isRight={isMyChat}>

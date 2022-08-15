@@ -1,11 +1,12 @@
 import { useContext, useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import { UserStateContext } from "components/ContextProvider";
 import Header from "../../Header";
 import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
+import MyChatTab from "./MyChatTab";
 import LoadingSpinner from "components/LoadingSpinner";
 import ChatModal from "pages/user/mypage/chat/ChatModal";
 import styled, { css } from "styled-components";
@@ -18,7 +19,6 @@ import * as Api from "api";
 const PER_PAGE = 5;
 
 const MyPage = () => {
-  const navigate = useNavigate();
   const { ownerId } = useParams();
   const { user } = useContext(UserStateContext);
 
@@ -56,14 +56,11 @@ const MyPage = () => {
 
   const openChatRoom = async () => {
     const room = await Api.post("room", {
-      users: [user.id, ownerId],
+      users: [userId, ownerId],
     });
     console.log(room.data);
     setRoomId(room.data.id);
     setIsChatModalOpen(true);
-    // navigate(`/chat/${room.data.id}`, {
-    //   state: { user, owner },
-    // });
   };
 
   useEffect(() => {
@@ -96,6 +93,14 @@ const MyPage = () => {
             >
               나의 이력서
             </Button>
+            {userId === owner.id && (
+              <Button
+                onClick={() => setTab("message")}
+                isClicked={tab === "message"}
+              >
+                채팅 목록
+              </Button>
+            )}
           </TabButtons>
           {tab === "posts" && (
             <MyPostsTab
@@ -106,6 +111,7 @@ const MyPage = () => {
             />
           )}
           {tab === "portfolio" && <MyPortfolioTab />}
+          {tab === "message" && <MyChatTab userId={userId} />}
         </UserContent>
       </Content>
       {user.id !== ownerId && (

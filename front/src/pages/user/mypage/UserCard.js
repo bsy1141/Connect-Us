@@ -22,7 +22,7 @@ const UserCard = ({ userId, owner }) => {
     keywords && keywords.length !== 0 ? Object.values(keywords[0]) : [];
   keywordsArr.splice(keywordsArr.length - 1, 1);
   const initalFollowState =
-    followers && followers.findIndex((i) => i.follower.id === userId) !== -1
+    followers && followers.findIndex((i) => i.follower?.id === userId) !== -1
       ? true
       : false;
 

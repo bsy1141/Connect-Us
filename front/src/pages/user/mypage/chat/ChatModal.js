@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 import * as Api from "api";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ChatCard from "./ChatCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -30,14 +30,13 @@ const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
   useEffect(() => {
     socket.emit("join_room", roomId);
     getExistedMessage();
-  }, [socket]);
+  }, []);
 
   useEffect(() => {
     socket.on("chat", (data) => {
-      console.log(data); //user에 objectID만 저장되어 있는 상태
       setTotalMessage((cur) => [...cur, data]);
     });
-  }, [socket]);
+  }, []);
 
   const handleClick = async () => {
     await Api.post(`room/${roomId}/chat`, {
@@ -53,9 +52,14 @@ const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
         <CloseButton onClick={() => setIsChatModalOpen(false)}>
           <FontAwesomeIcon icon={faXmark} />
         </CloseButton>
-        {totalMessage.map((msg, idx) => (
-          <ChatCard key={idx} message={msg} userId={user.id} />
-        ))}
+        <Content
+          isScroll={totalMessage.length > 9}
+          isNotScroll={totalMessage.length <= 9}
+        >
+          {totalMessage.map((msg, idx) => (
+            <ChatCard key={idx} message={msg} userId={user.id} />
+          ))}
+        </Content>
         <MessageInput>
           <button>
             <FontAwesomeIcon icon={faPaperclip} />
@@ -105,6 +109,19 @@ const Section = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+`;
+
+const Content = styled.div`
+  ${(props) =>
+    props.isScroll &&
+    css`
+      max-height: auto;
+    `}
+  ${(props) =>
+    props.isNotScroll &&
+    css`
+      min-height: 610px;
+    `}
 `;
 
 const MessageInput = styled.div`
