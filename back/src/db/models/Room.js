@@ -1,7 +1,7 @@
 import { RoomModel } from "../schemas/room";
 
 class Room {
-  static async create({ newRoom }) {
+  static async create(newRoom) {
     const createdNewRoom = await RoomModel.create(newRoom);
     return createdNewRoom;
   }
