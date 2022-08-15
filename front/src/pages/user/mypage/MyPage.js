@@ -8,11 +8,16 @@ import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
 import LoadingSpinner from "components/LoadingSpinner";
 import styled, { css } from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMessage } from "@fortawesome/free-solid-svg-icons";
+import styles from "../../../style/MainFeed.module.css";
+
 import * as Api from "api";
 
 const PER_PAGE = 5;
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const { ownerId } = useParams();
   const { user } = useContext(UserStateContext);
 
@@ -44,6 +49,14 @@ const MyPage = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const openChatRoom = async () => {
+    const room = await Api.post("room", {
+      users: [user.id, ownerId],
+    });
+    console.log(room.data);
+    navigate(`/chat/${room.data.id}`);
   };
 
   useEffect(() => {
@@ -88,6 +101,9 @@ const MyPage = () => {
           {tab === "portfolio" && <MyPortfolioTab />}
         </UserContent>
       </Content>
+      <button onClick={openChatRoom} className={styles.button_add}>
+        <FontAwesomeIcon icon={faMessage} className={styles.icon} />
+      </button>
     </Container>
   );
 };

@@ -12,7 +12,7 @@ class Room {
   }
 
   static async findByUsers({ users }) {
-    const room = await RoomModel.find({ users: { $all: users } });
+    const room = await RoomModel.findOne({ users: { $all: users } });
     return room;
   }
 }
