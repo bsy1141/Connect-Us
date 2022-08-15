@@ -14,7 +14,7 @@ chatRouter.post("/room", login_required, async function (req, res, next) {
   }
 });
 
-chatRouter.post("/room/:id/chat", async (req, res, next) => {
+chatRouter.post("/room/:id/chat", login_required, async (req, res, next) => {
   try {
     const id = req.params.id;
     const chat = req.body.chat;
@@ -23,6 +23,16 @@ chatRouter.post("/room/:id/chat", async (req, res, next) => {
     const createdChat = await chatService.createChat({ id, chat, userId });
     req.app.get("io").of("/chat").to(req.params.id).emit("chat", createdChat);
     res.send("ok");
+  } catch (err) {
+    next(err);
+  }
+});
+
+chatRouter.get("/room/:id", login_required, async (req, res, next) => {
+  try {
+    const roomId = req.params.id;
+    const chats = await chatService.getChatList({ roomId });
+    res.status(200).send(chats);
   } catch (err) {
     next(err);
   }

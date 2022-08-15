@@ -15,14 +15,20 @@ const ChattingPage = () => {
   const [message, setMessage] = useState("");
   const [totalMsg, setTotalMsg] = useState([]);
 
+  const getExistedMessage = async () => {
+    const chatList = await Api.get(`room/${roomId}`);
+    //console.log(chatList.data); //user에 user정보가 아예 저장되어 있음.
+    setTotalMsg(chatList.data);
+  };
   useEffect(() => {
     socket.emit("join_room", roomId);
+    getExistedMessage();
   }, [socket]);
 
   useEffect(() => {
     socket.on("chat", (data) => {
-      console.log(data);
-      setTotalMsg((cur) => [...cur, data.chat]);
+      console.log(data); //user에 objectID만 저장되어 있는 상태
+      setTotalMsg((cur) => [...cur, data]);
     });
   }, [socket]);
 
@@ -33,14 +39,9 @@ const ChattingPage = () => {
     });
   };
 
-  // const joinRoom = () => {
-  //   socket.emit("join_room", roomId);
-  // };
-
   return (
     <div>
       <p>chatting Page</p>
-      {/* <button onClick={joinRoom}>joinroom</button> */}
       <input
         type="text"
         value={message}
@@ -50,7 +51,7 @@ const ChattingPage = () => {
       <div>
         {totalMsg.map((msg, idx) => (
           <div key={idx}>
-            <p>{msg}</p>
+            <p>{msg.chat}</p>
           </div>
         ))}
       </div>

@@ -3,7 +3,7 @@ import { ChatModel } from "../schemas/chat";
 class Chat {
   static async create({ newChat }) {
     const createdNewChat = await ChatModel.create(newChat);
-    return createdNewChat;
+    return createdNewChat.populate("user");
   }
 
   static async findyByRoomId({ roomId }) {
