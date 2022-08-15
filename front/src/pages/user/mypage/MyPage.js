@@ -7,7 +7,7 @@ import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";
 import LoadingSpinner from "components/LoadingSpinner";
-import ChatModal from "pages/chat/ChatModal";
+import ChatModal from "pages/user/mypage/chat/ChatModal";
 import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMessage } from "@fortawesome/free-solid-svg-icons";
