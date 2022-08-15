@@ -16,7 +16,6 @@ class Chat {
 
   static async findByRoomIdLastOne({ roomId }) {
     const chats = await ChatModel.find({ roomId }).sort({ createdAt: -1 });
-    console.log(chats[0]);
     return chats[0];
   }
 }
