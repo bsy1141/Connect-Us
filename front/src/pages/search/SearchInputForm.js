@@ -7,7 +7,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const SearchInputForm = () => {
-  const options = ["전체", "기업명", "사용자명", "제목", "설명", "내용"];
+  const options = ["전체", "사용자명", "제목", "내용"];
 
   const [isOpen, setIsOpen] = useState(false);
   const [filter, setFilter] = useState("전체");
@@ -57,6 +57,7 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 10;
 `;
 
 const InputWrapper = styled.div`

@@ -79,12 +79,11 @@ class Post {
   static findAllToUser = async ({ getPosts }) => {
     const { userId, page, perPage } = getPosts;
     const totalDocuments = await PostModel.countDocuments({ userId });
-    const total = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({ userId })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-    return { total, posts };
+    return { total: totalDocuments, posts };
   };
 
   static findById = async ({ id }) => {
@@ -98,6 +97,63 @@ class Post {
     }).sort({ createdAt: -1 });
 
     return posts;
+  };
+
+  static findByUserName = async ({ getResults }) => {
+    const { name, page, perPage } = getResults;
+    const totalDocuments = await PostModel.countDocuments({
+      userName: { $regex: name },
+    });
+    const total = Math.ceil(totalDocuments / perPage);
+    const posts = await PostModel.find({ userName: { $regex: name } })
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { total: totalDocuments, posts };
+  };
+
+  static findByTitle = async ({ getResults }) => {
+    const { title, page, perPage } = getResults;
+    const totalDocuments = await PostModel.countDocuments({
+      title: { $regex: title },
+    });
+    const posts = await PostModel.find({ title: { $regex: title } })
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { total: totalDocuments, posts };
+  };
+
+  static findByContent = async ({ getResults }) => {
+    const { content, page, perPage } = getResults;
+    const totalDocuments = await PostModel.countDocuments({
+      $or: [
+        { content: { $regex: content } },
+        { description: { $regex: content } },
+      ],
+    });
+    const posts = await PostModel.find({
+      $or: [
+        { content: { $regex: content } },
+        { description: { $regex: content } },
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { total: totalDocuments, posts };
+  };
+
+  static findByKeyword = async ({ getResults }) => {
+    const { keyword, page, perPage } = getResults;
+    const totalDocuments = await PostModel.countDocuments({
+      $text: { $search: keyword },
+    });
+    const posts = await PostModel.find({ $text: { $search: keyword } })
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { total: totalDocuments, posts };
   };
 
   static update = async ({ id, toUpdate }) => {

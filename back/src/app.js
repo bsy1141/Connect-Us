@@ -10,6 +10,7 @@ import { educationRouter } from "./routers/educationRouter";
 import { certificateRouter } from "./routers/certificateRouter";
 import { awardRouter } from "./routers/awardRouter";
 import { chatRouter } from "./routers/chatRouter";
+import { searchRouter } from "./routers/searchRouter";
 import { errorMiddleware } from "./middlewares/errorMiddleware";
 
 const app = express();
@@ -42,6 +43,7 @@ app.use(certificateRouter);
 app.use(awardRouter);
 app.use(commentRouter);
 app.use(chatRouter);
+app.use(searchRouter);
 
 // 순서 중요 (router 에서 next() 시 아래의 에러 핸들링  middleware로 전달됨)
 app.use(errorMiddleware);

@@ -31,6 +31,30 @@ class User {
     return user;
   }
 
+  static async findByName({ name }) {
+    const users = await UserModel.find({ name: { $regex: name } }).limit(20);
+    return users;
+  }
+
+  static async findByKeyword({ keyword }) {
+    const usersFilteredByBasic = await UserModel.find({
+      $or: [
+        { name: { $regex: keyword } },
+        { introduction: { $regex: keyword } },
+      ],
+    }).limit(10);
+    const usersFilteredByKeywords = await UserModel.find({
+      $or: [
+        { keywords: { $elemMatch: { job: { $regex: keyword } } } },
+        { keywords: { $elemMatch: { jobDetail: { $regex: keyword } } } },
+        { keywords: { $elemMatch: { employ: { $regex: keyword } } } },
+      ],
+    }).limit(10);
+    const users = [...usersFilteredByBasic, ...usersFilteredByKeywords];
+
+    return [...new Set(users.map(JSON.stringify))].map(JSON.parse);
+  }
+
   static async findAll() {
     const users = await UserModel.find({});
     return users;
