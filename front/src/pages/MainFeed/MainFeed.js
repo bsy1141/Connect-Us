@@ -10,7 +10,7 @@ import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";
 import styled from "styled-components";
 import LoadingSpinner from "components/LoadingSpinner";
-import PostCard from "./PostCard";
+import PostCard from "../../components/PostCard";
 
 const COUNT = 5;
 const DEFAULT_PROFILE_IMAGE =
