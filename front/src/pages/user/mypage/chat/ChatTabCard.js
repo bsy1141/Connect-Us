@@ -5,10 +5,11 @@ import styled from "styled-components";
 import ChatModal from "./ChatModal";
 
 const socket = io.connect("http://localhost:5001/chat");
+const DEFAULT_PROFILE_IMAGE =
+  "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
-const ChatTabCard = ({ room }) => {
+const ChatTabCard = ({ room, isLast }) => {
   const { user } = useContext(UserStateContext);
-  //const [count, setCount] = useState(0);
   const [lastMessage, setLastMessage] = useState(room?.chat ?? {});
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
@@ -26,16 +27,39 @@ const ChatTabCard = ({ room }) => {
 
   const handleClick = () => {
     setIsChatModalOpen(true);
-    //setCount(0);
   };
 
+  const handleDate = (createdAt) => {
+    const today = new Date();
+    const curDate = new Date(createdAt);
+    if (
+      today.getFullYear() === curDate.getFullYear() &&
+      today.getMonth() === curDate.getMonth() &&
+      today.getDate() === curDate.getDate()
+    ) {
+      //하루 이전
+      return curDate.toLocaleString("ko-kr").slice(12, -3);
+    } else {
+      //하루 이후
+      return `${curDate.getMonth() + 1}월 ${curDate.getDate()}일`;
+    }
+  };
+
+  console.log(new Date(lastMessage.createdAt));
   return (
     <>
-      <Card>
-        <p>{room.user.name}</p>
-        <p>{lastMessage?.chat || ""}</p>
-        {/* <span>{count}</span> */}
-        <button onClick={handleClick}>채팅 참여</button>
+      <Card onClick={handleClick} isLast={isLast}>
+        <ProfileImg>
+          <img
+            src={room.user.imageLink ?? DEFAULT_PROFILE_IMAGE}
+            alt="profile_img"
+          />
+        </ProfileImg>
+        <Content>
+          <h4>{room.user.name}</h4>
+          <p>{lastMessage.chat}</p>
+        </Content>
+        <p>{handleDate(lastMessage.createdAt)}</p>
       </Card>
       {isChatModalOpen && (
         <ChatModal
@@ -50,4 +74,34 @@ const ChatTabCard = ({ room }) => {
 
 export default ChatTabCard;
 
-const Card = styled.div``;
+const Card = styled.div`
+  display: flex;
+  > p {
+    width: 10%;
+  }
+  margin-top: 10px;
+  margin-bottom: 30px;
+  border-bottom: ${(props) => (props.isLast ? "none" : "1px solid #c4c4c4")};
+  cursor: pointer;
+`;
+
+const ProfileImg = styled.div`
+  width: 15%;
+  > img {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+  }
+`;
+
+const Content = styled.div`
+  width: 75%;
+  align-self: center;
+  > h4 {
+    font-size: 20px;
+  }
+  > p {
+    color: #7b7b7b;
+    margin-bottom: 0;
+  }
+`;

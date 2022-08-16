@@ -8,7 +8,9 @@ const MyChatTab = ({ userId }) => {
 
   const getRoomList = async () => {
     const rooms = await Api.get(`rooms/${userId}`);
-    setRooms(rooms.data);
+    const filteredRooms = rooms.data.filter((room) => room.chat);
+    console.log(filteredRooms);
+    setRooms(filteredRooms);
   };
 
   useEffect(() => {
@@ -16,9 +18,12 @@ const MyChatTab = ({ userId }) => {
   }, []);
   return (
     <Container>
-      {rooms.map((room) => (
-        <ChatTabCard room={room} key={room.id} />
-      ))}
+      {rooms.map((room, idx) => {
+        if (idx === rooms.length - 1) {
+          return <ChatTabCard room={room} key={room.id} isLast />;
+        }
+        return <ChatTabCard room={room} key={room.id} />;
+      })}
     </Container>
   );
 };
