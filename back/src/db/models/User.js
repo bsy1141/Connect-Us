@@ -47,6 +47,9 @@ class User {
       $or: [
         { keywords: { $elemMatch: { job: { $regex: keyword } } } },
         { keywords: { $elemMatch: { jobDetail: { $regex: keyword } } } },
+        { keywords: { $elemMatch: { workPlace: { $regex: keyword } } } },
+        { keywords: { $elemMatch: { career: { $regex: keyword } } } },
+        { keywords: { $elemMatch: { education: { $regex: keyword } } } },
         { keywords: { $elemMatch: { employ: { $regex: keyword } } } },
       ],
     }).limit(10);
