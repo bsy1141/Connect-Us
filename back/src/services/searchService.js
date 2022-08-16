@@ -19,7 +19,7 @@ class searchService {
 
   static getResultsByContent = async ({ getResults }) => {
     const posts = await Post.findByContent({ getResults });
-    return { user: [], posts };
+    return { users: [], posts };
   };
 
   static getResultsByKeyword = async ({ getResults }) => {

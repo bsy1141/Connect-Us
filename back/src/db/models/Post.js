@@ -104,12 +104,12 @@ class Post {
     const totalDocuments = await PostModel.countDocuments({
       userName: { $regex: name },
     });
-    const total = Math.ceil(totalDocuments / perPage);
+    const totalPage = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({ userName: { $regex: name } })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-    return { total: totalDocuments, posts };
+    return { totalPage, len: totalDocuments, posts };
   };
 
   static findByTitle = async ({ getResults }) => {
@@ -117,11 +117,12 @@ class Post {
     const totalDocuments = await PostModel.countDocuments({
       title: { $regex: title },
     });
+    const totalPage = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({ title: { $regex: title } })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-    return { total: totalDocuments, posts };
+    return { totalPage, len: totalDocuments, posts };
   };
 
   static findByContent = async ({ getResults }) => {
@@ -132,6 +133,7 @@ class Post {
         { description: { $regex: content } },
       ],
     });
+    const totalPage = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({
       $or: [
         { content: { $regex: content } },
@@ -141,7 +143,7 @@ class Post {
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-    return { total: totalDocuments, posts };
+    return { totalPage, len: totalDocuments, posts };
   };
 
   static findByKeyword = async ({ getResults }) => {
@@ -149,11 +151,19 @@ class Post {
     const totalDocuments = await PostModel.countDocuments({
       $text: { $search: keyword },
     });
-    const posts = await PostModel.find({ $text: { $search: keyword } })
+    const totalPage = Math.ceil(totalDocuments / perPage);
+    const posts = await PostModel.find({
+      $or: [
+        { content: { $regex: keyword } },
+        { description: { $regex: keyword } },
+        { title: { $regex: keyword } },
+        { userName: { $regex: keyword } },
+      ],
+    })
       .sort({ createdAt: -1 })
       .skip(perPage * (page - 1))
       .limit(perPage);
-    return { total: totalDocuments, posts };
+    return { totalPage, len: totalDocuments, posts };
   };
 
   static update = async ({ id, toUpdate }) => {
