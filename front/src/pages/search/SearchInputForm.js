@@ -5,36 +5,73 @@ import {
   faCaretDown,
   faMagnifyingGlass,
 } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
 
-const SearchInputForm = () => {
-  const options = ["전체", "사용자명", "제목", "내용"];
+const options = [
+  { eng: "all", kor: "전체" },
+  { eng: "user", kor: "사용자명" },
+  { eng: "title", kor: "제목" },
+  { eng: "content", kor: "내용" },
+];
+
+const SearchInputForm = ({ search }) => {
+  const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [filter, setFilter] = useState("전체");
+  const [searchKeyword, setSearchKeyword] = useState(search);
+  const [option, setOption] = useState({ eng: "all", kor: "전체" });
+
+  const handleKeyPress = (key) => {
+    if (key === "Enter") {
+      navigate(
+        `/posts?option=${option.eng}&search=${encodeURIComponent(
+          searchKeyword
+        )}`
+      );
+    }
+  };
+
+  const handleClickOption = (option) => {
+    setOption(option);
+    setIsOpen(false);
+  };
 
   return (
     <InputContainer>
       <InputWrapper>
         <SelectBoxContainer>
           <SelectBoxWrapper>
-            <span>{filter}</span>
+            <span>{option.kor}</span>
             <OpenButton onClick={() => setIsOpen(!isOpen)}>
               <FontAwesomeIcon icon={faCaretDown} />
             </OpenButton>
           </SelectBoxWrapper>
           {options.map((option) => (
             <Option
-              key={option}
-              onClick={() => setFilter(option)}
+              key={option.eng}
+              onClick={() => handleClickOption(option)}
               open={isOpen ? "block" : "none"}
             >
-              {option}
+              {option.kor}
             </Option>
           ))}
         </SelectBoxContainer>
         <InputFormWrapper>
-          <input type="text" />
-          <button>
+          <input
+            type="text"
+            value={searchKeyword || ""}
+            onChange={(e) => setSearchKeyword(e.target.value)}
+            onKeyPress={(e) => handleKeyPress(e.key)}
+          />
+          <button
+            onClick={() =>
+              navigate(
+                `/posts?option=${option.eng}&search=${encodeURIComponent(
+                  searchKeyword
+                )}`
+              )
+            }
+          >
             <FontAwesomeIcon
               icon={faMagnifyingGlass}
               style={{
