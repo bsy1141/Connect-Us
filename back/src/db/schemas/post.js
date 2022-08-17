@@ -21,6 +21,10 @@ const PostSchema = new Schema(
       type: String,
       required: true,
     },
+    userImageLink: {
+      type: String,
+      required: true,
+    },
     userType: {
       type: String,
       required: true,

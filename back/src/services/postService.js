@@ -9,6 +9,7 @@ class postService {
     const user = await User.findById({ userId: newPost.userId });
     newPost.userName = user.name;
     newPost.userType = user.type;
+    newPost.userImageLink = user.imageLink;
 
     const createNewPostResult = await Post.create({ newPost });
     createNewPostResult.errorMessage = null;
