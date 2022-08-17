@@ -1,3 +1,4 @@
+import PostCard from "components/PostCard";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -16,22 +17,12 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
 
   return (
     <Container>
-      {posts.map((post) => (
-        <PostCardContainer
-          key={post.id}
-          onClick={() => navigate(`/post/${post.id}`)}
-        >
-          <PostCardContent>
-            <PostWriterWrapper>
-              <PostWriterImage />
-              <span>{post.userName}</span>
-            </PostWriterWrapper>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-          </PostCardContent>
-          <PostCardImage src={post.previewImageLink} />
-        </PostCardContainer>
-      ))}
+      {posts.map((post, idx) => {
+        if (idx === posts.length - 1) {
+          return <PostCard key={post.id} post={post} isLast />;
+        }
+        return <PostCard key={post.id} post={post} />;
+      })}
       <div
         style={{
           display: "flex",
