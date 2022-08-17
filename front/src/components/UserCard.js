@@ -1,7 +1,9 @@
 import { Card } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const UserCard = ({ user }) => {
+  const navigate = useNavigate();
   const keywordsArr =
     user.keywords && user.keywords.length !== 0
       ? Object.values(user.keywords[0])
@@ -17,7 +19,9 @@ const UserCard = ({ user }) => {
         marginRight: "50px",
         paddingTop: "2%",
         display: "inline-block",
+        cursor: "pointer",
       }}
+      onClick={() => navigate(`/myPage/${user.id}`)}
     >
       <ProfileImageWrapper>
         <img src={user.imageLink} alt="profile" />

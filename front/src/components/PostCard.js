@@ -49,6 +49,7 @@ const PostCardContainer = styled.div`
   height: 230px;
   padding: 30px;
   border-bottom: ${(props) => (props.isLast ? "none" : "solid 1px #c4c4c4")};
+  cursor: pointer;
 `;
 
 const PostCardContentContainer = styled.div`
