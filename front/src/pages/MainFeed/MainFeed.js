@@ -152,11 +152,14 @@ const MainFeedWrapper = styled.div`
 const FollowingContainer = styled.div`
   width: 20%;
   overflow: auto;
-  height: 80vh;
+  height: 85vh;
   border: 1px solid #c4c4c4;
   border-radius: 15px;
   margin-left: 30px;
-  padding: 1%;
+  padding: 0.5% 1%;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const NoFollowingWrapper = styled.div`

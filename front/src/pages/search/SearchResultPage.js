@@ -77,14 +77,18 @@ const SearchResultPage = () => {
             </UserCardWrapper>
           )}
         </UsersResultWrapper>
-        <div>
+        <PostsResultWrapper>
+          <p>
+            총 <span>{totalPostsNum}</span>개의 포스트
+          </p>
+          {totalPostsNum === 0 && <h3>검색 결과가 없습니다.</h3>}
           {posts.map((post, idx) => {
             if (idx === posts.length - 1) {
               return <PostCard key={post.id} post={post} isLast />;
             }
             return <PostCard key={post.id} post={post} />;
           })}
-        </div>
+        </PostsResultWrapper>
       </ResultPageWrapper>
     </Container>
   );
@@ -120,5 +124,19 @@ const UserCardWrapper = styled.div`
   display: flex;
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const PostsResultWrapper = styled.div`
+  margin-top: 20px;
+  > p {
+    font-size: 20px;
+    > span {
+      font-weight: bold;
+    }
+  }
+  > h3 {
+    font-size: 20px;
+    color: #7b7b7b;
   }
 `;
