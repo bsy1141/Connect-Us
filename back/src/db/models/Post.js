@@ -149,7 +149,12 @@ class Post {
   static findByKeyword = async ({ getResults }) => {
     const { keyword, page, perPage } = getResults;
     const totalDocuments = await PostModel.countDocuments({
-      $text: { $search: keyword },
+      $or: [
+        { content: { $regex: keyword } },
+        { description: { $regex: keyword } },
+        { title: { $regex: keyword } },
+        { userName: { $regex: keyword } },
+      ],
     });
     const totalPage = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({
