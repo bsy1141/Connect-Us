@@ -97,43 +97,6 @@ const Container = styled.div`
   }
 `;
 
-const PostCardContainer = styled.div`
-  cursor: pointer;
-  height: 230px;
-  padding: 30px;
-  border-bottom: solid 1px #c4c4c4;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const PostCardContent = styled.div`
-  width: 70%;
-  > p {
-    color: #828282;
-  }
-`;
-
-const PostWriterWrapper = styled.div`
-  display: flex;
-  margin-bottom: 30px;
-  > span {
-    margin-left: 10px;
-    align-self: center;
-  }
-`;
-
-const PostWriterImage = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #c4c4c4;
-`;
-
-const PostCardImage = styled.img`
-  width: 150px;
-  height: 150px;
-`;
-
 const PaginationButton = styled.div`
   border: 1px solid #c4c4c4;
   border-radius: 5px;
