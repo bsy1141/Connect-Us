@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const KeywordModal = ({ setIsModalOpen }) => {
+const KeywordModal = ({ setIsModalOpen, type }) => {
   const navigate = useNavigate();
 
   return (
@@ -9,7 +9,12 @@ const KeywordModal = ({ setIsModalOpen }) => {
       <Section>
         <Content>
           <h4>나의 키워드를 저장하러 가시겠습니까?</h4>
-          <p>키워드를 입력하면, 기업을 추천 받으실 수 있습니다.</p>
+          <p>
+            {`키워드를 입력하면, ${
+              type === "company" ? "구인자" : "기업"
+            }을 추천 받으실 수 있습니다`}
+            .
+          </p>
         </Content>
         <Buttons>
           <button

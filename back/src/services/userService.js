@@ -98,6 +98,9 @@ class userAuthService {
     const keywords = user.keywords;
     const followers = user.followers;
     const followings = user.followings;
+    const type = user.type;
+    const introduction = user.introduction;
+    const imageLink = user.imageLink;
 
     const loginUser = {
       token,
@@ -107,6 +110,9 @@ class userAuthService {
       keywords,
       followers,
       followings,
+      type,
+      introduction,
+      imageLink,
       errorMessage: null,
     };
 

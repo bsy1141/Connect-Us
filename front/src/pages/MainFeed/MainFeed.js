@@ -19,10 +19,13 @@ const DEFAULT_PROFILE_IMAGE =
 function MainFeed() {
   const navigate = useNavigate();
   const { user } = useContext(UserStateContext);
+
   const [posts, setPosts] = useState([]);
   const [popularPosts, setPopularPosts] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(user?.keywords?.length === 0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [following, setFollowing] = useState(null);
+  const [type, setType] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const fetchPosts = async () => {
     const followingPosts = await Api.get("posts/following");
@@ -33,17 +36,26 @@ function MainFeed() {
     setPosts(followingPosts.data);
   };
 
-  useEffect(() => {
+  const setUser = (user) => {
     if (user) {
-      setIsModalOpen(false);
-      setFollowing(user.followings || []);
+      setType(user.type);
+      setIsModalOpen(user.keywords.length === 0);
+      setFollowing(user.followings);
     }
+  };
+
+  useEffect(() => {
+    setLoading(true);
+
+    setUser(user);
     fetchPosts();
+
+    setLoading(false);
   }, [user]);
 
   console.log(user);
 
-  if (!following) {
+  if (loading) {
     return (
       <Container>
         <Header />
@@ -54,14 +66,12 @@ function MainFeed() {
     );
   }
 
-  console.log(following);
-
   return (
     <Container>
       <Header />
       <MainFeedWrapper>
         <FollowingContainer>
-          {following.length !== 0 ? (
+          {following && following.length !== 0 ? (
             following.map((f) => (
               <Line key={f.following.name}>
                 <ProfileImage
@@ -109,7 +119,9 @@ function MainFeed() {
       >
         <FontAwesomeIcon icon={faPlus} className={styles.icon} />
       </button>
-      {isModalOpen && <KeywordModal setIsModalOpen={setIsModalOpen} />}
+      {isModalOpen && (
+        <KeywordModal setIsModalOpen={setIsModalOpen} type={type} />
+      )}
     </Container>
   );
 }
