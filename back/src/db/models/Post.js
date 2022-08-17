@@ -13,9 +13,14 @@ class Post {
     return createdNewPost;
   };
 
-  static findAll = async () => {
-    const posts = await PostModel.find({}).sort({ createdAt: -1 });
-    return posts;
+  static findAll = async ({ page, perPage }) => {
+    const totalDocuments = await PostModel.countDocuments({});
+    const totalPage = Math.ceil(totalDocuments / perPage);
+    const posts = await PostModel.find({})
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
+    return { totalPage, posts };
   };
 
   static findPopularPosts = async ({ count }) => {
@@ -45,6 +50,9 @@ class Post {
         $addFields: { likes_count: { $size: { $ifNull: ["$likes", []] } } },
       },
       {
+        $match: { likes_count: { $gte: 1 } },
+      },
+      {
         $sort: { likes_count: -1 },
       },
       {
@@ -68,9 +76,9 @@ class Post {
       {
         $sort: { likes_count: -1 },
       },
-      {
-        $limit: count,
-      },
+      // {
+      //   $limit: count,
+      // },
     ]);
 
     return posts;

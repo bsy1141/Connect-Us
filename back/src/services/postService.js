@@ -17,8 +17,8 @@ class postService {
     return createNewPostResult;
   };
 
-  static getPosts = async () => {
-    const getPostsResult = await Post.findAll();
+  static getPosts = async ({ page, perPage }) => {
+    const getPostsResult = await Post.findAll({ page, perPage });
 
     if (!getPostsResult) {
       const errorMessage = "포스트들을 불러오는 데 실패했습니다.";
