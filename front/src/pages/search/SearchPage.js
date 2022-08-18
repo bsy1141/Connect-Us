@@ -17,8 +17,8 @@ const SearchPage = () => {
   const [page, setPage] = useState(1);
 
   const getPopularPosts = async () => {
-    const getUserPopularPosts = Api.get("posts", "popular/user?count=10");
-    const getCompanyPopularPosts = Api.get("posts", "popular/company?count=10");
+    const getUserPopularPosts = Api.get("posts", "popular/user?count=12");
+    const getCompanyPopularPosts = Api.get("posts", "popular/company?count=12");
 
     try {
       setLoading(true);

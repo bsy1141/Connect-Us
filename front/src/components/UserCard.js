@@ -36,7 +36,7 @@ const UserCard = ({ user }) => {
         <Card.Text>{user.introduction}</Card.Text>
         <Keywords>
           {keywordsArr.length !== 0 &&
-            keywordsArr.map((keyword) => <span>{keyword}</span>)}
+            keywordsArr.map((keyword) => <span key={keyword}>{keyword}</span>)}
         </Keywords>
       </Card.Body>
     </Card>

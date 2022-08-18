@@ -20,21 +20,29 @@ const SearchResultPage = () => {
   const [posts, setPosts] = useState([]);
   const [totalPostsNum, setTotalPostsNum] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [bottomRef, setBottomRef] = useState(null);
+  const [isFirst, setIsFirst] = useState(true);
 
   const getPostsData = async () => {
     if (page === 0) return;
     if (page > totalPage) return;
     try {
       setLoading(true);
-      const res = await Api.get(
-        "search",
-        `${option}?page=${page}&perPage=${10}&keyword=${search}`
-      );
-      setUsers(res.data.users);
-      setPosts((cur) => [...cur, ...res.data.posts.posts]);
-      setTotalPostsNum(res.data.posts.len);
-      setTotalPage(res.data.posts.totalPage);
-
+      if (isFirst) {
+        setIsFirst(false);
+      } else {
+        const res = await Api.get(
+          "search",
+          `${option}?page=${page}&perPage=${5}&keyword=${search}`
+        );
+        if (page === 1) {
+          setUsers(res.data.users);
+        }
+        setPosts((cur) => [...cur, ...res.data.posts.posts]);
+        setTotalPostsNum(res.data.posts.len);
+        setTotalPage(res.data.posts.totalPage);
+        setPage((prev) => prev + 1);
+      }
       setLoading(false);
     } catch (err) {
       setPosts([]);
@@ -42,27 +50,37 @@ const SearchResultPage = () => {
     }
   };
 
-  // useUpdateEffect(() => {
-  //   setPosts([]);
-  //   setUsers([]);
-  //   setTotalPage(1);
-  //   setPage(0);
-  // }, [search]);
-
   useEffect(() => {
     getPostsData();
-  }, [page]);
+  }, []);
 
-  if (loading) {
-    return (
-      <Container>
-        <Header />
-        <LoadingSpinnerWrapper>
-          <LoadingSpinner />
-        </LoadingSpinnerWrapper>
-      </Container>
-    );
-  }
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      await getPostsData();
+      observer.observe(entry.target);
+    }
+  };
+
+  useEffect(() => {
+    let observer;
+    if (bottomRef) {
+      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+      observer.observe(bottomRef);
+    }
+    return () => observer && observer.disconnect();
+  }, [bottomRef]);
+
+  // if (loading) {
+  //   return (
+  //     <Container>
+  //       <Header />
+  //       <LoadingSpinnerWrapper>
+  //         <LoadingSpinner />
+  //       </LoadingSpinnerWrapper>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Container>
@@ -90,6 +108,12 @@ const SearchResultPage = () => {
           })}
         </PostsResultWrapper>
       </ResultPageWrapper>
+      {!loading && <div ref={setBottomRef} />}
+      {loading && (
+        <LoadingSpinnerWrapper>
+          <LoadingSpinner />
+        </LoadingSpinnerWrapper>
+      )}
     </Container>
   );
 };
@@ -103,7 +127,6 @@ const Container = styled.div`
 
 const LoadingSpinnerWrapper = styled.div`
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

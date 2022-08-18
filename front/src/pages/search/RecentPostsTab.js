@@ -1,8 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import SearchPostCard from "./SearchPostCard";
 import * as Api from "api";
-//import InfiniteScroll from "components/InfiniteScroll";
 
 const RecentPostsTab = () => {
   const [posts, setPosts] = useState([]);
@@ -20,7 +19,6 @@ const RecentPostsTab = () => {
       if (isFirst) {
         setIsFirst(false);
       } else {
-        console.log(page);
         const res = await Api.getWithoutParams(
           `postlist?page=${page}&perPage=8`
         );
@@ -28,10 +26,10 @@ const RecentPostsTab = () => {
         setTotalPage(res.data.totalPage);
         setPage((prev) => prev + 1);
       }
+      setLoading(false);
     } catch (err) {
       setPosts([]);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
