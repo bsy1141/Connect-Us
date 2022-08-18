@@ -16,6 +16,7 @@ import ContextProvider from "./components/ContextProvider";
 import FetchCurrentUser from "./components/FetchCurrentUser";
 import EditPostPage from "pages/post/EditPostPage";
 import SearchResultPage from "pages/search/SearchResultPage";
+import NotFoundPage from "pages/NotFoundPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -46,7 +47,7 @@ function App() {
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
-            <Route path="*" element={mainfeed} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Container>
       </Router>
