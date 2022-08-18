@@ -87,9 +87,22 @@ postRouter.get("/postlist/:userId", login_required, async (req, res, next) => {
 
 postRouter.get("/posts/following", login_required, async (req, res, next) => {
   try {
+    if (is.emptyObject(req.query)) {
+      throw new Error("페이지네이션을 위한 쿼리를 확인해주세요.");
+    }
+
+    const page = Number(req.query.page) || 1;
+    const perPage = Number(req.query.perPage) || 3;
     const userId = req.currentUserId;
-    const followingPosts = await postService.getFollwingPostsByUserId({
+
+    const getPosts = {
       userId,
+      page: page,
+      perPage: perPage,
+    };
+
+    const followingPosts = await postService.getFollwingPostsByUserId({
+      getPosts,
     });
 
     if (followingPosts.errorMessage) {

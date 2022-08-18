@@ -99,12 +99,19 @@ class Post {
     return post;
   };
 
-  static findByFollowingUserId = async ({ followingUserId }) => {
+  static findByFollowingUserId = async ({ followingUserId, page, perPage }) => {
+    const totalDocuments = await PostModel.countDocuments({
+      userId: { $in: followingUserId },
+    });
+    const totalPage = Math.ceil(totalDocuments / perPage);
     const posts = await PostModel.find({
       userId: { $in: followingUserId },
-    }).sort({ createdAt: -1 });
+    })
+      .sort({ createdAt: -1 })
+      .skip(perPage * (page - 1))
+      .limit(perPage);
 
-    return posts;
+    return { totalPage, posts };
   };
 
   static findByUserName = async ({ getResults }) => {

@@ -87,7 +87,8 @@ class postService {
   //   return getPostsResult;
   // };
 
-  static getFollwingPostsByUserId = async ({ userId }) => {
+  static getFollwingPostsByUserId = async ({ getPosts }) => {
+    const { userId, page, perPage } = getPosts;
     const user = await User.findById({ userId });
     let followingUserId;
 
@@ -100,6 +101,8 @@ class postService {
 
     const getPostsResult = await Post.findByFollowingUserId({
       followingUserId,
+      page,
+      perPage,
     });
 
     if (!getPostsResult) {

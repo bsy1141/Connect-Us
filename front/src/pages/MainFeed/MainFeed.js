@@ -9,7 +9,6 @@ import styles from "../../style/MainFeed.module.css";
 import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";
 import styled from "styled-components";
-import LoadingSpinner from "components/LoadingSpinner";
 import PostCard from "../../components/PostCard";
 
 const COUNT = 5;
@@ -26,45 +25,80 @@ function MainFeed() {
   const [following, setFollowing] = useState(null);
   const [type, setType] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+  const [bottomRef, setBottomRef] = useState(null);
+  const [isFirst, setIsFirst] = useState(true);
 
-  const fetchPosts = async () => {
-    const followingPosts = await Api.get("posts/following");
-    if (followingPosts.data.length < 3) {
-      const posts = await Api.get(`posts/popular?count=${COUNT}`);
-      setPopularPosts(posts.data);
-    }
-    setPosts(followingPosts.data);
-  };
-
-  const setUser = (user) => {
+  useEffect(() => {
     if (user) {
       setType(user.type);
       setIsModalOpen(user.keywords.length === 0);
       setFollowing(user.followings);
     }
+  }, [user]);
+
+  const fetchPosts = async () => {
+    if (page === 0) return;
+    if (page > totalPage) return;
+    try {
+      setLoading(true);
+
+      if (isFirst) {
+        setIsFirst(false);
+      } else {
+        const res = await Api.getWithoutParams(
+          `posts/following?page=${page}&perPage=5`
+        );
+        console.log(res.data);
+        if (page === 1 && res.data.posts.length < 3) {
+          const posts = await Api.get(`posts/popular?count=${COUNT}`);
+          setPopularPosts(posts.data);
+        }
+        setPosts((cur) => [...cur, ...res.data.posts]);
+        setTotalPage(res.data.totalPage);
+        setPage((prev) => prev + 1);
+      }
+      setLoading(false);
+    } catch (err) {
+      setPosts([]);
+      setPopularPosts([]);
+    }
   };
 
   useEffect(() => {
-    setLoading(true);
-
-    setUser(user);
     fetchPosts();
+  }, []);
 
-    setLoading(false);
-  }, [user]);
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      await fetchPosts();
+      observer.observe(entry.target);
+    }
+  };
 
-  console.log(user);
+  useEffect(() => {
+    let observer;
+    if (bottomRef) {
+      observer = new IntersectionObserver(onIntersect, { threshold: 1 });
+      observer.observe(bottomRef);
+    }
+    return () => observer && observer.disconnect();
+  }, [bottomRef]);
 
-  if (loading) {
-    return (
-      <Container>
-        <Header />
-        <LoadingWrapper>
-          <LoadingSpinner />
-        </LoadingWrapper>
-      </Container>
-    );
-  }
+  //console.log(user);
+
+  // if (loading) {
+  //   return (
+  //     <Container>
+  //       <Header />
+  //       <LoadingWrapper>
+  //         <LoadingSpinner />
+  //       </LoadingWrapper>
+  //     </Container>
+  //   );
+  // }
 
   return (
     <Container>
@@ -95,9 +129,9 @@ function MainFeed() {
         <PostCardsContainer>
           {posts.map((post, idx) => {
             if (idx === posts.length - 1) {
-              return <PostCard key={post.id} post={post} isLast />;
+              return <PostCard key={idx} post={post} isLast />;
             }
-            return <PostCard key={post.id} post={post} />;
+            return <PostCard key={idx} post={post} />;
           })}
           {popularPosts.length !== 0 && (
             <PopularPostsContainer>
@@ -105,9 +139,9 @@ function MainFeed() {
               <p>추천 게시글을 확인해보세요!</p>
               {popularPosts.map((post, idx) => {
                 if (idx === popularPosts.length - 1) {
-                  return <PostCard key={post.id} post={post} isLast />;
+                  return <PostCard key={idx} post={post} isLast />;
                 }
-                return <PostCard key={post.id} post={post} />;
+                return <PostCard key={idx} post={post} />;
               })}
             </PopularPostsContainer>
           )}
@@ -122,6 +156,7 @@ function MainFeed() {
       {isModalOpen && (
         <KeywordModal setIsModalOpen={setIsModalOpen} type={type} />
       )}
+      {!loading && <div ref={setBottomRef} />}
     </Container>
   );
 }
