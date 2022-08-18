@@ -12,11 +12,9 @@ import RecentPostsTab from "./RecentPostsTab";
 const SearchPage = () => {
   const [userPosts, setUserPosts] = useState([]);
   const [companyPosts, setCompanyPosts] = useState([]);
-  const [recentPosts, setRecentPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState("user");
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
 
   const getPopularPosts = async () => {
     const getUserPopularPosts = Api.get("posts", "popular/user?count=10");
@@ -39,25 +37,9 @@ const SearchPage = () => {
     }
   };
 
-  const getRecentPosts = async () => {
-    if (page === 0) return;
-    if (page > totalPage) return;
-    try {
-      const res = await Api.getWithoutParams("postlist?page=1&perPage=8");
-      setRecentPosts(res.data.posts);
-      setTotalPage(res.data.totalPage);
-    } catch (err) {
-      setRecentPosts([]);
-    }
-  };
-
   useEffect(() => {
     getPopularPosts();
   }, []);
-
-  useEffect(() => {
-    getRecentPosts();
-  }, [page]);
 
   if (loading) {
     return (
@@ -78,7 +60,7 @@ const SearchPage = () => {
         <SearchTabs tab={tab} setTab={setTab} />
         {tab === "user" && <UserPopularPostsTab posts={userPosts} />}
         {tab === "company" && <CompanyPopularPostsTab posts={companyPosts} />}
-        {tab === "recent" && <RecentPostsTab posts={recentPosts} />}
+        {tab === "recent" && <RecentPostsTab />}
       </Content>
     </Container>
   );

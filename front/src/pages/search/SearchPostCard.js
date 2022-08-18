@@ -8,12 +8,13 @@ import styles from "../../style/search.module.css";
 const DEFAULT_POST_IMAGE =
   "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultPostImg.jpeg";
 
-const SearchPostCard = ({ post }) => {
+const SearchPostCard = ({ post, bottomRef }) => {
   const navigate = useNavigate();
   return (
-    <Card
+    <div
       className={styles.search_card}
       onClick={() => navigate(`/post/${post.id}`)}
+      ref={bottomRef}
     >
       <Card.Img
         variant="top"
@@ -51,7 +52,7 @@ const SearchPostCard = ({ post }) => {
           </Infos>
         </ListGroup.Item>
       </ListGroup>
-    </Card>
+    </div>
   );
 };
 
