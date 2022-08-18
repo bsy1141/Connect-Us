@@ -1,4 +1,4 @@
-import Header from "pages/Header";
+import Header from "components/Header";
 import { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 

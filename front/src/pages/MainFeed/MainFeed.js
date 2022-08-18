@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { UserStateContext } from "../../components/ContextProvider";
-import Header from "../Header";
+import Header from "../../components/Header";
 import styles from "../../style/MainFeed.module.css";
 import KeywordModal from "../modal/KeywordModal";
 import * as Api from "../../api";

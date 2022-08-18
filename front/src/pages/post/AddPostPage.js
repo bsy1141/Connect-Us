@@ -12,7 +12,7 @@ import codeSyntaxHighlight from "@toast-ui/editor-plugin-code-syntax-highlight";
 import styled from "styled-components";
 
 import * as Api from "../../api";
-import Header from "../Header";
+import Header from "../../components/Header";
 import PreviewModal from "pages/modal/PreviewModal";
 
 const AddPostPage = () => {

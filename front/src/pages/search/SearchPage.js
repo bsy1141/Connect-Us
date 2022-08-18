@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import * as Api from "api";
 import LoadingSpinner from "components/LoadingSpinner";
-import Header from "../Header";
+import Header from "../../components/Header";
 import SearchInputForm from "./SearchInputForm";
 import SearchTabs from "./SearchTabs";
 import UserPopularPostsTab from "./UserPopularPostsTab";

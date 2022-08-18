@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 import { UserStateContext } from "components/ContextProvider";
-import Header from "../../Header";
+import Header from "../../../components/Header";
 import UserCard from "./UserCard";
 import MyPostsTab from "./MyPostsTab";
 import MyPortfolioTab from "./MyPortfolioTab";

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import * as Api from "api";
-import Header from "pages/Header";
+import Header from "components/Header";
 import styled from "styled-components";
 import LoadingSpinner from "components/LoadingSpinner";
 import PostCard from "components/PostCard";

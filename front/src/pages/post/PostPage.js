@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 import { UserStateContext } from "../../components/ContextProvider";
-import Header from "../Header";
+import Header from "../../components/Header";
 import LoadingSpinner from "components/LoadingSpinner";
 import PostComment from "./PostComments";
 import DeleteModal from "pages/modal/DeleteModal";
