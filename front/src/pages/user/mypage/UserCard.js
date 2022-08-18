@@ -200,6 +200,7 @@ const FollowsTitle = styled.div`
     color: #ff758f;
     display: inline;
     margin: 0 10%;
+    cursor: pointer;
   }
   > p:hover {
     text-decoration: underline;

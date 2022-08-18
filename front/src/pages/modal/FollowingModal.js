@@ -104,20 +104,18 @@ const CloseButton = styled.button`
   border-radius: 50%;
   width: 30px;
   height: 30px;
+  z-index: 6;
 `;
 
 const Content = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   overflow-y: hidden;
 `;
 
 const TabContainer = styled.div`
   position: absolute;
   z-index: 5;
-  width: 100%;
+  width: 90%;
   display: flex;
 `;
 const Tab = styled.div`
