@@ -26,6 +26,18 @@ class chatService {
     return createdNewChat;
   }
 
+  static async createChatWithGif({ id, gif, userId }) {
+    const room = await Room.findById({ id });
+    const user = await User.findById({ userId });
+    const newChat = {
+      roomId: room.id,
+      user: user._id,
+      gif,
+    };
+    const createdNewChat = await Chat.create({ newChat });
+    return createdNewChat;
+  }
+
   static async getChatList({ roomId }) {
     const room = await Room.findById({ id: roomId });
     if (!room) {

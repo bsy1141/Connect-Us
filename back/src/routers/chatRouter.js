@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { chatService } from "../services/chatService";
+import { chatImgUpload } from "../utils/s3";
 const chatRouter = Router();
 
 chatRouter.post("/room", login_required, async function (req, res, next) {
@@ -27,6 +28,28 @@ chatRouter.post("/room/:id/chat", login_required, async (req, res, next) => {
     next(err);
   }
 });
+
+chatRouter.post(
+  "/room/:id/gif",
+  login_required,
+  chatImgUpload.single("image"),
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const gif = req.file.location;
+      const userId = req.currentUserId;
+      const createdChat = await chatService.createChatWithGif({
+        id,
+        gif,
+        userId,
+      });
+      req.app.get("io").of("/chat").to(req.params.id).emit("chat", createdChat);
+      res.send("ok");
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 chatRouter.get("/room/:id", login_required, async (req, res, next) => {
   try {

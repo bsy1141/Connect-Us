@@ -9,6 +9,7 @@ const DEFAULT_PROFILE_IMAGE =
   "https://connectusbucket.s3.ap-northeast-2.amazonaws.com/defaultImage.png";
 
 const ChatTabCard = ({ room, isLast }) => {
+  console.log(room);
   const { user } = useContext(UserStateContext);
   const [lastMessage, setLastMessage] = useState(room?.chat ?? {});
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
@@ -57,7 +58,8 @@ const ChatTabCard = ({ room, isLast }) => {
         </ProfileImg>
         <Content>
           <h4>{room.user.name}</h4>
-          <p>{lastMessage.chat}</p>
+          {lastMessage.chat && <p>{lastMessage.chat}</p>}
+          {lastMessage.gif && <p>사진을 보냈습니다.</p>}
         </Content>
         <p>{handleDate(lastMessage.createdAt)}</p>
       </Card>

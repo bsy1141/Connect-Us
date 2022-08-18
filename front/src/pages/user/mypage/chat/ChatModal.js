@@ -46,6 +46,19 @@ const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
     scrollToBottom();
     setMessage("");
   };
+
+  const handleSendGif = async (e) => {
+    const img = e.target.files[0];
+    const formData = new FormData();
+    formData.append("image", img);
+    try {
+      await Api.postImage(`room/${roomId}/gif`, formData);
+      scrollToBottom();
+    } catch (err) {
+      alert(err.response.data);
+    }
+  };
+
   return (
     <Container>
       <Section>
@@ -61,9 +74,21 @@ const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
           ))}
         </Content>
         <MessageInput>
-          <button>
+          <label htmlFor="add_gif">
+            <div>
+              <FontAwesomeIcon icon={faPaperclip} />
+            </div>
+          </label>
+          <input
+            type="file"
+            id="add_gif"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleSendGif}
+          />
+          {/* <button>
             <FontAwesomeIcon icon={faPaperclip} />
-          </button>
+          </button> */}
           <input
             type="text"
             value={message}
@@ -137,16 +162,17 @@ const MessageInput = styled.div`
   > input:focus {
     outline: none;
   }
-  > button {
-    background: #fff;
-    border: none;
-  }
-  > button:nth-child(1) {
+  > label {
     width: 10%;
-    border-right: 1px solid #c4c4c4;
     margin-right: 1%;
+    text-align: center;
+    div {
+      border-right: 1px solid #c4c4c4;
+      cursor: pointer;
+    }
   }
-  > button:nth-child(3) {
+  > button {
+    border: none;
     width: 13%;
     background: #ff758e;
     border-radius: 5px;

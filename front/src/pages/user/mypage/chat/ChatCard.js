@@ -4,8 +4,9 @@ const ChatCard = ({ message, userId }) => {
   const isMyChat = userId === message.user.id;
   return (
     <CardContainer isRight={isMyChat}>
-      <img src={message.user.imageLink} alt="profile_img" />
-      <p>{message.chat}</p>
+      <ProfileImg src={message.user.imageLink} alt="profile_img" />
+      {message.chat && <p>{message.chat}</p>}
+      {message.gif && <ChatGif src={message.gif} alt="message_gif" />}
     </CardContainer>
   );
 };
@@ -17,11 +18,6 @@ const CardContainer = styled.div`
   display: flex;
   flex-direction: ${(props) => (props.isRight ? "row-reverse" : "row")};
   margin: 20px 10px;
-  > img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-  }
   > p {
     max-width: 350px;
     background: ${(props) => (props.isRight ? "#1A233B" : "#fff")};
@@ -31,4 +27,17 @@ const CardContainer = styled.div`
     align-self: center;
     border-radius: 6px;
   }
+`;
+
+const ProfileImg = styled.img`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+`;
+
+const ChatGif = styled.img`
+  width: 200px;
+  height: 250px;
+  object-fit: cover;
+  margin-right: 20px;
 `;
