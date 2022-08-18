@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import * as Api from "api";
 import UserEditModal from "pages/modal/userEditModal/UserEditModal";
+import FollowingModal from "pages/modal/FollowingModal";
 
 const UserCard = ({ userId, owner }) => {
   const {
@@ -30,6 +31,8 @@ const UserCard = ({ userId, owner }) => {
   const [isFollow, setIsFollow] = useState(false);
   const [followerCount, setFollowerCount] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFollowingModalOpen, setIsFollowingModalOpen] = useState(false);
+  const [tab, setTab] = useState("");
 
   useEffect(() => {
     setIsFollow(initalFollowState);
@@ -55,6 +58,11 @@ const UserCard = ({ userId, owner }) => {
     setIsFollow((prev) => !prev);
   };
 
+  const handleClickFollowingTab = (tab) => {
+    setTab(tab);
+    setIsFollowingModalOpen(true);
+  };
+
   return (
     <>
       <Container>
@@ -74,8 +82,8 @@ const UserCard = ({ userId, owner }) => {
         </UserInfo>
         <Follows>
           <FollowsTitle>
-            <p>팔로우</p>
-            <p>팔로워</p>
+            <p onClick={() => handleClickFollowingTab("following")}>팔로우</p>
+            <p onClick={() => handleClickFollowingTab("follower")}>팔로워</p>
           </FollowsTitle>
           <FollowsContent>
             <p>{followings ? followings.length : 0}</p>
@@ -114,6 +122,14 @@ const UserCard = ({ userId, owner }) => {
       </Container>
       {isEditable && isModalOpen && (
         <UserEditModal user={owner} setIsModalOpen={setIsModalOpen} />
+      )}
+      {isFollowingModalOpen && (
+        <FollowingModal
+          setIsModalOpen={setIsFollowingModalOpen}
+          tabName={tab}
+          followers={followers}
+          followings={followings}
+        />
       )}
     </>
   );
@@ -184,6 +200,9 @@ const FollowsTitle = styled.div`
     color: #ff758f;
     display: inline;
     margin: 0 10%;
+  }
+  > p:hover {
+    text-decoration: underline;
   }
 `;
 
