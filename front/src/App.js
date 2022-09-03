@@ -16,6 +16,7 @@ import ContextProvider from "./components/ContextProvider";
 import FetchCurrentUser from "./components/FetchCurrentUser";
 import EditPostPage from "pages/post/EditPostPage";
 import SearchResultPage from "pages/search/SearchResultPage";
+import RecommendPage from "pages/recommend/RecommendPage";
 import NotFoundPage from "pages/NotFoundPage";
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
   const keywordPage = wrapFetchUser(<KeywordPage />);
   const searchPage = wrapFetchUser(<SearchPage />);
   const searchResultPage = wrapFetchUser(<SearchResultPage />);
+  const recommendPage = wrapFetchUser(<RecommendPage />);
 
   return (
     <ContextProvider>
@@ -47,6 +49,7 @@ function App() {
             <Route path="/myPage/:ownerId" element={myPage} />
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
+            <Route path="/recommend" element={recommendPage} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Container>

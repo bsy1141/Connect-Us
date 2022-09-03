@@ -52,6 +52,14 @@ function Header() {
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
+        <Nav.Link
+          onClick={() => navigate(`/recommend`)}
+          style={{ color: "#fff" }}
+        >
+          추천
+        </Nav.Link>
+      </Nav.Item>
+      <Nav.Item>
         <Nav.Link onClick={() => navigate(`/search`)} style={{ color: "#fff" }}>
           검색
         </Nav.Link>
