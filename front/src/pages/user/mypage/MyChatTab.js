@@ -16,6 +16,16 @@ const MyChatTab = ({ userId }) => {
   useEffect(() => {
     getRoomList();
   }, []);
+
+  if (rooms.length === 0) {
+    return (
+      <NoPostsContainer>
+        <img src={`${process.env.PUBLIC_URL}/noMessage.svg`} alt="No Posts" />
+        <h3>채팅방이 없습니다.</h3>
+      </NoPostsContainer>
+    );
+  }
+
   return (
     <Container>
       {rooms.map((room, idx) => {
@@ -37,5 +47,23 @@ const Container = styled.div`
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
+  }
+`;
+
+const NoPostsContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  margin-top: 10px;
+  text-align: center;
+  overflow-y: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  > img {
+    margin-top: 10%;
+    width: 45%;
+  }
+  > h3 {
+    margin-top: 5%;
   }
 `;
