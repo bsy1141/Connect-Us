@@ -8,7 +8,6 @@ function Header() {
   const location = useLocation();
 
   const { user, dispatch } = useContext(UserStateContext);
-
   const isLogin = !!user;
 
   const logout = () => {
@@ -21,7 +20,6 @@ function Header() {
     navigate(router);
     window.location.reload();
   };
-
   return (
     <Nav
       activeKey={location.pathname}
@@ -51,14 +49,16 @@ function Header() {
           나의 페이지
         </Nav.Link>
       </Nav.Item>
-      <Nav.Item>
-        <Nav.Link
-          onClick={() => navigate(`/recommend`)}
-          style={{ color: "#fff" }}
-        >
-          추천
-        </Nav.Link>
-      </Nav.Item>
+      {user?.keywords?.length !== 0 && (
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => navigate(`/recommend`)}
+            style={{ color: "#fff" }}
+          >
+            추천
+          </Nav.Link>
+        </Nav.Item>
+      )}
       <Nav.Item>
         <Nav.Link onClick={() => navigate(`/search`)} style={{ color: "#fff" }}>
           검색
