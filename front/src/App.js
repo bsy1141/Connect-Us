@@ -18,6 +18,7 @@ import EditPostPage from "pages/post/EditPostPage";
 import SearchResultPage from "pages/search/SearchResultPage";
 import RecommendPage from "pages/recommend/RecommendPage";
 import NotFoundPage from "pages/NotFoundPage";
+import RecommentResultPage from "pages/recommend/RecommendResultPage";
 
 function App() {
   const wrapFetchUser = (child) => {
@@ -33,6 +34,7 @@ function App() {
   const searchPage = wrapFetchUser(<SearchPage />);
   const searchResultPage = wrapFetchUser(<SearchResultPage />);
   const recommendPage = wrapFetchUser(<RecommendPage />);
+  const recommentResultPage = wrapFetchUser(<RecommentResultPage />);
 
   return (
     <ContextProvider>
@@ -50,6 +52,7 @@ function App() {
             <Route path="/keyword" element={keywordPage} />
             <Route path="/search" element={searchPage} />
             <Route path="/recommend" element={recommendPage} />
+            <Route path="/recommend/result" element={recommentResultPage} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Container>
