@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
-const KeywordCard = ({ title, data, state, setState, multiple }) => {
+const KeywordCard = ({
+  title,
+  data,
+  state,
+  setState,
+  isRecommend,
+  multiple,
+}) => {
   const clickMultipleState = (s) => {
     if (state.includes(s)) {
       const filteredArr = state.filter((data) => data !== s);
@@ -20,23 +27,42 @@ const KeywordCard = ({ title, data, state, setState, multiple }) => {
     }
   };
 
-  if (multiple) {
+  if (isRecommend) {
+    if (multiple) {
+      return (
+        <CardContainer>
+          <h5>{title}</h5>
+          <MultipleCardContent>
+            {data.map((s) => (
+              <Keyword
+                onClick={() => clickMultipleState(s.eng)}
+                bgcolor={state.includes(s.eng) ? "#ff758f" : "#fff"}
+                color={state.includes(s.eng) ? "#fff" : "#828282"}
+                border={state.includes(s.eng) ? "none" : "1px solid #c4c4c4"}
+                multiple={true}
+              >
+                {s.kor}
+              </Keyword>
+            ))}
+          </MultipleCardContent>
+        </CardContainer>
+      );
+    }
     return (
       <CardContainer>
         <h5>{title}</h5>
-        <MultipleCardContent>
+        <CardContent>
           {data.map((s) => (
             <Keyword
-              onClick={() => clickMultipleState(s)}
-              bgcolor={state.includes(s) ? "#ff758f" : "#fff"}
-              color={state.includes(s) ? "#fff" : "#828282"}
-              border={state.includes(s) ? "none" : "1px solid #c4c4c4"}
-              multiple={true}
+              onClick={() => setState(s.eng)}
+              bgcolor={state === s.eng ? "#ff758f" : "#fff"}
+              color={state === s.eng ? "#fff" : "#828282"}
+              border={state === s.eng ? "none" : "1px solid #c4c4c4"}
             >
-              {s}
+              {s.kor}
             </Keyword>
           ))}
-        </MultipleCardContent>
+        </CardContent>
       </CardContainer>
     );
   }
