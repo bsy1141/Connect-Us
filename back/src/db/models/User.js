@@ -63,6 +63,86 @@ class User {
     return users;
   }
 
+  static async findRecommendUsers({ userKeywords, userType, keywordType }) {
+    let users;
+    const first = keywordType[0];
+    const second = keywordType[1];
+    const third = keywordType[2];
+
+    if (userType === "all") {
+      const usersWithAll = await UserModel.find({
+        $and: [
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+          { keywords: { third: userKeywords.third } },
+        ],
+      });
+
+      const userWithFirstAndSecond = await User.find({
+        $and: [
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+        ],
+      });
+
+      const userWithFirst = await User.find({
+        keywords: { first: userKeywords.first },
+      });
+
+      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+    } else if (userType === "user") {
+      const usersWithAll = await UserModel.find({
+        $and: [
+          { type: "user" },
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+          { keywords: { third: userKeywords.third } },
+        ],
+      });
+
+      const userWithFirstAndSecond = await User.find({
+        $and: [
+          { type: "user" },
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+        ],
+      });
+
+      const userWithFirst = await User.find({
+        $and: [{ type: "user" }, { keywords: { first: userKeywords.first } }],
+      });
+
+      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+    } else if (userType === "company") {
+      const usersWithAll = await UserModel.find({
+        $and: [
+          { type: "company" },
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+          { keywords: { third: userKeywords.third } },
+        ],
+      });
+
+      const userWithFirstAndSecond = await User.find({
+        $and: [
+          { type: "company" },
+          { keywords: { first: userKeywords.first } },
+          { keywords: { second: userKeywords.second } },
+        ],
+      });
+
+      const userWithFirst = await User.find({
+        $and: [
+          { type: "company" },
+          { keywords: { first: userKeywords.first } },
+        ],
+      });
+
+      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+    }
+    return [...new Set(users.map(JSON.stringify))].map(JSON.parse);
+  }
+
   static async update({ userId, fieldToUpdate, newValue }) {
     const filter = { id: userId };
     const update = { [fieldToUpdate]: newValue };
