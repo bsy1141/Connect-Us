@@ -87,18 +87,8 @@ function MainFeed() {
     return () => observer && observer.disconnect();
   }, [bottomRef]);
 
-  //console.log(user);
-
-  // if (loading) {
-  //   return (
-  //     <Container>
-  //       <Header />
-  //       <LoadingWrapper>
-  //         <LoadingSpinner />
-  //       </LoadingWrapper>
-  //     </Container>
-  //   );
-  // }
+  // console.log(user);
+  // console.log(sessionStorage.getItem("userToken"));
 
   return (
     <Container>
