@@ -17,6 +17,7 @@ const UserCard = ({ user }) => {
         width: "17rem",
         maxwidth: "17rem",
         marginRight: "50px",
+        marginBottom: "50px",
         paddingTop: "2%",
         display: "inline-block",
         cursor: "pointer",
