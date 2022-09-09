@@ -138,7 +138,11 @@ class userAuthService {
       keywordType,
     });
 
-    return recommendUsers;
+    const filteredRecommendUsers = recommendUsers.filter(
+      (user) => user.id !== userId
+    );
+
+    return filteredRecommendUsers;
   }
 
   static async setUser({ userId, toUpdate }) {

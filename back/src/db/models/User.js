@@ -63,83 +63,90 @@ class User {
     return users;
   }
 
-  static async findRecommendUsers({ userKeywords, userType, keywordType }) {
+  static async findRecommendUsers({ keywords, userType, keywordType }) {
     let users;
     const first = keywordType[0];
     const second = keywordType[1];
     const third = keywordType[2];
+    //console.log(keywords[first]);
+    // { keywords: { $elemMatch: { job: { $regex: keyword } } } },
 
     if (userType === "all") {
       const usersWithAll = await UserModel.find({
         $and: [
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
-          { keywords: { third: userKeywords.third } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
+          { keywords: { $elemMatch: { [third]: keywords[third] } } },
         ],
       });
 
-      const userWithFirstAndSecond = await User.find({
+      const userWithFirstAndSecond = await UserModel.find({
         $and: [
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
         ],
       });
 
-      const userWithFirst = await User.find({
-        keywords: { first: userKeywords.first },
+      const userWithFirst = await UserModel.find({
+        keywords: { $elemMatch: { [first]: keywords[first] } },
       });
 
-      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+      users = [...usersWithAll, ...userWithFirstAndSecond, ...userWithFirst];
     } else if (userType === "user") {
       const usersWithAll = await UserModel.find({
         $and: [
           { type: "user" },
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
-          { keywords: { third: userKeywords.third } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
+          { keywords: { $elemMatch: { [third]: keywords[third] } } },
         ],
       });
 
-      const userWithFirstAndSecond = await User.find({
+      const userWithFirstAndSecond = await UserModel.find({
         $and: [
           { type: "user" },
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
         ],
       });
 
-      const userWithFirst = await User.find({
-        $and: [{ type: "user" }, { keywords: { first: userKeywords.first } }],
+      const userWithFirst = await UserModel.find({
+        $and: [
+          { type: "user" },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+        ],
       });
 
-      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+      users = [...usersWithAll, ...userWithFirstAndSecond, ...userWithFirst];
     } else if (userType === "company") {
       const usersWithAll = await UserModel.find({
         $and: [
           { type: "company" },
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
-          { keywords: { third: userKeywords.third } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
+          { keywords: { $elemMatch: { [third]: keywords[third] } } },
         ],
       });
 
-      const userWithFirstAndSecond = await User.find({
+      const userWithFirstAndSecond = await UserModel.find({
         $and: [
           { type: "company" },
-          { keywords: { first: userKeywords.first } },
-          { keywords: { second: userKeywords.second } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
+          { keywords: { $elemMatch: { [second]: keywords[second] } } },
         ],
       });
 
-      const userWithFirst = await User.find({
+      const userWithFirst = await UserModel.find({
         $and: [
           { type: "company" },
-          { keywords: { first: userKeywords.first } },
+          { keywords: { $elemMatch: { [first]: keywords[first] } } },
         ],
       });
 
-      users = [...userWithAll, ...userWithFirstAndSecond, ...userWithFirst];
+      users = [...usersWithAll, ...userWithFirstAndSecond, ...userWithFirst];
     }
+
+    console.log(users);
     return [...new Set(users.map(JSON.stringify))].map(JSON.parse);
   }
 

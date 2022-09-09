@@ -266,14 +266,15 @@ userAuthRouter.get(
   async function (req, res, next) {
     try {
       const userId = req.currentUserId;
-      const userType = req.body.userType;
-      const keywordType = req.body.keywordType;
+      const userType = req.query.userType;
+      const keywordType = req.query.keywordType.split(",");
 
       const result = await userAuthService.getRecommendUsers({
         userId,
         userType,
         keywordType,
       });
+
       res.status(200).send(result);
     } catch (error) {
       next(error);
