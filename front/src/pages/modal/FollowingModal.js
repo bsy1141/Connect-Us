@@ -10,6 +10,7 @@ const DEFAULT_PROFILE_IMG =
 const FollowingModal = ({ setIsModalOpen, tabName, followers, followings }) => {
   const navigate = useNavigate();
   const [tab, setTab] = useState(tabName);
+  console.log(followings);
   return (
     <Container>
       <Section>
@@ -56,7 +57,7 @@ const FollowingModal = ({ setIsModalOpen, tabName, followers, followings }) => {
                     alt="profile"
                   />
                   <span onClick={() => navigate(`/myPage/${f.follower.id}`)}>
-                    {f.following.name}
+                    {f.follower.name}
                   </span>
                 </div>
               ))}
