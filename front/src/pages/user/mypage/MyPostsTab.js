@@ -10,7 +10,9 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
       <NoPostsContainer>
         <img src={`${process.env.PUBLIC_URL}/noContent.svg`} alt="No Posts" />
         <h3>게시글이 없습니다.</h3>
-        <button onClick={() => navigate(`/post`)}>게시글 작성하기</button>
+        <button onClick={() => navigate(`/post/create`)}>
+          게시글 작성하기
+        </button>
       </NoPostsContainer>
     );
   }
