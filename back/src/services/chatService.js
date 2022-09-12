@@ -17,9 +17,11 @@ class chatService {
 
   static async createChat({ id, chat, userId }) {
     const room = await Room.findById({ id });
+    const user = await User.findById({ userId });
+
     const newChat = {
       roomId: room.id,
-      user: userId,
+      user: user._id,
       chat,
     };
     const createdNewChat = await Chat.create({ newChat });

@@ -2,6 +2,7 @@ import { Router } from "express";
 import { login_required } from "../middlewares/login_required";
 import { chatService } from "../services/chatService";
 import { chatImgUpload } from "../utils/s3";
+
 const chatRouter = Router();
 
 chatRouter.post("/room", login_required, async function (req, res, next) {
@@ -19,7 +20,7 @@ chatRouter.post("/room/:id/chat", login_required, async (req, res, next) => {
   try {
     const id = req.params.id;
     const chat = req.body.chat;
-    const userId = req.body.userId;
+    const userId = req.currentUserId;
 
     const createdChat = await chatService.createChat({ id, chat, userId });
     req.app.get("io").of("/chat").to(req.params.id).emit("chat", createdChat);

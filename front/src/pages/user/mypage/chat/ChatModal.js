@@ -13,6 +13,7 @@ import {
 const socket = io.connect("http://localhost:5001/chat");
 
 const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
+  console.log(user);
   const messageEndRef = useRef(null);
   const [message, setMessage] = useState("");
   const [totalMessage, setTotalMessage] = useState([]);
@@ -41,7 +42,6 @@ const ChatModal = ({ setIsChatModalOpen, roomId, user }) => {
   const handleClick = async () => {
     await Api.post(`room/${roomId}/chat`, {
       chat: message,
-      userId: user._id,
     });
     scrollToBottom();
     setMessage("");
