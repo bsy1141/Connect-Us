@@ -29,14 +29,15 @@ const MyPage = () => {
   const [userId, setUserId] = useState("");
   const [posts, setPosts] = useState([]);
   const [page, setPage] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
+  //const [totalPage, setTotalPage] = useState(1);
   const [roomId, setRoomId] = useState("");
 
   const fetchMyPageData = async () => {
     const getOwnerData = Api.get(`users/${ownerId}`);
     const getOwnerPosts = Api.get(
+      //?page=${page}&perPage=${PER_PAGE}
       "postlist",
-      `${ownerId}?page=${page}&perPage=${PER_PAGE}`
+      `${ownerId}/noPage`
     );
     try {
       setLoading(true);
@@ -45,8 +46,7 @@ const MyPage = () => {
         getOwnerPosts,
       ]);
       setOwner(ownerData.data);
-      setTotalPage(ownerPosts.data.total);
-      setPosts(ownerPosts.data.posts);
+      setPosts(ownerPosts.data);
 
       setLoading(false);
     } catch (err) {
@@ -71,7 +71,7 @@ const MyPage = () => {
 
   useEffect(() => {
     fetchMyPageData();
-  }, [ownerId, page, totalPage]);
+  }, [ownerId, page]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -106,7 +106,7 @@ const MyPage = () => {
             <MyPostsTab
               posts={posts}
               page={page}
-              totalPage={totalPage}
+              //totalPage={totalPage}
               setPage={setPage}
             />
           )}

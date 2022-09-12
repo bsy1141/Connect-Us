@@ -85,6 +85,25 @@ postRouter.get("/postlist/:userId", login_required, async (req, res, next) => {
   }
 });
 
+postRouter.get(
+  "/postlist/:userId/noPage",
+  login_required,
+  async (req, res, next) => {
+    try {
+      const userId = req.params.userId;
+      const post = await postService.getPostsByUserIdWithNoPage({ userId });
+
+      if (post.errorMessage) {
+        throw new Error(post.errorMessage);
+      }
+
+      res.status(200).send(post);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
 postRouter.get("/posts/following", login_required, async (req, res, next) => {
   try {
     if (is.emptyObject(req.query)) {

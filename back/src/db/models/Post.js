@@ -94,6 +94,11 @@ class Post {
     return { total: totalDocuments, posts };
   };
 
+  static findAllToUserWithNoPage = async ({ userId }) => {
+    const posts = await PostModel.find({ userId });
+    return posts;
+  };
+
   static findById = async ({ id }) => {
     const post = await PostModel.findOne({ id }).populate("comments").lean();
     return post;

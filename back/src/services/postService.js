@@ -58,6 +58,17 @@ class postService {
     return getPostsResult;
   };
 
+  static getPostsByUserIdWithNoPage = async ({ userId }) => {
+    const getPostsResult = await Post.findAllToUserWithNoPage({ userId });
+
+    if (!getPostsResult) {
+      const errorMessage = "해당 유저의 포스트들을 불러오는 데 실패했습니다.";
+      return { errorMessage };
+    }
+
+    return getPostsResult;
+  };
+
   static getPostById = async ({ id }) => {
     const getPostResult = await Post.findById({ id });
 

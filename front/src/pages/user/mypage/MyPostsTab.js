@@ -2,7 +2,7 @@ import PostCard from "components/PostCard";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const MyPosts = ({ posts, page, totalPage, setPage }) => {
+const MyPosts = ({ posts, page, setPage }) => {
   const navigate = useNavigate();
 
   if (posts.length === 0) {
@@ -32,7 +32,7 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
           marginTop: "10px",
         }}
       >
-        <PaginationButton>
+        {/* <PaginationButton>
           <button
             style={{
               borderRight: "1px solid #c4c4c4",
@@ -53,7 +53,7 @@ const MyPosts = ({ posts, page, totalPage, setPage }) => {
           >
             {">"}
           </button>
-        </PaginationButton>
+        </PaginationButton> */}
       </div>
     </Container>
   );

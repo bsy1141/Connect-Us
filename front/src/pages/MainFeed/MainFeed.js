@@ -230,6 +230,7 @@ const Name = styled.div`
   > p {
     display: inline-block;
     margin: 0;
+    cursor: pointer;
   }
 `;
 
