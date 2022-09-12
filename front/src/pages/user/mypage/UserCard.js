@@ -4,8 +4,18 @@ import styled from "styled-components";
 import * as Api from "api";
 import UserEditModal from "pages/modal/userEditModal/UserEditModal";
 import FollowingModal from "pages/modal/FollowingModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBehance,
+  faFacebook,
+  faGithub,
+  faLinkedin,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import { faHouse, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 const UserCard = ({ userId, owner }) => {
+  console.log(owner);
   const {
     imageLink,
     introduction,
@@ -15,6 +25,7 @@ const UserCard = ({ userId, owner }) => {
     followers,
     followings,
     email,
+    socialData,
   } = owner;
   const navigate = useNavigate();
 
@@ -102,6 +113,75 @@ const UserCard = ({ userId, owner }) => {
                 ))}
               </div>
             </>
+          )}
+          {socialData.length > 0 && <p>소셜 정보</p>}
+          {socialData.length > 0 && socialData[0].github.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faGithub}
+                onClick={() =>
+                  window.open(
+                    `https://github.com/${socialData[0].github}`,
+                    "_blank"
+                  )
+                }
+              />
+            </SocialIcon>
+          )}
+          {socialData.length > 0 && socialData[0].behance.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faBehance}
+                onClick={() =>
+                  window.open(
+                    `https://www.behance.net/${socialData[0].behance}`,
+                    "_blank"
+                  )
+                }
+              />
+            </SocialIcon>
+          )}
+          {socialData.length > 0 && socialData[0].twitter.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faTwitter}
+                onClick={() =>
+                  window.open(
+                    `https://twitter.com/${socialData[0].twitter}`,
+                    "_blank"
+                  )
+                }
+              />
+            </SocialIcon>
+          )}
+          {socialData.length > 0 && socialData[0].facebook.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faLinkedin}
+                onClick={() =>
+                  window.open(
+                    `https://www.linkedin.com/in/${socialData[0].linkedIn}`,
+                    "_blank"
+                  )
+                }
+              />
+            </SocialIcon>
+          )}
+          {socialData.length > 0 && socialData[0].blog.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                onClick={() => window.open(socialData[0].blog, "_blank")}
+              />
+            </SocialIcon>
+          )}
+          {socialData.length > 0 && socialData[0].homepage.length > 0 && (
+            <SocialIcon>
+              <FontAwesomeIcon
+                icon={faHouse}
+                onClick={() => window.open(socialData[0].homepage, "_blank")}
+              />
+            </SocialIcon>
           )}
           {isEditable && (
             <div style={{ textAlign: "center", marginTop: "20px" }}>
@@ -274,4 +354,15 @@ const Keyword = styled.span`
   border-radius: 20px;
   padding: 2% 5%;
   margin: 0 3% 3% 0;
+`;
+
+const SocialIcon = styled.div`
+  font-size: 30px;
+  color: #c4c4c4;
+  cursor: pointer;
+  display: inline;
+  margin-right: 15px;
+  &:hover {
+    color: #000;
+  }
 `;
