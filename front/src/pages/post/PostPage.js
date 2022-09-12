@@ -24,6 +24,7 @@ const PostPage = () => {
   const { postId } = params;
 
   const [id, setId] = useState(user?.id || "");
+  const [userImage, setUserImage] = useState(user?.imageLink || "");
   const [post, setPost] = useState({});
   const [loading, setLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,6 +50,7 @@ const PostPage = () => {
   useEffect(() => {
     if (user) {
       setId(user.id);
+      setUserImage(user.imageLink);
     }
     getPost();
   }, [user]);
@@ -64,7 +66,6 @@ const PostPage = () => {
     );
   }
 
-  console.log(post);
   return (
     <Container>
       <Header />
@@ -72,7 +73,9 @@ const PostPage = () => {
         <h1>{post.title}</h1>
         <PostInfo>
           <WriterInfo>
-            <p>{post.userName}</p>
+            <p onClick={() => navigate(`/myPage/${post.userId}`)}>
+              {post.userName}
+            </p>
             <span>{formatDate(post.createdAt || "")}</span>
           </WriterInfo>
           {id === post.userId && (
@@ -95,7 +98,10 @@ const PostPage = () => {
         </Content>
       </Post>
       <WriterProfile>
-        <ProfileImage onClick={() => navigate(`/myPage/${post.userId}`)} />
+        <ProfileImage
+          src={userImage}
+          onClick={() => navigate(`/myPage/${post.userId}`)}
+        />
         <h3 onClick={() => navigate(`/myPage/${post.userId}`)}>
           {post.userName}
         </h3>
@@ -153,6 +159,10 @@ const WriterInfo = styled.div`
     display: inline-block;
     margin-right: 15px;
     font-weight: bold;
+    cursor: pointer;
+  }
+  > p:hover {
+    text-decoration: underline;
   }
   > span {
     color: #4d555b;
@@ -198,9 +208,10 @@ const WriterProfile = styled.div`
   }
 `;
 
-const ProfileImage = styled.div`
-  background-color: #c4c4c4;
+const ProfileImage = styled.img`
   border-radius: 50%;
   width: 100px;
   height: 100px;
+  object-fit: cover;
+  cursor: pointer;
 `;
