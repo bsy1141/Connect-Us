@@ -29,7 +29,6 @@ export default SearchTabs;
 const TabsContainer = styled.div`
   position: absolute;
   top: 170px;
-  z-index: 5;
   width: 100%;
   display: flex;
 `;
