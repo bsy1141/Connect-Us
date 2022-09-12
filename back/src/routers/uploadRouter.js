@@ -12,7 +12,7 @@ uploadRouter.post(
   async function (req, res, next) {
     try {
       console.log(req.file);
-      const saveFilePath = req.file?.location ?? null; // 업로드된 파일의 경로 (index.html 기준)
+      const saveFilePath = req.file?.location ?? null;
 
       res.status(201).send(saveFilePath);
     } catch (error) {
